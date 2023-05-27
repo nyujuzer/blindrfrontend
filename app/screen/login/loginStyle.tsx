@@ -1,38 +1,33 @@
 import { StyleSheet } from "react-native";
-import { BackgroundColor, global } from "../../components/helpers/StyleVars";
+import { BackgroundColor, secondaryBg, SecondaryColor } from "../../components/helpers/StyleVars";
 export const loginStyles = StyleSheet.create({
-  header:{ color:"white"},
-  OuterContainer: {
-    flex: 1,
-    alignContent: "center",
-    justifyContent: "center",
-    backgroundColor: BackgroundColor,
-    height: '100%'
-  },
   container: {
+    backgroundColor:BackgroundColor,
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-  },
-  input: {
-    color: '#fff',
-    borderColor: '#fff',
-    height: 40,
-    margin: 12,
-    width: 200,
-    borderWidth: 1,
-    padding: 10
-  },
-  thumbnail: {
-    height: 190,
-    aspectRatio: 1 / 1,
-  },
-  test: {
-    flex: 2,
-    flexDirection: "row"
+    alignItems: 'center',
+    padding: 20,
   },
   card: {
-    marginTop:30,
-    backgroundColor: "#252525",
-},
+    backgroundColor: secondaryBg,
+    borderRadius: 10,
+    padding: 20,
+    elevation: 5,
+    shadowColor: SecondaryColor,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  createAccountText: {
+    color:"white",
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  createAccountLink: {
+    color: 'blue',
+    textDecorationLine: 'underline',
+  },
 });

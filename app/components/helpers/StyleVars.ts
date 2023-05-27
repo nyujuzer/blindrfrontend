@@ -14,5 +14,5 @@ const ActionColor = "#FEDB5B"
 const SecondaryColor = "#d1b038"
 const BackgroundColor = "#000"
 const darkColor = '#b39b27'
-const secondaryBg = "#333333"
+const secondaryBg = "#252525"
 export {ActionColor, BackgroundColor, global, SecondaryColor, darkColor, secondaryBg};

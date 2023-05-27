@@ -1,7 +1,7 @@
 import React, { useEffect, } from "react";
 import { useState } from "react";
 import { StatusBar } from 'expo-status-bar';
-import { Text,SafeAreaView, Image, View, StyleSheet, Alert } from 'react-native';
+import { Text,SafeAreaView, Image, View,  Alert } from 'react-native';
 import { loginStyles } from "./loginStyle";
 import { save, getValueOf } from "../../components/helpers/app.loginHelper";
 import { ip } from "../../components/helpers/conf";
@@ -63,15 +63,15 @@ export const LoginScreen = (prop: LoginScreenProps) => {
     }
   }
   return (
-    <SafeAreaView style={styles.container}>
-      <Card style={styles.card}>
+    <SafeAreaView style={loginStyles.container}>
+      <Card style={loginStyles.card}>
         <Image source={require("../../../img/knsz.png")} style={{height:150,width:150}}/>
         <EmailField onChangeText={setEmail} />
         <PasswordField onChangeText={setPassword} />
         <StyledButton text="Login" onPress={loginF(email, password)} />
-        <Text style={styles.createAccountText}>
+        <Text style={loginStyles.createAccountText}>
           Don't have an account?{' '}
-          <Text style={styles.createAccountLink} onPress={()=>prop.navigation.navigate("Register")}>
+          <Text style={loginStyles.createAccountLink} onPress={()=>prop.navigation.navigate("Register")}>
             Create one
           </Text>
         </Text>
@@ -80,35 +80,5 @@ export const LoginScreen = (prop: LoginScreenProps) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor:BackgroundColor,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  card: {
-    backgroundColor: secondaryBg,
-    borderRadius: 10,
-    padding: 20,
-    elevation: 5,
-    shadowColor: SecondaryColor,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  createAccountText: {
-    marginTop: 10,
-    textAlign: 'center',
-  },
-  createAccountLink: {
-    color: 'blue',
-    textDecorationLine: 'underline',
-  },
-});
 
 
