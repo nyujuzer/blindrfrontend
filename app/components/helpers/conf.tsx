@@ -1,2 +1,2 @@
-const ip = "http://192.168.1.9:8000"
+const ip = "http://192.168.1.3:8000"
 export {ip}

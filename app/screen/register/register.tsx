@@ -3,7 +3,7 @@ import { SafeAreaView, Image, Text, View, ScrollView, Platform, Modal, TextStyle
 // import NumberField from 'react-number-field'
 import { AppropriateDatePicker, DatabaseComponent, EmailField, InputField, PasswordField, StyledButton, } from '../../components/pre-styled/components';
 import { ip } from '../../components/helpers/conf';
-import { saveLogin, readStorage } from "../../components/helpers/app.loginHelper";
+import { save, getValueOf } from "../../components/helpers/app.loginHelper";
 import { RegisterStyles } from './registerStyle';
 import { SecondaryColor, ActionColor, darkColor, global } from '../../components/helpers/StyleVars';
 import { RadioButton, Card, } from 'react-native-paper';
@@ -77,8 +77,8 @@ const RegSite = (prop:regnav) => {
       xhr.onreadystatechange = function () {
         if (this.readyState == 4) {
             if (JSON.parse(this.responseText)['success']){
-              saveLogin("email", formData.email)
-              saveLogin("pass", formData.password)
+              save("email", formData.email)
+              save("pass", formData.password)
               prop.navigation.navigate("Login")
             }else{
               alert("Email is already in use")

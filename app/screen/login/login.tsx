@@ -1,13 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, } from "react";
 import { useState } from "react";
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, Image, Alert } from 'react-native';
+import { Text,SafeAreaView, Image, View, StyleSheet, Alert } from 'react-native';
 import { loginStyles } from "./loginStyle";
-import { saveLogin, readStorage } from "../../components/helpers/app.loginHelper";
+import { save, getValueOf } from "../../components/helpers/app.loginHelper";
 import { ip } from "../../components/helpers/conf";
 import { StyledButton, PasswordField, EmailField } from "../../components/pre-styled/components";
 import { Card } from "react-native-paper";
-import { global } from "../../components/helpers/StyleVars";
+import { SecondaryColor, global, secondaryBg } from "../../components/helpers/StyleVars";
+import { darkColor } from "../../components/helpers/StyleVars";
+import { BackgroundColor } from "../../components/helpers/StyleVars";
 
 
 interface LoginScreenProps {
@@ -16,26 +18,28 @@ interface LoginScreenProps {
 
 export const LoginScreen = (prop: LoginScreenProps) => {
   useEffect(() => {
-    readStorage("email").then((result: any) => {
-      setName(result);
+    getValueOf("email").then((result: any) => {
+      setEmail(result);
       console.log(result); // Display the retrieved email value
     }).catch((err) => {
       Alert.alert("Something went wrong while retrieving email");
     });
     
-    readStorage("pass").then((result: any) => {
-      setPass(result);
+    getValueOf("pass").then((result: any) => {
+      setPassword(result);
       console.log(result); // Display the retrieved password value
     }).catch((err) => {
       Alert.alert("Something went wrong while retrieving password");
     });
-    
+    if (email != '' && password != ''){
+      loginF(email, password)
+    }
   }, [])
   const login = () => { prop.navigation.navigate("Home") }
-  const [password, setPass] = useState('')
-  const [name, setName] = useState('')
+  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('')
 
-  function loginF(Name: any, Pass: any) {
+  function loginF(email: any, Pass: any) {
     const xhtml = new XMLHttpRequest()
     xhtml.onreadystatechange = function () {
 
@@ -43,9 +47,9 @@ export const LoginScreen = (prop: LoginScreenProps) => {
 
 
         if (JSON.parse(this.responseText)['login'] === "successful") {
-          saveLogin("email", name)
-          saveLogin("pass", password)
-          readStorage("pass")
+          console.log(email, password)
+          save("email", email)
+          save("pass", password)
           login()
         } else {
           alert("Password or email incorrect")
@@ -53,30 +57,58 @@ export const LoginScreen = (prop: LoginScreenProps) => {
       }
 
     }
-    if (Name !== null && Pass !== null) {
-      xhtml.open("GET", ip + "/login/" + Name.trim() + "+" + Pass.trim() + "/")
+    if (email !== null && Pass !== null) {
+      xhtml.open("GET", ip + "/login/" + email.trim() + "+" + Pass.trim() + "/")
       xhtml.send()
     }
   }
   return (
-    <View style={loginStyles.OuterContainer}>
-      <Card style={loginStyles.card}>
-        <View style={loginStyles.container}>
-          <Image source={require('../../../img/knsz.png')} style={loginStyles.thumbnail}></Image>
-
-          <Text style={[loginStyles.header, global.h1]}>Login</Text>
-          <EmailField onChangeText={(text: string) => setName(text)}></EmailField>
-          <PasswordField onChangeText={(newPass: string) => { setPass(newPass); }}></PasswordField>
-          <View style={loginStyles.test}>
-            <StyledButton text={"Login"} onPress={() => { loginF(name, password) }}></StyledButton>
-            <StyledButton text={"Register"} onPress={() => { prop.navigation.navigate("Register") }}></StyledButton>
-          </View>
-        </View>
+    <SafeAreaView style={styles.container}>
+      <Card style={styles.card}>
+        <Image source={require("../../../img/knsz.png")} style={{height:150,width:150}}/>
+        <EmailField onChangeText={setEmail} />
+        <PasswordField onChangeText={setPassword} />
+        <StyledButton text="Login" onPress={loginF(email, password)} />
+        <Text style={styles.createAccountText}>
+          Don't have an account?{' '}
+          <Text style={styles.createAccountLink} onPress={()=>prop.navigation.navigate("Register")}>
+            Create one
+          </Text>
+        </Text>
       </Card>
-
-
-      <StatusBar style="auto" />
-    </View>
+    </SafeAreaView>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor:BackgroundColor,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  card: {
+    backgroundColor: secondaryBg,
+    borderRadius: 10,
+    padding: 20,
+    elevation: 5,
+    shadowColor: SecondaryColor,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  createAccountText: {
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  createAccountLink: {
+    color: 'blue',
+    textDecorationLine: 'underline',
+  },
+});
+
 

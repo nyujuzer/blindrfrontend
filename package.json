@@ -27,7 +27,8 @@
     "react-native-numeric-input": "^1.9.1",
     "react-native-paper": "^5.7.0",
     "react-native-paper-dates": "^0.16.1",
-    "react-native-web": "~0.18.10"
+    "react-native-web": "~0.18.10",
+    "expo-secure-store": "~12.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
