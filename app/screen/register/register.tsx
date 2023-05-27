@@ -1,13 +1,13 @@
 import react, { useState, useCallback } from 'react';
-import { SafeAreaView, Image, Text, View, ScrollView, Platform, Modal, TextStyle, StyleProp, } from 'react-native';
+import { SafeAreaView, TouchableOpacity, Image, Text, View, ScrollView, Platform, Modal, TextStyle, StyleProp, } from 'react-native';
 // import NumberField from 'react-number-field'
 import { AppropriateDatePicker, DatabaseComponent, EmailField, InputField, PasswordField, StyledButton, } from '../../components/pre-styled/components';
 import { ip } from '../../components/helpers/conf';
 import { save, getValueOf } from "../../components/helpers/app.loginHelper";
 import { RegisterStyles } from './registerStyle';
 import { SecondaryColor, ActionColor, darkColor, global } from '../../components/helpers/StyleVars';
-import { RadioButton, Card, } from 'react-native-paper';
-
+import { RadioButton, Card, FAB} from 'react-native-paper';
+import { AntDesign } from '@expo/vector-icons';
 interface regnav{
   navigation:any
 }
@@ -179,6 +179,16 @@ const RegSite = (prop:regnav) => {
   //#endregion
   return (
     <SafeAreaView style={RegisterStyles.box}>
+      <TouchableOpacity>
+              <AntDesign onPress={()=>{prop.navigation.navigate("Login")}} name="leftcircle" size={50} color={ActionColor} style={{
+        position: 'absolute',
+    left:100,
+    marginTop:15,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 4,}} />
+      </TouchableOpacity>
       <Image source={require("../../../img/knsz.png")} style={global.logo}></Image>
       <ScrollView
       
