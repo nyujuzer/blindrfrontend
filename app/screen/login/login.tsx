@@ -45,8 +45,13 @@ export const LoginScreen = (prop: LoginScreenProps) => {
 
       if (this.readyState == 4) {
 
-
-        if (JSON.parse(this.responseText)['login'] === "successful") {
+        var response;
+        try {
+          response = JSON.parse(this.responseText)
+        }catch{
+          response = JSON.parse("{login:unsuccessful}")
+        }
+        if (response['login'] === "successful") {
           console.log(email, password)
           save("email", email)
           save("pass", password)
@@ -66,9 +71,9 @@ export const LoginScreen = (prop: LoginScreenProps) => {
     <SafeAreaView style={loginStyles.container}>
       <Card style={loginStyles.card}>
         <Image source={require("../../../img/knsz.png")} style={{height:150,width:150}}/>
-        <EmailField onChangeText={setEmail} />
-        <PasswordField onChangeText={setPassword} />
-        <StyledButton text="Login" onPress={loginF(email, password)} />
+        <EmailField onChangeText={(text)=>setEmail(text)} />
+        <PasswordField onChangeText={(text)=>setPassword(text)} />
+        <StyledButton text="Login" onPress={()=>loginF(email, password)} />
         <Text style={loginStyles.createAccountText}>
           Don't have an account?{' '}
           <Text style={loginStyles.createAccountLink} onPress={()=>prop.navigation.navigate("Register")}>
