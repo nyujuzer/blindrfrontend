@@ -9,8 +9,8 @@ export const RegisterStyles = StyleSheet.create({
     },
     box: {
         flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: BackgroundColor,
     },
     borderTest: {

@@ -6,14 +6,14 @@ import { ip } from '../../components/helpers/conf';
 import { save, getValueOf } from "../../components/helpers/app.loginHelper";
 import { RegisterStyles } from './registerStyle';
 import { SecondaryColor, ActionColor, darkColor, global } from '../../components/helpers/StyleVars';
-import { RadioButton, Card, FAB} from 'react-native-paper';
+import { RadioButton, Card, FAB } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
-interface regnav{
-  navigation:any
+interface regnav {
+  navigation: any
 }
 
-const RegSite = (prop:regnav) => {
-  enum Groups{
+const RegSite = (prop: regnav) => {
+  enum Groups {
     PREFERENCES,
     GENDER
   }
@@ -26,16 +26,16 @@ const RegSite = (prop:regnav) => {
     conf: 'TestPassword1',
     name: 'Johnny Test1',
     gender: 'male',
-    preferences:'female',
-    hobbies:new Array(),
+    preferences: 'female',
+    hobbies: new Array(),
     age: '' || new Date()
   });
 
-  function handleStylehange(value:string, caller:Groups) {
+  function handleStylehange(value: string, caller: Groups) {
 
-    var type = caller === Groups.GENDER?formData.gender:formData.preferences
+    var type = caller === Groups.GENDER ? formData.gender : formData.preferences
 
-    if (type === value ) {
+    if (type === value) {
       return {
         ...RegisterStyles.radioLabelActive,
       };
@@ -53,7 +53,7 @@ const RegSite = (prop:regnav) => {
   }
   const handleSelectHobby = (id) => {
     const updatedHobbies = [...formData.hobbies]; // Create a copy of the existing hobbies array
-  
+
     // Check if the selected hobby is already in the array
     const index = updatedHobbies.indexOf(id);
     if (index !== -1) {
@@ -61,39 +61,39 @@ const RegSite = (prop:regnav) => {
     } else {
       updatedHobbies.push(id); // Add the hobby to the array
     }
-  
+
     setFormData((prevFormData) => ({
       ...prevFormData,
       hobbies: updatedHobbies,
     }));
-  
+
     console.log(updatedHobbies);
   };
-  
+
   //#region validations
   const register = () => {
     if (Validate()) {
       const xhr = new XMLHttpRequest()
       xhr.onreadystatechange = function () {
         if (this.readyState == 4) {
-            if (JSON.parse(this.responseText)['success']){
-              save("email", formData.email)
-              save("pass", formData.password)
-              prop.navigation.navigate("Login")
-            }else{
-              alert("Email is already in use")
-            }
+          if (JSON.parse(this.responseText)['success']) {
+            save("email", formData.email)
+            save("pass", formData.password)
+            prop.navigation.navigate("Login")
+          } else {
+            alert("Email is already in use")
+          }
         }
       }
       xhr.open("POST", ip + "/register/", true)
       xhr.setRequestHeader("Content-Type", "application/json")
       xhr.send(JSON.stringify(formData))
-      
+
     }
   }
 
   const Validate = () => {
-    if (checkHobbies()&&checkPassAndConf() && checkLength() && containsUpperCase() && containsNumber() && checkEmail()) {
+    if (checkHobbies() && checkPassAndConf() && checkLength() && containsUpperCase() && containsNumber() && checkEmail()) {
       if (mindate - 0 < 18) {
         return false
       } else {
@@ -111,7 +111,7 @@ const RegSite = (prop:regnav) => {
       return false;
     }
   };
-  
+
   const checkEmail = () => {
     if (formData.email !== '') {
       return true;
@@ -120,7 +120,7 @@ const RegSite = (prop:regnav) => {
       return false;
     }
   };
-  
+
   const checkPassAndConf = () => {
     if (formData.password === formData.conf) {
       return true;
@@ -129,12 +129,12 @@ const RegSite = (prop:regnav) => {
       return false;
     }
   };
-  
-  const checkHobbies = () =>{
-    var length = formData.hobbies.length > 0 
-    if (length){
+
+  const checkHobbies = () => {
+    var length = formData.hobbies.length > 0
+    if (length) {
       return length
-    }else{
+    } else {
       alert("Please choose at least one hobby!")
       return length
     }
@@ -142,7 +142,7 @@ const RegSite = (prop:regnav) => {
   const containsNumber = (): boolean => {
     const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
     let hasNumber = false;
-  
+
     nums.forEach(num => {
       formData.password.split("").forEach(letter => {
         if (num === parseInt(letter)) {
@@ -150,7 +150,7 @@ const RegSite = (prop:regnav) => {
         }
       });
     });
-  
+
     if (hasNumber) {
       return true;
     } else {
@@ -158,16 +158,16 @@ const RegSite = (prop:regnav) => {
       return false;
     }
   };
-  
+
   const containsUpperCase = (): boolean => {
     let hasCapital = false;
-  
+
     formData.password.split("").forEach(letter => {
       if (letter === letter.toUpperCase()) {
         hasCapital = true;
       }
     });
-  
+
     if (hasCapital) {
       return true;
     } else {
@@ -175,26 +175,27 @@ const RegSite = (prop:regnav) => {
       return false;
     }
   };
-  
+
   //#endregion
   return (
-    <SafeAreaView style={RegisterStyles.box}>
-      <TouchableOpacity>
-              <AntDesign onPress={()=>{prop.navigation.navigate("Login")}} name="leftcircle" size={50} color={ActionColor} style={{
-        position: 'absolute',
-    left:100,
-    marginTop:15,
-    borderRadius: 28,
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 4,}} />
-      </TouchableOpacity>
-      <Image source={require("../../../img/knsz.png")} style={global.logo}></Image>
+    <SafeAreaView style={[RegisterStyles.box]}>
+      <View style={{paddingBottom:20, alignSelf:'flex-start'}}>
+        <TouchableOpacity>
+          <AntDesign onPress={() => { prop.navigation.navigate("Login") }} name="leftcircle" size={50} color={ActionColor} style={{
+            position: 'absolute',
+            left:300,
+            marginTop: 15,
+            borderRadius: 28,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }} />
+        </TouchableOpacity>
+        <Image source={require("../../../img/knsz.png")} style={global.logo}></Image>
+
+      </View>
       <ScrollView
-      
         keyboardShouldPersistTaps='handled'
         keyboardDismissMode='on-drag'>
-
         <Card style={RegisterStyles.card}>
           <Card.Title titleStyle={{ color: "white" }} title="Let's start with some personal details!" />
           <Card.Content>
@@ -206,9 +207,9 @@ const RegSite = (prop:regnav) => {
         </Card>
         <Card style={[RegisterStyles.card]}>
           <Card.Title titleStyle={{ color: "white" }} title="And i'd like to ask for your birthday as well" />
-            <View style={RegisterStyles.center}>
-          <StyledButton text={"Set Your Birthday"} onPress={() => { openModal() }} />
-            </View>
+          <View style={RegisterStyles.center}>
+            <StyledButton text={"Set Your Birthday"} onPress={() => { openModal() }} />
+          </View>
           <AppropriateDatePicker
             visibility={open}
             onPress={() => { openModal() }}
@@ -221,25 +222,25 @@ const RegSite = (prop:regnav) => {
             value={formData.gender}
             onValueChange={(value) => setFormData(prev => ({ ...prev, gender: value }))}
           >
-            <View style={{flex:3, flexDirection:'row'}}>
+            <View style={{ flex: 3, flexDirection: 'row' }}>
               <RadioButton.Item
-              color={ActionColor}
-              labelStyle={handleStylehange('male', Groups.GENDER)} 
-              status={formData.gender === 'male' ? 'checked' : 'unchecked'}
-              value='male' label='male'
-               />
-              <RadioButton.Item 
-              color={ActionColor}
-              labelStyle={handleStylehange('female', Groups.GENDER)}
-              value='female'
-              label='female'
-              status={formData.gender === 'female' ? 'checked' : 'unchecked'} />
-              <RadioButton.Item 
-              color={ActionColor}
-              labelStyle={handleStylehange('enby', Groups.GENDER)}
-              value='enby'
-              label='enby'
-              status={formData.gender === 'male' ? 'checked' : 'unchecked'} />
+                color={ActionColor}
+                labelStyle={handleStylehange('male', Groups.GENDER)}
+                status={formData.gender === 'male' ? 'checked' : 'unchecked'}
+                value='male' label='male'
+              />
+              <RadioButton.Item
+                color={ActionColor}
+                labelStyle={handleStylehange('female', Groups.GENDER)}
+                value='female'
+                label='female'
+                status={formData.gender === 'female' ? 'checked' : 'unchecked'} />
+              <RadioButton.Item
+                color={ActionColor}
+                labelStyle={handleStylehange('enby', Groups.GENDER)}
+                value='enby'
+                label='enby'
+                status={formData.gender === 'male' ? 'checked' : 'unchecked'} />
 
             </View>
           </RadioButton.Group>
@@ -250,32 +251,32 @@ const RegSite = (prop:regnav) => {
             value={formData.preferences}
             onValueChange={(value) => setFormData(prev => ({ ...prev, preferences: value }))}
           >
-            <View style={{flex:3, flexDirection:'row'}}>
-              <RadioButton.Item 
-              color={ActionColor}
-              labelStyle={handleStylehange('male', Groups.PREFERENCES)}
-              status={formData.preferences === 'male' ? 'checked' : 'unchecked'} 
-              value='male' label='male' />
-              <RadioButton.Item 
-              color={ActionColor}
-              labelStyle={handleStylehange('female', Groups.PREFERENCES)}
-              value='female'
-              status={formData.preferences === 'female' ? 'checked' : 'unchecked'}
-              label='female' />
+            <View style={{ flex: 3, flexDirection: 'row' }}>
               <RadioButton.Item
-              color={ActionColor}
-              status={formData.preferences === 'any' ? 'checked' : 'unchecked'}
-              labelStyle={handleStylehange('any', Groups.PREFERENCES)}
-              value='any'
-              label='any' />
+                color={ActionColor}
+                labelStyle={handleStylehange('male', Groups.PREFERENCES)}
+                status={formData.preferences === 'male' ? 'checked' : 'unchecked'}
+                value='male' label='male' />
+              <RadioButton.Item
+                color={ActionColor}
+                labelStyle={handleStylehange('female', Groups.PREFERENCES)}
+                value='female'
+                status={formData.preferences === 'female' ? 'checked' : 'unchecked'}
+                label='female' />
+              <RadioButton.Item
+                color={ActionColor}
+                status={formData.preferences === 'any' ? 'checked' : 'unchecked'}
+                labelStyle={handleStylehange('any', Groups.PREFERENCES)}
+                value='any'
+                label='any' />
             </View>
           </RadioButton.Group>
         </Card>
         <Card style={RegisterStyles.card}>
-          <Card.Title titleStyle={{ color: "white" }} title="What do you do for fun?"/>
-          <DatabaseComponent onSelectHobby={(id)=>{handleSelectHobby(id)}} apiUrl={ip+"/getHobbies"}/>
+          <Card.Title titleStyle={{ color: "white" }} title="What do you do for fun?" />
+          <DatabaseComponent onSelectHobby={(id) => { handleSelectHobby(id) }} apiUrl={ip + "/getHobbies"} />
         </Card>
-        <StyledButton text={"Continue"} onPress={() => { register()}} />
+        <StyledButton text={"Continue"} onPress={() => { register() }} />
       </ScrollView>
     </SafeAreaView>
 

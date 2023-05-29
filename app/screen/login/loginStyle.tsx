@@ -27,7 +27,7 @@ export const loginStyles = StyleSheet.create({
     textAlign: 'center',
   },
   createAccountLink: {
-    color: 'blue',
+    color: 'lightblue',
     textDecorationLine: 'underline',
   },
 });
