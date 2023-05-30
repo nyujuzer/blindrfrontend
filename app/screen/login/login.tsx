@@ -3,7 +3,7 @@ import { useState } from "react";
 import { StatusBar } from 'expo-status-bar';
 import { Text,SafeAreaView, Image, View,  Alert } from 'react-native';
 import { loginStyles } from "./loginStyle";
-import { save, getValueOf } from "../../components/helpers/app.loginHelper";
+import { save, getValueOf, getUserIdFromCookie, getCookieValue } from "../../components/helpers/app.loginHelper";
 import { ip } from "../../components/helpers/conf";
 import { StyledButton, PasswordField, EmailField } from "../../components/pre-styled/components";
 import { Card } from "react-native-paper";
@@ -31,9 +31,7 @@ export const LoginScreen = (prop: LoginScreenProps) => {
     }).catch((err) => {
       Alert.alert("Something went wrong while retrieving password");
     });
-    if (email != '' && password != ''){
       loginF(email, password)
-    }
   }, [])
   const login = () => { prop.navigation.navigate("Home") }
   const [password, setPassword] = useState('')
@@ -51,10 +49,11 @@ export const LoginScreen = (prop: LoginScreenProps) => {
         }catch{
           response = JSON.parse("{login:unsuccessful}")
         }
-        if (response['login'] === "successful") {
+        if (response['login'] === "successful") {          
           console.log(email, password)
           save("email", email)
           save("pass", password)
+          save("uid", response['uid'])
           login()
         } else {
           alert("Password or email incorrect")

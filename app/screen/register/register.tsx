@@ -179,7 +179,7 @@ const RegSite = (prop: regnav) => {
   //#endregion
   return (
     <SafeAreaView style={[RegisterStyles.box]}>
-      <View style={{paddingBottom:20, alignSelf:'flex-start'}}>
+      <View style={{paddingBottom:20, alignSelf:'center'}}>
         <TouchableOpacity>
           <AntDesign onPress={() => { prop.navigation.navigate("Login") }} name="leftcircle" size={50} color={ActionColor} style={{
             position: 'absolute',
