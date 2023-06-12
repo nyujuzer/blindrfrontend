@@ -6,6 +6,7 @@ import { ActionColor, BackgroundColor, darkColor, SecondaryColor } from "../help
 import { RadioButton, } from "react-native-paper";
 import DateTimePickerAndroid from '@react-native-community/datetimepicker'
 import DatePicker from 'react-native-modern-datepicker'
+import * as Manip from 'expo-image-manipulator';
 
 
 const style = StyleSheet.create({
@@ -124,66 +125,6 @@ const StyledButton = ({ onPress, text, _style = null }: any) => {
     </Pressable>
   )
 }
-const UploadField = () => {
-  const [selectedImages, setSelectedImages] = useState([]);
-
-  const handleImageUpload = async () => {
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (permissionResult.granted === false) {
-      alert('Permission to access camera roll is required!');
-      return;
-    }
-
-    const pickerResult = await ImagePicker.launchImageLibraryAsync({ allowsMultipleSelection: true });
-
-    if (pickerResult.canceled === true) {
-      return;
-    }
-
-    const images = pickerResult.assets.map((asset) => {
-      return {
-        uri: asset.uri,
-        type: 'image/jpeg', // Change this if your image is of a different type
-        name: 'image.jpg', // Change this if you want a different name for your image file
-      };
-    });
-
-    setSelectedImages(images);
-    console.log(pickerResult.assets.map((asset) => asset.uri));
-  };
-
-  const uploadImages = async (files) => {
-    const formData = new FormData();
-    files.forEach((file) => {
-      formData.append('images', file);
-    });
-
-    try {
-      const response = await fetch(ip + '/uploadImages/', {
-        method: 'POST',
-        body: formData,
-      });
-      const data = await response.json();
-      console.log('Images uploaded successfully:', data);
-      return data;
-    } catch (error) {
-      console.error('Error uploading images:', error);
-      throw new Error('Failed to upload images');
-    }
-  };
-
-  return (
-    <View style={[style.container, { marginBottom: 50 }]}>
-      {selectedImages.map((image, index) => (
-        <Image key={index} style={style.image} source={image} />
-      ))}
-      <Pressable style={[style.btn, style.widthPlus]} onPress={handleImageUpload}>
-        <Text>Select Profile Images</Text>
-      </Pressable>
-    </View>
-  );
-};
 
 const RadioGroup = ({ children, output }: any) => {
   const [val, setValue]: any = useState();
@@ -207,6 +148,80 @@ const Selection = ({ children }: any) => {
     </Pressable>
   }
 }
+const UploadField = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageUpload = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert('Permission to access camera roll is required!');
+      return;
+    }
+
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({ allowsEditing: true });
+
+    if (pickerResult.canceled === true) {
+      return;
+    }
+
+    const { width, height } = pickerResult.assets[0];
+
+    const cropAspectRatio = 1;
+    const cropWidth = width;
+    const cropHeight = width / cropAspectRatio;
+
+    const manipResult = await Manip.manipulateAsync(
+      pickerResult.assets[0].uri,
+      [{ crop: { originX: 0, originY: (height - cropHeight) / 2, width: cropWidth, height: cropHeight } }],
+      { compress: 1, format: Manip.SaveFormat.JPEG }
+    );
+
+    const image = {
+      uri: manipResult.uri,
+      type: 'image/jpeg',
+      name: 'image.jpg',
+    };
+
+    setSelectedImage(image);
+  };
+
+  const uploadImage = async () => {
+  if (!selectedImage) {
+    alert('Please select an image first.');
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append('image', selectedImage.file); // Access the file object from the selectedImage
+    formData.append('uid', uid)//TODO:FILL WITH APPROPRIATE ITEMc
+    const response = await fetch(ip + '/uploadImage/', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const data = await response.json();
+    console.log('Image uploaded successfully:', data);
+    return data;
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    throw new Error('Failed to upload image');
+  }
+};
+
+  return (
+    <View style={[style.container, { marginBottom: 50 }]}>
+      {selectedImage && <Image style={style.image} source={selectedImage} />}
+      <Pressable style={[style.btn, style.widthPlus]} onPress={handleImageUpload}>
+        <Text>Select Image</Text>
+      </Pressable>
+      <StyledButton onPress={uploadImage} text="Upload?" />
+    </View>
+  );
+};
+export default UploadField;
+
 
 const AppropriateDatePicker = ({ style, visibility, onPress, onchange }) => {
   // var Cdate = new Date()
