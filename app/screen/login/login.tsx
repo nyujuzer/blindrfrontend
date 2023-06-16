@@ -1,15 +1,12 @@
 import React, { useEffect, } from "react";
 import { useState } from "react";
-import { StatusBar } from 'expo-status-bar';
-import { Text,SafeAreaView, Image, View,  Alert } from 'react-native';
+import { Text,SafeAreaView, Image,  Alert } from 'react-native';
 import { loginStyles } from "./loginStyle";
-import { save, getValueOf, getUserIdFromCookie, getCookieValue } from "../../components/helpers/app.loginHelper";
+import { save, getValueOf, } from "../../components/helpers/app.loginHelper";
 import { ip } from "../../components/helpers/conf";
 import { StyledButton, PasswordField, EmailField } from "../../components/pre-styled/components";
 import { Card } from "react-native-paper";
-import { SecondaryColor, global, secondaryBg } from "../../components/helpers/StyleVars";
-import { darkColor } from "../../components/helpers/StyleVars";
-import { BackgroundColor } from "../../components/helpers/StyleVars";
+
 
 
 interface LoginScreenProps {
@@ -53,6 +50,7 @@ export const LoginScreen = (prop: LoginScreenProps) => {
           console.log(email, password)
           save("email", email)
           save("pass", password)
+          console.log(response['uid']+'response')
           save("uid", response['uid'])
           login()
         } else {

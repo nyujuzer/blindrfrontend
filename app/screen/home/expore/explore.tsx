@@ -3,14 +3,15 @@ import { View, ScrollView, Text, Image, StyleSheet } from 'react-native';
 import { ip } from '../../../components/helpers/conf';
 import { getValueOf } from '../../../components/helpers/app.loginHelper';
 
-const ExploreScreen = () => {
+const ExploreScreen = ({uid}) => {
   const [nearbyUsers, setNearbyUsers] = useState([]);
-
+  const [userId, setUserId] = useState("")
   useEffect(() => {
     fetchNearbyUsers();
   }, []);
 
   const fetchNearbyUsers = () => {
+    console.log(uid)
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = () => {
       if (xhttp.readyState === 4) {
@@ -22,9 +23,12 @@ const ExploreScreen = () => {
         }
       }
     };
-    var test = JSON.stringify(getValueOf("uid"))
-    console.log(test)
-    xhttp.open('GET', ip+'/getUsers/'+test, true);
+
+
+
+
+
+    xhttp.open('GET', ip+'/getUsers/'+userId, true);
     xhttp.setRequestHeader('Content-type', 'application/json');
     xhttp.send();
   };
@@ -32,12 +36,13 @@ const ExploreScreen = () => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {nearbyUsers.map((user) => (
+        <Text>{uid}</Text>
+        {/* {nearbyUsers.map((user) => (
           <View key={user.id} style={styles.userCard}>
             <Image source={{ uri: user.image }} style={styles.userImage} />
             <Text style={styles.userName}>{user.name}</Text>
           </View>
-        ))}
+        ))} */}
       </ScrollView>
     </View>
   );

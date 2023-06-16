@@ -1,13 +1,20 @@
 import react, { useState, useCallback } from 'react';
-import { SafeAreaView, TouchableOpacity, Image, Text, View, ScrollView, Platform, Modal, TextStyle, StyleProp, } from 'react-native';
+import { SafeAreaView, TouchableOpacity, Image, View, ScrollView,} from 'react-native';
 // import NumberField from 'react-number-field'
-import { AppropriateDatePicker, DatabaseComponent, EmailField, InputField, PasswordField, StyledButton, } from '../../components/pre-styled/components';
 import { ip } from '../../components/helpers/conf';
 import { save, getValueOf } from "../../components/helpers/app.loginHelper";
 import { RegisterStyles } from './registerStyle';
-import { SecondaryColor, ActionColor, darkColor, global } from '../../components/helpers/StyleVars';
+import {  ActionColor, global } from '../../components/helpers/StyleVars';
 import { RadioButton, Card, FAB } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
+import InputField from '../../components/inputfield';
+import PasswordField from '../../components/passwordfield';
+import EmailField from '../../components/emailfield';
+import DatabaseComponent from '../../components/hobbies';
+import StyledButton from '../../components/styledbutton';
+import AppropriateDatePicker from '../../components/datepicker';
+
+
 interface regnav {
   navigation: any
 }
@@ -214,7 +221,7 @@ const RegSite = (prop: regnav) => {
             visibility={open}
             onPress={() => { openModal() }}
             style={[RegisterStyles.container, RegisterStyles.modalView]}
-            onchange={(text: any) => { handleDateChange(text) }} />
+            onChange={(text: any) => { handleDateChange(text) }} />
         </Card>
         <Card style={RegisterStyles.card}>
           <Card.Title titleStyle={{ color: "white" }} title="You identify as..." />

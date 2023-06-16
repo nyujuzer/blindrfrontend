@@ -7,6 +7,7 @@ import { RadioButton, } from "react-native-paper";
 import DateTimePickerAndroid from '@react-native-community/datetimepicker'
 import DatePicker from 'react-native-modern-datepicker'
 import * as Manip from 'expo-image-manipulator';
+import { getValueOf } from "../helpers/app.loginHelper";
 
 
 const style = StyleSheet.create({
@@ -187,28 +188,32 @@ const UploadField = () => {
   };
 
   const uploadImage = async () => {
-  if (!selectedImage) {
-    alert('Please select an image first.');
-    return;
-  }
-
-  try {
-    const formData = new FormData();
-    formData.append('image', selectedImage.file); // Access the file object from the selectedImage
-    formData.append('uid', uid)//TODO:FILL WITH APPROPRIATE ITEMc
-    const response = await fetch(ip + '/uploadImage/', {
-      method: 'POST',
-      body: formData,
-    });
-
-    const data = await response.json();
-    console.log('Image uploaded successfully:', data);
-    return data;
-  } catch (error) {
-    console.error('Error uploading image:', error);
-    throw new Error('Failed to upload image');
-  }
-};
+    if (!selectedImage) {
+      alert('Please select an image first.');
+      return;
+    }
+  
+    try {
+      const uid = await getValueOf("uid");
+      console.log(uid) // Await the promise here to get the uid
+      const formData = new FormData();
+      formData.append('image', selectedImage.file);
+      formData.append('uid', uid);
+  
+      const response = await fetch(ip + '/uploadImage/', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      const data = await response.json();
+      console.log('Image uploaded successfully:', data);
+      return data;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw new Error('Failed to upload image');
+    }
+  };
+  
 
   return (
     <View style={[style.container, { marginBottom: 50 }]}>

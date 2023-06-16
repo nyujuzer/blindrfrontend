@@ -1,52 +1,29 @@
 import * as secureStore from 'expo-secure-store'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Platform } from 'react-native'
 const save = async (key:string, value:any) => {
     await secureStore.setItemAsync(key, value)
+    await AsyncStorage.setItem(key, value);
   }
-const getValueOf = async (key:string) => {
-  var x = await secureStore.getItemAsync(key)
-  return x
-}
+const getValueOf = async (key: string) => {
+  let value;
+  if (Platform.OS === 'web') {
+    value = await AsyncStorage.getItem(key);
+    console.log(value, 'from AsyncStorage');
+  } else {
+    value = await secureStore.getItemAsync(key);
+    console.log(value, 'from secureStore');
+  }
   
-function getUserIdFromCookie() {
-  const cookies = document.cookie.split(';');
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    if (cookie.startsWith('user_id=')) {
-      return cookie.substring('user_id='.length);
-    }
+  // Additional validation or logging steps
+  if (value === null) {
+    console.log('Value not found for key:', key);
+  } else {
+    console.log('Value found:', value);
   }
-  return null; // Return null if the cookie is not found
-}
-import CookieManager from 'react-native-cookies';
-import { ip } from './conf'
 
-// Function to retrieve the value of a specific cookie
-const getCookieValue = async (cookieName) => {
-  try {
-    // Fetch all cookies
-    const cookies = await CookieManager.get(ip);
-    
-    // Check if the desired cookie exists
-    if (cookies && cookies[cookieName]) {
-      // Retrieve the cookie value
-      const cookieValue = cookies[cookieName].value;
-      return cookieValue;
-    } else {
-      // Cookie not found
-      return null;
-    }
-  } catch (error) {
-    // Handle any errors
-    console.error('Error retrieving cookie:', error);
-    return null;
-  }
+  return value;
 };
 
-// Usage example
-const retrieveCookie = async () => {
-  const cookieName = 'user_id';
-  const cookieValue = await getCookieValue(cookieName);
-  console.log('Cookie Value:', cookieValue);
-};
   
-export {save, getValueOf, getUserIdFromCookie, getCookieValue}
+export {save, getValueOf, }

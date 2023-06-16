@@ -1,27 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { BottomNavigation, Provider as PaperProvider} from 'react-native-paper';
 import { ActionColor, SecondaryColor, darkColor, secondaryBg } from '../../components/helpers/StyleVars';
 import ExploreScreen from './expore/explore';
+import { getValueOf } from '../../components/helpers/app.loginHelper';
 
 
 const App = () => {
   const [index, setIndex] = useState(0);
-
+  const [uid, setUserId] = useState()
   const handleNavigation = (newIndex) => {
     setIndex(newIndex);
   };
-
+  useEffect(()=>{
+    getValueOf("uid").then((res:any)=>{
+      setUserId(res)
+    })
+  },[])
   const renderScene = () => {
     switch (index) {
       case 0:
         return (
-          <ExploreScreen/>
+          <ExploreScreen uid={uid}/>
         );
       case 1:
         return (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Home Screen</Text>
+            <Text>{uid}</Text>
           </View>
         );
       case 2:
