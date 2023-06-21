@@ -2,6 +2,8 @@ import React from "react";
 import { Modal, View, Platform, StyleSheet, Button } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DatePicker from "react-native-modern-datepicker";
+import { ActionColor, BackgroundColor, SecondaryColor } from "./helpers/StyleVars";
+import StyledButton from "./styledbutton";
 
 interface AppropriateDatePickerProps {
   style: any;
@@ -16,51 +18,35 @@ const AppropriateDatePicker: React.FC<AppropriateDatePickerProps> = ({
   onPress,
   onChange,
 }) => {
-  const currentDate = new Date();
-
-  const handleDateChange = (event: any, date: Date | undefined) => {
-    if (date) {
-      const formattedDate = date.toISOString().split("T")[0];
-      onChange(formattedDate);
-    }
-  };
-
   const renderDatePicker = () => {
-    if (Platform.OS === "web") {
+    if (Platform.OS === "android") {
       return (
         <View style={style.modalContainer}>
           <View style={style.datePickerContainer}>
             <DatePicker
               mode="calendar"
-              onSelectedChange={(value) => onChange(value)}
+              onDateChange={(value) => onChange(value)} // Corrected prop name
               options={{
-                backgroundColor: "#252525",
-                textHeaderColor: "blue",
+                backgroundColor: BackgroundColor,
+                textHeaderColor: SecondaryColor,
                 textDefaultColor: "white",
-                selectedTextColor: "white",
-                mainColor: "blue",
+                selectedTextColor: "black",
+                mainColor: ActionColor,
               }}
-              maximumDate={new Date()}
+              maximumDate={'2005-05-10'}
+              minimumDate={'1970-01-01'}
+              current={'2005-05-10'}
             />
           </View>
-          <Button title="Set Birthday" onPress={onPress} />
+          <StyledButton text="Set Birthday" onPress={() => {onPress(); }} />
         </View>
       );
-    } else {
-      return (
-        <DateTimePicker
-          value={currentDate}
-          mode="date"
-          display="default"
-          maximumDate={new Date()}
-          onChange={handleDateChange}
-        />
-      );
     }
+    // Add an else branch if necessary for other platforms
   };
 
   return (
-    <Modal visible={visibility} animationType="slide" transparent={true}>
+    <Modal style={style.datePickerContainer} visible={visibility} animationType="slide" transparent={true}>
       {renderDatePicker()}
     </Modal>
   );

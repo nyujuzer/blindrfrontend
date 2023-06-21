@@ -1,77 +1,55 @@
-import React, { useEffect, useState } from 'react';
-import { View, ScrollView, Text, Image, StyleSheet } from 'react-native';
+import React, { useEffect, useState,  } from 'react';
+import { View, ScrollView, Text, Image, StyleSheet, Alert } from 'react-native';
+
+import * as Location from 'expo-location'
+import { getPathFromState } from '@react-navigation/native';
 import { ip } from '../../../components/helpers/conf';
-import { getValueOf } from '../../../components/helpers/app.loginHelper';
+import StyledButton from '../../../components/styledbutton';
 
 const ExploreScreen = ({uid}) => {
-  const [nearbyUsers, setNearbyUsers] = useState([]);
-  const [userId, setUserId] = useState("")
-  useEffect(() => {
-    fetchNearbyUsers();
-  }, []);
+  const [count, setcount]=useState(0)
+  const getPermissions = async () => {
+    console.log("hello there!")
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      console.log("Please grant location permissions");
+      return;
+    }
 
-  const fetchNearbyUsers = () => {
-    console.log(uid)
-    const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = () => {
-      if (xhttp.readyState === 4) {
-        if (xhttp.status === 200) {
-          const response = JSON.parse(xhttp.responseText);
-          setNearbyUsers(response);
-        } else {
-          console.error('Error fetching nearby users:', xhttp.status);
-        }
+    let currentLocation = await Location.getCurrentPositionAsync({});
+    const newLocation = {'latitude':currentLocation.coords.latitude,'longitude': currentLocation.coords.longitude};
+    setLocation(newLocation);
+    
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (this.readyState == 4) {
+        console.log(this.responseText)
       }
     };
+    xhr.open("POST", ip + "getUsers/", true);
+    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    xhr.send(JSON.stringify({
+      "uid": uid,
+      location: newLocation,
+    }));
 
-
-
-
-
-    xhttp.open('GET', ip+'/getUsers/'+userId, true);
-    xhttp.setRequestHeader('Content-type', 'application/json');
-    xhttp.send();
   };
-
+  const [location, setLocation] = useState({})
+  useEffect(() => {
+    console.log("hello")
+    //getPermissions();
+    
+  }, []); 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text>{uid}</Text>
-        {/* {nearbyUsers.map((user) => (
-          <View key={user.id} style={styles.userCard}>
-            <Image source={{ uri: user.image }} style={styles.userImage} />
-            <Text style={styles.userName}>{user.name}</Text>
-          </View>
-        ))} */}
-      </ScrollView>
+    <View style={style.container}>
+      <StyledButton text={'test'} onPress={()=>{setcount(count+1);Alert.alert(count.toLocaleString())}}/>
     </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    alignItems: 'center',
-  },
-  userCard: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  userImage: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-  },
-  userName: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
-
+  )
+}
+const style = StyleSheet.create({
+  container:{
+    alignItems:'center',
+    alignSelf:'center'
+  }
+})
 export default ExploreScreen;

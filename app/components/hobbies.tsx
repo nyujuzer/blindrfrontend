@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { ActionColor } from "./helpers/StyleVars";
 
 const DatabaseComponent = ({ apiUrl, onSelectHobby }: any) => {
   const [data, setData] = useState([]);
@@ -62,6 +63,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   item: {
+    opacity:0.5,
     padding: 10,
     marginBottom: 10,
     marginRight: 10,
@@ -71,7 +73,8 @@ const styles = StyleSheet.create({
     minWidth: 80,
   },
   selectedItem: {
-    backgroundColor: "blue",
+    opacity:1.0,
+    backgroundColor: ActionColor,
   },
   buttonText: {
     fontSize: 14,

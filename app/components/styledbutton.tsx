@@ -1,5 +1,6 @@
 import React from "react";
 import { Pressable, Text, StyleSheet } from "react-native";
+import { ActionColor } from "./helpers/StyleVars";
 
 const StyledButton = ({ onPress, text, style }: any) => {
   return (
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    backgroundColor: "#ccc",
+    backgroundColor: ActionColor,
   },
   buttonPressed: {
     opacity: 0.8,
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#fff",
+    color: "black",
   },
 });
 

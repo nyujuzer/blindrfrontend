@@ -28,14 +28,14 @@ const RegSite = (prop: regnav) => {
 
   const [open, setOpen] = useState(false)
   const [formData, setFormData] = useState({
-    email: 'test@asd.com',
-    password: 'TestPassword1',
-    conf: 'TestPassword1',
-    name: 'Johnny Test1',
-    gender: 'male',
-    preferences: 'female',
-    hobbies: new Array(),
-    age: '' || new Date()
+        email: '',
+        password: '',
+        conf: '',
+        name: '',
+        gender: '',
+        preferences: '',
+        hobbies: new Array(),
+        age: '' || new Date()
   });
 
   function handleStylehange(value: string, caller: Groups) {
@@ -50,13 +50,13 @@ const RegSite = (prop: regnav) => {
     return RegisterStyles.radioLabelPassive;
   }
   function handleDateChange(date: Date) {
-    setFormData(prev => ({ ...prev, age: date }))
+    setFormData(prev => ({ ...prev, age: date  }))
     console.log(formData.age)
-    setOpen(false)
   }
 
   function openModal() {
-    setOpen(true)
+    console.log("trugg")
+    setOpen(!open)
   }
   const handleSelectHobby = (id) => {
     const updatedHobbies = [...formData.hobbies]; // Create a copy of the existing hobbies array
