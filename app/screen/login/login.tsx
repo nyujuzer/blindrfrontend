@@ -6,6 +6,7 @@ import { save, getValueOf, } from "../../components/helpers/app.loginHelper";
 import { ip } from "../../components/helpers/conf";
 import { StyledButton, PasswordField, EmailField } from "../../components/pre-styled/components";
 import { Card } from "react-native-paper";
+import xhtmlrequestBuilder from "../../components/helpers/request";
 
 
 
@@ -35,34 +36,8 @@ export const LoginScreen = (prop: LoginScreenProps) => {
   const [email, setEmail] = useState('')
 
   function loginF(email: any, Pass: any) {
-    const xhtml = new XMLHttpRequest()
-    xhtml.onreadystatechange = function () {
-
-      if (this.readyState == 4) {
-
-        var response;
-        try {
-          response = JSON.parse(this.responseText)
-        }catch{
-          response = JSON.parse("{login:unsuccessful}")
-        }
-        if (response['login'] === "successful") {          
-          console.log(email, password)
-          save("email", email)
-          save("pass", password)
-          console.log(response['uid']+'response')
-          save("uid", response['uid'])
-          login()
-        } else {
-          alert("Password or email incorrect")
-        }
-      }
-
-    }
-    if (email !== null && Pass !== null) {
-      xhtml.open("GET", ip + "/login/" + email.trim() + "+" + Pass.trim() + "/")
-      xhtml.send()
-    }
+    const request = new xhtmlrequestBuilder()
+    request.to(ip).atRoute("login/"+email+"+"+Pass+"/").asType("GET").onCompletion((res)=>{if (JSON.parse(res)['login'] === "successful"){login()}else{alert("password or email is incorrect")}}).setHeaders({"Content-Type":"application/json"}).send()
   }
   return (
     <SafeAreaView style={loginStyles.container}>

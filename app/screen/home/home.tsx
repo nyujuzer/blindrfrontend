@@ -4,6 +4,7 @@ import { BottomNavigation, Provider as PaperProvider} from 'react-native-paper';
 import { ActionColor, SecondaryColor, darkColor, secondaryBg } from '../../components/helpers/StyleVars';
 import ExploreScreen from './expore/explore';
 import { getValueOf } from '../../components/helpers/app.loginHelper';
+import ProfileScreen from './profile/profile';
 
 
 const App = () => {
@@ -32,7 +33,7 @@ const App = () => {
       case 2:
         return (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Profile Screen</Text>
+            <ProfileScreen uid={uid}/>
           </View>
         );
       case 3:

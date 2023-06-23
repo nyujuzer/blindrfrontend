@@ -3,7 +3,7 @@ import { createStackNavigator, TransitionPreset } from "@react-navigation/stack"
 import { NavigationContainer } from "@react-navigation/native";
 import { LoginScreen } from "../screen/login/login";
 import Home from "../screen/home/home";
-import ProfileScreen from "../screen/profile/profile";
+import ProfileScreen from "../screen/home/profile/profile";
 import { RegSite } from "../screen/register/register";
 import TestPage from "../screen/tests/test";
 
@@ -12,7 +12,7 @@ const { Navigator, Screen } = createStackNavigator();
 const AppNavigator = () => {
     return (
         <NavigationContainer>
-            <Navigator screenOptions={(({ headerShown: false }))} initialRouteName="Register">
+            <Navigator screenOptions={(({ headerShown: false }))} initialRouteName="Login">
                 <Screen name="Login" component={LoginScreen}></Screen>
                 <Screen name="Home" component={Home}></Screen>
                 <Screen name="Profile" component={ProfileScreen}></Screen>

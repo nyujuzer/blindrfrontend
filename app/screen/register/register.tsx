@@ -13,6 +13,7 @@ import EmailField from '../../components/emailfield';
 import DatabaseComponent from '../../components/hobbies';
 import StyledButton from '../../components/styledbutton';
 import AppropriateDatePicker from '../../components/datepicker';
+import xhtmlrequestBuilder from '../../components/helpers/request';
 
 
 interface regnav {
@@ -80,22 +81,23 @@ const RegSite = (prop: regnav) => {
   //#region validations
   const register = () => {
     if (Validate()) {
-      const xhr = new XMLHttpRequest()
-      xhr.onreadystatechange = function () {
-        if (this.readyState == 4) {
-          if (JSON.parse(this.responseText)['success']) {
-            save("email", formData.email)
-            save("pass", formData.password)
-            prop.navigation.navigate("Login")
-          } else {
-            alert("Email is already in use")
-          }
+      const xhr = new xhtmlrequestBuilder()
+      .to(ip)
+      .atRoute("/register/")
+      .asType("POST")
+      .setHeaders({ "Content-Type": "application/json" })
+      .message((formData))
+      .onCompletion(function (response) {
+        if (JSON.parse(response)["success"]) {
+          save("email", formData.email);
+          save("pass", formData.password);
+          prop.navigation.navigate("Login");
+          console.log(response)
+        } else {
+          alert("Email is already in use");
         }
-      }
-      xhr.open("POST", ip + "/register/", true)
-      xhr.setRequestHeader("Content-Type", "application/json")
-      xhr.send(JSON.stringify(formData))
-
+      })
+      .send();
     }
   }
 
