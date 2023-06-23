@@ -7,6 +7,8 @@ const InputField = ({ onChangeText, placeholder }: any) => {
       style={styles.inputFieldStyle}
       placeholder={placeholder}
       onChangeText={onChangeText}
+      selectionColor={"green"}
+      cursorColor={"red"}
       placeholderTextColor={"white"}
     />
   );
@@ -16,8 +18,8 @@ const styles = StyleSheet.create({
   inputFieldStyle: {
     height: 45,
     width: 300,
+    opacity:0.4,
     fontSize: 20,
-    opacity: 0.4,
     color: "white",
     borderRadius: 6,
     borderColor: "white",

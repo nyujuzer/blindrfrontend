@@ -19,9 +19,9 @@ const AppropriateDatePicker: React.FC<AppropriateDatePickerProps> = ({
   onChange,
 }) => {
   const renderDatePicker = () => {
-    if (Platform.OS === "android") {
+    
       return (
-        <View style={style.modalContainer}>
+        <View style={style.modalView}>
           <View style={style.datePickerContainer}>
             <DatePicker
               mode="calendar"
@@ -42,14 +42,12 @@ const AppropriateDatePicker: React.FC<AppropriateDatePickerProps> = ({
         </View>
       );
     }
-    // Add an else branch if necessary for other platforms
-  };
 
   return (
-    <Modal style={style.datePickerContainer} visible={visibility} animationType="slide" transparent={true}>
+    <Modal style={{width:30, height:30}} visible={visibility} animationType="slide" transparent={true}>
       {renderDatePicker()}
     </Modal>
   );
-};
+  };
 
 export default AppropriateDatePicker;

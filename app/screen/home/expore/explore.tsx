@@ -9,7 +9,6 @@ import StyledButton from '../../../components/styledbutton';
 const ExploreScreen = ({uid}) => {
   const [count, setcount]=useState(0)
   const getPermissions = async () => {
-    console.log("hello there!")
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       console.log("Please grant location permissions");
@@ -19,9 +18,10 @@ const ExploreScreen = ({uid}) => {
     let currentLocation = await Location.getCurrentPositionAsync({});
     const newLocation = {'latitude':currentLocation.coords.latitude,'longitude': currentLocation.coords.longitude};
     setLocation(newLocation);
-    
+    console.log(newLocation)
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
+      console.log(this.readyState+" reasdy")
       if (this.readyState == 4) {
         console.log(this.responseText)
       }
@@ -36,8 +36,7 @@ const ExploreScreen = ({uid}) => {
   };
   const [location, setLocation] = useState({})
   useEffect(() => {
-    console.log("hello")
-    //getPermissions();
+    getPermissions();
     
   }, []); 
   return (

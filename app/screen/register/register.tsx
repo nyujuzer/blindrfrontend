@@ -217,12 +217,14 @@ const RegSite = (prop: regnav) => {
           <View style={RegisterStyles.center}>
             <StyledButton text={"Set Your Birthday"} onPress={() => { openModal() }} />
           </View>
+          </Card>
+          <Card style={[RegisterStyles.card]}>
           <AppropriateDatePicker
             visibility={open}
             onPress={() => { openModal() }}
-            style={[RegisterStyles.container, RegisterStyles.modalView]}
+            style={{container:RegisterStyles.container, modalView:RegisterStyles.modalView}}
             onChange={(text: any) => { handleDateChange(text) }} />
-        </Card>
+          </Card>
         <Card style={RegisterStyles.card}>
           <Card.Title titleStyle={{ color: "white" }} title="You identify as..." />
           <RadioButton.Group

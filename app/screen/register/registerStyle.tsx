@@ -28,15 +28,11 @@ export const RegisterStyles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        width:'10%',
-        height:'10%',
-
         alignItems: 'center',
     },
     modalView:{
-        height:'30%',
-        width:"30%",
-
+        width:"80%",
+        alignSelf:"center",
         borderRadius:20,
     },
     header: {
