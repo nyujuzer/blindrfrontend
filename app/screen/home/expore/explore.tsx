@@ -21,9 +21,9 @@ const ExploreScreen = ({uid}) => {
     console.log(newLocation)
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
-      console.log(this.readyState+" reasdy")
-      if (this.readyState == 4) {
-        console.log(this.responseText)
+      if (this.readyState == 4&&this.status == 200) {
+        console.log(this.response)
+        
       }
     };
     xhr.open("POST", ip + "getUsers/", true);
@@ -38,7 +38,7 @@ const ExploreScreen = ({uid}) => {
   useEffect(() => {
     getPermissions();
     
-  }, []); 
+  }, [1]); 
   return (
     <View style={style.container}>
       <StyledButton text={'test'} onPress={()=>{setcount(count+1);Alert.alert(count.toLocaleString())}}/>

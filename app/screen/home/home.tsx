@@ -5,6 +5,7 @@ import { ActionColor, SecondaryColor, darkColor, secondaryBg } from '../../compo
 import ExploreScreen from './expore/explore';
 import { getValueOf } from '../../components/helpers/app.loginHelper';
 import ProfileScreen from './profile/profile';
+import { useNavigation } from '@react-navigation/native';
 
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
       setUserId(res)
     })
   },[])
+  const nav = useNavigation()
   const renderScene = () => {
     switch (index) {
       case 0:
@@ -33,7 +35,7 @@ const App = () => {
       case 2:
         return (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <ProfileScreen uid={uid}/>
+            <ProfileScreen prop={nav} />
           </View>
         );
       case 3:

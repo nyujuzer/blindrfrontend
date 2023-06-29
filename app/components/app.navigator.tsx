@@ -5,20 +5,19 @@ import { LoginScreen } from "../screen/login/login";
 import Home from "../screen/home/home";
 import ProfileScreen from "../screen/home/profile/profile";
 import { RegSite } from "../screen/register/register";
-import TestPage from "../screen/tests/test";
-
-const { Navigator, Screen } = createStackNavigator();
+import Finish from "../screen/home/profile/signup/finish";
+const Stack = createStackNavigator();
 
 const AppNavigator = () => {
     return (
         <NavigationContainer>
-            <Navigator screenOptions={(({ headerShown: false }))} initialRouteName="Login">
-                <Screen name="Login" component={LoginScreen}></Screen>
-                <Screen name="Home" component={Home}></Screen>
-                <Screen name="Profile" component={ProfileScreen}></Screen>
-                <Screen name="Register" component={RegSite}></Screen>
-                <Screen name="Test" component={TestPage}></Screen>
-            </Navigator>
+            <Stack.Navigator screenOptions={(({ headerShown: false }))} initialRouteName="Login">
+                <Stack.Screen name="Profile" component={ProfileScreen} />
+                <Stack.Screen name="Login" component={LoginScreen}/>
+                <Stack.Screen name="Home" component={Home}/>
+                <Stack.Screen name="Register" component={RegSite}/>
+                <Stack.Screen name="Finish" component={Finish}/>
+            </Stack.Navigator>
         </NavigationContainer>)
 }
 
