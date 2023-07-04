@@ -91,6 +91,8 @@ const RegSite = (prop: regnav) => {
         if (JSON.parse(response)["success"]) {
           save("email", formData.email);
           save("pass", formData.password);
+          console.log(JSON.parse(response)['uid'])
+          save("uid", JSON.parse(response)['uid'])
           prop.navigation.navigate("Login");
           console.log(response)
         } else {

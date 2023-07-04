@@ -50,6 +50,9 @@ export const LoginScreen = (prop: LoginScreenProps) => {
       .asType("GET")
       .onCompletion((res) => {
         if (JSON.parse(res)["login"] === "successful") {
+          save("uid",JSON.parse(res)['uid'])
+          save("email", email)
+          save("pass", Pass)
           login();
         } else {
           alert("password or email is incorrect");
