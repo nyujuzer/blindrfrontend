@@ -1,12 +1,15 @@
 import React from "react";
 import { TextInput, StyleSheet } from "react-native";
-
-const InputField = ({ onChangeText, placeholder }: any) => {
+type props = {
+  onChangeText:(text)=>void,
+  placeholder:string
+}
+const InputField = ({onChangeText, placeholder}:props) => {
   return (
     <TextInput
       style={styles.inputFieldStyle}
       placeholder={placeholder}
-      onChangeText={onChangeText}
+      onChangeText={(text)=>onChangeText(text)}
       selectionColor={"green"}
       cursorColor={"red"}
       placeholderTextColor={"white"}
@@ -16,6 +19,7 @@ const InputField = ({ onChangeText, placeholder }: any) => {
 
 const styles = StyleSheet.create({
   inputFieldStyle: {
+    padding:10,
     height: 45,
     width: 300,
     opacity:0.4,

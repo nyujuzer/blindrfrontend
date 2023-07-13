@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { Text, SafeAreaView, Image, Alert } from "react-native";
 import { loginStyles } from "./loginStyle";
-import { save, getValueOf } from "../../components/helpers/app.loginHelper";
+import { save, getValueOf, getMultipleVals } from "../../components/helpers/app.loginHelper";
 import { ip } from "../../components/helpers/conf";
 
 import { Card } from "react-native-paper";
@@ -17,24 +17,10 @@ interface LoginScreenProps {
 
 export const LoginScreen = (prop: LoginScreenProps) => {
   useEffect(() => {
-    getValueOf("email")
-      .then((result: any) => {
-        setEmail(result);
-        console.log(result); // Display the retrieved email value
-      })
-      .catch((err) => {
-        Alert.alert("Something went wrong while retrieving email");
-      });
-
-    getValueOf("pass")
-      .then((result: any) => {
-        setPassword(result);
-        console.log(result); // Display the retrieved password value
-      })
-      .catch((err) => {
-        Alert.alert("Something went wrong while retrieving password");
-      });
-    loginF(email, password);
+    getMultipleVals(['email', 'pass']).then((vals)=>{
+      console.log(vals)
+      loginF(vals["email"], vals["pass"]);
+    })
   }, []);
   const login = () => {
     prop.navigation.navigate("Home");

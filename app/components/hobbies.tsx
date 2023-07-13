@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { ActionColor } from "./helpers/StyleVars";
 
-const DatabaseComponent = ({ apiUrl, onSelectHobby }: any) => {
+const Hobbies = ({ apiUrl, onSelectHobby }: any) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -82,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DatabaseComponent;
+export default Hobbies;

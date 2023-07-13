@@ -35,7 +35,7 @@ const App = () => {
       case 2:
         return (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <ProfileScreen prop={nav} />
+            <ProfileScreen uid={uid} />
           </View>
         );
       case 3:
@@ -56,7 +56,7 @@ const App = () => {
   };
 
   const [routes] =useState([
-    { key: 'explore', title: 'Explore' },
+    { key: 'explore', title: 'Explore', icon:'camera' },
     { key: 'matches', title: 'Matches' },
     { key: 'profile', title: 'Profile' },
     { key: 'Settings', title: 'Settings' },

@@ -1,2 +1,2 @@
-const ip = "https://4425-195-228-188-74.ngrok-free.app/"
+const ip = "http://10.0.2.2:8000/"
 export {ip}

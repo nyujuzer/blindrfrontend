@@ -41,7 +41,6 @@ const ExploreScreen = ({uid}) => {
   }, [1]); 
   return (
     <View style={style.container}>
-      <StyledButton text={'test'} onPress={()=>{setcount(count+1);Alert.alert(count.toLocaleString())}}/>
     </View>
   )
 }

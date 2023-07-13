@@ -6,6 +6,7 @@ import Home from "../screen/home/home";
 import ProfileScreen from "../screen/home/profile/profile";
 import { RegSite } from "../screen/register/register";
 import Finish from "../screen/home/profile/signup/finish";
+import Vidupload from "../screen/home/profile/uploadVideos";
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
@@ -17,6 +18,7 @@ const AppNavigator = () => {
                 <Stack.Screen name="Home" component={Home}/>
                 <Stack.Screen name="Register" component={RegSite}/>
                 <Stack.Screen name="Finish" component={Finish}/>
+                <Stack.Screen name="Vid" component={Vidupload}/>
             </Stack.Navigator>
         </NavigationContainer>)
 }

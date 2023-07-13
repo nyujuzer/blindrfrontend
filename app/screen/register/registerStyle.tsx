@@ -21,6 +21,7 @@ export const RegisterStyles = StyleSheet.create({
         marginTop:30,
         backgroundColor: "#252525",
     },
+
     test: {
         position: "absolute",
         top: "95%",
@@ -30,9 +31,15 @@ export const RegisterStyles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
+    modalContainer:{
+        alignContent:"center",
+        flex:1,
+        alignItems:"center",
+        justifyContent:"center",
+    },
     modalView:{
-        width:"80%",
         alignSelf:"center",
+        width:"90%",
         borderRadius:20,
     },
     header: {

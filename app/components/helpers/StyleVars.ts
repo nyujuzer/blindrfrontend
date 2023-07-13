@@ -15,4 +15,5 @@ const SecondaryColor = "#d1b038"
 const BackgroundColor = "#000"
 const darkColor = '#b39b27'
 const secondaryBg = "#252525"
-export {ActionColor, BackgroundColor, global, SecondaryColor, darkColor, secondaryBg};
+const lightGray = "#b5b5b5"
+export {ActionColor, BackgroundColor, global, SecondaryColor, darkColor, secondaryBg, lightGray};

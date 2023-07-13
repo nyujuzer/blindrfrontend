@@ -26,5 +26,14 @@ const getValueOf = async (key: string) => {
 
   return value;
 };
+const getMultipleVals = async (keys: string[]) => {
+  const values = {};
 
-export { save, getValueOf };
+  for (const key of keys) {
+    const value = await secureStore.getItemAsync(key);
+    values[key] = value;
+  }
+
+  return values;
+};
+export { save, getValueOf, getMultipleVals };

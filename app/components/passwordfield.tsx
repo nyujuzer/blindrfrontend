@@ -8,6 +8,7 @@ const PasswordField = ({ onChangeText }: any) => {
       placeholder="Password"
       placeholderTextColor={"white"}
       secureTextEntry={true}
+      passwordRules="required: upper; required: lower; required: digit; max-consecutive: 2; minlength: 8;"
       onChangeText={onChangeText}
       autoComplete="off"
     />

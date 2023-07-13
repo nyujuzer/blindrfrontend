@@ -3,10 +3,20 @@
   import * as ImagePicker from 'expo-image-picker';
   import { ip } from './helpers/conf';
   import StyledButton from './styledbutton';
+  import Icon from 'react-native-vector-icons/FontAwesome';
+import { BackgroundColor, lightGray } from './helpers/StyleVars';
+import { getValueOf } from './helpers/app.loginHelper';
 
-  const UploadField = ({uid}) => {
+  const UploadField = ({handleSelection , uid}) => {
+    const myIcon = <Icon name="camera" size={30} color={lightGray} />;
     const [selectedImage, setSelectedImage] = useState(null);
-
+    const generateName = ()=>{
+      let name
+      getValueOf("email").then((text) =>{ name = text.split("@")[0];})
+      console.log(name);
+      
+      return name
+    }
     const handleImageUpload = async () => {
       const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -24,30 +34,15 @@
       const image = {
         uri: pickerResult.assets[0].uri,
         type: 'image/jpeg', // Change this if your image is of a different type
-        name: 'image.jpg', // Change this if you want a different name for your image file
+        name: uid+'.jpg', // Change this if you want a different name for your image file
       };
 
       setSelectedImage(image);
-      console.log(image.uri);
+      handleSelection(image)
+      console.log(image.name);
     };
 
-    const uploadImage = async () => {
-      const formData = new FormData();
-      formData.append('image', selectedImage);
-      formData.append("uid", uid)
-      try {
-        const response = await fetch(ip + '/uploadImage/', {
-          method: 'POST',
-          body: formData,
-        });
-        const data = await response.json();
-        console.log('Image uploaded successfully:', data);
-        return data;
-      } catch (error) {
-        console.error('Error uploading image:', error);
-        throw new Error('Failed to upload image');
-      }
-    };
+   
 
     const renderContent = () => {
       if (selectedImage) {
@@ -59,7 +54,9 @@
       } else {
         return (
           <Pressable onPress={handleImageUpload}>
-            <View style={style.square} />
+            <View style={style.square} >
+              <Text>{myIcon}</Text>
+              </View>
           </Pressable>
         );
       }
@@ -68,7 +65,6 @@
     return (
       <View style={[style.container, { marginBottom: 50 }]}>
         {renderContent()}
-        <StyledButton text={'Upload Image'} onPress={uploadImage} />
               </View>
     );
   };
@@ -79,14 +75,21 @@
       flexWrap: 'wrap',
     },
     image: {
-      width: 100,
-      height: 100,
-      borderRadius: 3,
+      width: 150,
+      height: 150,
+      borderRadius: 10,
       borderColor: "red",
-      borderWidth: 3,
     },
     square:{
-      width:100, height:100, backgroundColor:'gray'
+      justifyContent: 'center',
+      alignItems: 'center',
+      width:150,
+      height:150,
+      backgroundColor:"#d1d1d1",
+      borderRadius:10
+    },
+    camera:{
+      alignSelf:'center',
     }
   })
 

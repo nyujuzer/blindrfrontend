@@ -10,7 +10,7 @@ import { AntDesign } from '@expo/vector-icons';
 import InputField from '../../components/inputfield';
 import PasswordField from '../../components/passwordfield';
 import EmailField from '../../components/emailfield';
-import DatabaseComponent from '../../components/hobbies';
+import Hobbies from '../../components/hobbies';
 import StyledButton from '../../components/styledbutton';
 import AppropriateDatePicker from '../../components/datepicker';
 import xhtmlrequestBuilder from '../../components/helpers/request';
@@ -80,7 +80,7 @@ const RegSite = (prop: regnav) => {
 
   //#region validations
   const register = () => {
-    if (Validate()) {
+    if (/* Validate() */1 == 1) {
       const xhr = new xhtmlrequestBuilder()
       .to(ip)
       .atRoute("/register/")
@@ -190,7 +190,7 @@ const RegSite = (prop: regnav) => {
   //#endregion
   return (
     <SafeAreaView style={[RegisterStyles.box]}>
-      <View style={{paddingBottom:20, alignSelf:'center'}}>
+      <View style={[{paddingBottom:20, alignSelf:'center'}]}>
         <TouchableOpacity>
           <AntDesign onPress={() => { prop.navigation.navigate("Login") }} name="leftcircle" size={50} color={ActionColor} style={{
             position: 'absolute',
@@ -226,7 +226,7 @@ const RegSite = (prop: regnav) => {
           <AppropriateDatePicker
             visibility={open}
             onPress={() => { openModal() }}
-            style={{container:RegisterStyles.container, modalView:RegisterStyles.modalView}}
+            style={{container:RegisterStyles.modalContainer, modalView:RegisterStyles.modalView}}
             onChange={(text: any) => { handleDateChange(text) }} />
           </Card>
         <Card style={RegisterStyles.card}>
@@ -287,7 +287,7 @@ const RegSite = (prop: regnav) => {
         </Card>
         <Card style={RegisterStyles.card}>
           <Card.Title titleStyle={{ color: "white" }} title="What do you do for fun?" />
-          <DatabaseComponent onSelectHobby={(id) => { handleSelectHobby(id) }} apiUrl={ip + "/getHobbies"} />
+          <Hobbies onSelectHobby={(id) => { handleSelectHobby(id) }} apiUrl={ip + "/getHobbies"} />
         </Card>
         <StyledButton text={"Continue"} onPress={() => { register() }} />
       </ScrollView>
