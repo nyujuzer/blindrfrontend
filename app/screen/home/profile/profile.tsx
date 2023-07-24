@@ -1,40 +1,71 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, Image, FlatList, StyleSheet } from 'react-native';
-import { ip } from '../../../components/helpers/conf';
-import {Video, ResizeMode} from 'expo-av'
-import Player from '../../../components/Player';
+import React, { useEffect, useRef, useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import { ip } from "../../../components/helpers/conf";
+import { Video, ResizeMode } from "expo-av";
+import Player from "../../../components/Player";
+import StyledButton from "../../../components/styledbutton";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { createStackNavigator } from "@react-navigation/stack";
+import {
+  useIsFocused,
+  useNavigation,
+  useNavigationState,
+} from "@react-navigation/native";
+import { ActionColor } from "../../../components/helpers/StyleVars";
+import { ScaleFromCenterAndroid } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/TransitionPresets";
 const ProfileScreen = ({ uid }) => {
+  const isFocus = useIsFocused();
   const [profileImage, setProfileImage] = useState(null);
   const [videos, setVideos] = useState([]);
-const video = useRef(null)
-const [status, setStatus] = useState({})
+  const video = useRef(null);
+  const [status, setStatus] = useState({});
+  const nav = useNavigation() as any;
   useEffect(() => {
-    // Fetch profile image from the server
-    fetchProfileImage();
+    if (isFocus) {
+      console.log("isFocus :>> ", isFocus);
+      // Fetch profile image from the server
+      fetchProfileImage();
 
-    // Fetch videos from the server
-    fetchVideos();
-  }, []);
+      // Fetch videos from the server
+      fetchVideos();
+    }
+  }, [isFocus]);
+
+  const plus = <Icon name="plus" size={40}></Icon>;
 
   const fetchProfileImage = async () => {
     try {
       const response = await fetch(`${ip}getFile/${uid}`);
-      const imageBlob = await response.blob();
+      if (response.status === 404) {
+        console.log("null");
+        setProfileImage(null);
+      } else {
+        console.log("esle");
+        const imageBlob = await response.blob();
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result);
-      };
-      reader.readAsDataURL(imageBlob);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setProfileImage(reader.result);
+          console.log("yay?");
+        };
+        reader.readAsDataURL(imageBlob);
+      }
     } catch (error) {
-      console.error('Error fetching profile image:', error);
+      console.log(error);
+      console.log(profileImage);
     }
   };
 
-
   const fetchVideos = async () => {
     try {
-      const response = await fetch(`${ip}videos/${uid}`);
+      const response = await fetch(`${ip}getThumbs/${uid}`);
       const videoBlob = await response.blob();
 
       const reader = new FileReader();
@@ -43,26 +74,54 @@ const [status, setStatus] = useState({})
       };
       reader.readAsDataURL(videoBlob);
     } catch (error) {
-      console.error('Error fetching videos:', error);
+      console.log(videos);
     }
+  };
+  const renderElse = () => {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>
+          It seems you haven't finished your registration
+        </Text>
+        <StyledButton
+          text={"Finish Registration"}
+          onPress={() => {
+            nav.navigate("Finish");
+          }}
+        ></StyledButton>
+      </View>
+    );
+  };
+  const renderIf = () => {
+    return (
+      <View style={{flex:2, flexDirection:"column"}}>
+        <View>
+          <Image source={{ uri: profileImage }} style={styles.profileImage} />
+          <Text style={styles.title}>Profile</Text>
+          <Text style={styles.subtitle}>Videos:</Text>
+        </View>
+        
+        <TouchableOpacity
+          onPress={() => nav.navigate({ name: "Vid" })}
+          style={[styles.button, styles.add]}
+        >
+          <Text style={{ textAlign: "center" }}>{plus}</Text>
+        </TouchableOpacity>
+      </View>
+    );
   };
   return (
     <View style={styles.container}>
-      {profileImage ? (
-        <Image source={{ uri: profileImage }} style={styles.profileImage} />
-      ):null}
-      <Text style={styles.title}>Profile</Text>
-      <Text style={styles.subtitle}>Videos:</Text>
-      <Player url={ip+"videos/"+uid}></Player>
-      </View>
+      {profileImage ? renderIf() : renderElse()}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 16,
   },
   profileImage: {
@@ -73,12 +132,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 8,
   },
   videoContainer: {
@@ -86,11 +145,26 @@ const styles = StyleSheet.create({
   },
   videoTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   videoDescription: {
     fontSize: 14,
-    color: '#888',
+    color: "#888",
+  },
+  add: {
+    backgroundColor: ActionColor,
+
+  },
+  button: {
+    bottom: 0,
+    left: 0,
+    borderRadius: 100,
+    position: "absolute",
+    width: 50,
+    justifyContent: "center",
+    height: 50,
+    margin: 30,
+    alignContent: "center",
   },
 });
 

@@ -4,13 +4,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import DatePicker from "react-native-modern-datepicker";
 import { ActionColor, BackgroundColor, SecondaryColor } from "./helpers/StyleVars";
 import StyledButton from "./styledbutton";
-
-interface AppropriateDatePickerProps {
-  style: any;
-  visibility: boolean;
-  onPress: () => void;
-  onChange: (value: string) => void;
-}
+import { AppropriateDatePickerProps } from "./helpers/interfaces";
 
 const AppropriateDatePicker: React.FC<AppropriateDatePickerProps> = ({
   style,

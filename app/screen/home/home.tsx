@@ -6,6 +6,7 @@ import ExploreScreen from './expore/explore';
 import { getValueOf } from '../../components/helpers/app.loginHelper';
 import ProfileScreen from './profile/profile';
 import { useNavigation } from '@react-navigation/native';
+import { AntDesign } from '@expo/vector-icons';
 
 
 const App = () => {
@@ -56,7 +57,7 @@ const App = () => {
   };
 
   const [routes] =useState([
-    { key: 'explore', title: 'Explore', icon:'camera' },
+    { key: 'explore', title: 'Explore', icon:<AntDesign name="camera" size={20} color={"#400"}></AntDesign> },
     { key: 'matches', title: 'Matches' },
     { key: 'profile', title: 'Profile' },
     { key: 'Settings', title: 'Settings' },

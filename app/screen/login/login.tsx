@@ -10,12 +10,10 @@ import xhtmlrequestBuilder from "../../components/helpers/request";
 import EmailField from "../../components/emailfield";
 import PasswordField from "../../components/passwordfield";
 import StyledButton from "../../components/styledbutton";
+import { navProps } from "../../components/helpers/interfaces";
 
-interface LoginScreenProps {
-  navigation: any;
-}
 
-export const LoginScreen = (prop: LoginScreenProps) => {
+export const LoginScreen = (prop: navProps) => {
   useEffect(() => {
     getMultipleVals(['email', 'pass']).then((vals)=>{
       console.log(vals)

@@ -1,13 +1,14 @@
   import React, { useState, } from 'react';
-  import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
+  import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
   import * as ImagePicker from 'expo-image-picker';
   import { ip } from './helpers/conf';
   import StyledButton from './styledbutton';
   import Icon from 'react-native-vector-icons/FontAwesome';
 import { BackgroundColor, lightGray } from './helpers/StyleVars';
 import { getValueOf } from './helpers/app.loginHelper';
+import { imageUploadProps } from './helpers/interfaces';
 
-  const UploadField = ({handleSelection , uid}) => {
+  const UploadField = ({handleSelection , uid}:imageUploadProps) => {
     const myIcon = <Icon name="camera" size={30} color={lightGray} />;
     const [selectedImage, setSelectedImage] = useState(null);
     const generateName = ()=>{
@@ -25,7 +26,12 @@ import { getValueOf } from './helpers/app.loginHelper';
         return;
       }
 
-      const pickerResult = await ImagePicker.launchImageLibraryAsync();
+      const pickerResult = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
 
       if (pickerResult.canceled === true) {
         return;
@@ -47,17 +53,17 @@ import { getValueOf } from './helpers/app.loginHelper';
     const renderContent = () => {
       if (selectedImage) {
         return (
-          <Pressable onPress={handleImageUpload}>
+          <TouchableOpacity onPress={handleImageUpload}>
             <Image style={style.image} source={selectedImage} />
-          </Pressable>
+          </TouchableOpacity>
         );
       } else {
         return (
-          <Pressable onPress={handleImageUpload}>
+          <TouchableOpacity onPress={handleImageUpload}>
             <View style={style.square} >
               <Text>{myIcon}</Text>
               </View>
-          </Pressable>
+          </TouchableOpacity>
         );
       }
     };

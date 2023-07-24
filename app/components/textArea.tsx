@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     position: "relative",
     width: "100%",
   },
-  textArea: {
+  textArea: {paddingTop:30,
     borderRadius:10,
     textAlignVertical:"top",
     height:150,
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    padding: 5,
+    // padding: 5,
   },
 
   overlayText: {

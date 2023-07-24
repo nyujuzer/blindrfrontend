@@ -1,11 +1,4 @@
-interface xhtmlrequestdetails{
-  ip : string
-  route:string
-  _onReadyStateChange:Function
-  _requestType:'GET'|'POST'
-  _body:object
-  _headers: Record<string, string>;
-}
+import { xhtmlrequestdetails } from "./interfaces"
 
 class xhtmlrequestBuilder implements xhtmlrequestdetails{
   ip : string

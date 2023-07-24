@@ -14,13 +14,11 @@ import Hobbies from '../../components/hobbies';
 import StyledButton from '../../components/styledbutton';
 import AppropriateDatePicker from '../../components/datepicker';
 import xhtmlrequestBuilder from '../../components/helpers/request';
+import { navProps } from '../../components/helpers/interfaces';
 
 
-interface regnav {
-  navigation: any
-}
 
-const RegSite = (prop: regnav) => {
+const RegSite = (prop: navProps) => {
   enum Groups {
     PREFERENCES,
     GENDER

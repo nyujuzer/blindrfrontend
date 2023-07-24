@@ -15,8 +15,10 @@ import {
 } from "../../../../components/helpers/StyleVars";
 import { Card, TextInput } from "react-native-paper";
 import TextArea from "../../../../components/textArea";
+import { useNavigation } from "@react-navigation/native";
 
 const Finish = () => {
+  const nav = useNavigation()
   const [selectedImage, setSelectedImages] = useState(null);
   const [bio, setBio] = useState<string>("");
   const [maxDist, setMaxDist] = useState(1);
@@ -43,9 +45,13 @@ const Finish = () => {
         method: "POST",
         body: formData,
       });
+      
       const data = await response.json();
-      console.log("Image uploaded successfully:", data);
-      return data;
+      console.log(data);
+      
+      if (data['success'] == true){
+        nav.goBack()
+      }
     } catch (error) {
       console.error("Error uploading image:", error);
       throw new Error("Failed to upload image");
@@ -58,9 +64,9 @@ const Finish = () => {
         <Card.Title titleStyle={{ color: "white" }} title="Bio" />
         <Card.Content>
           <TextArea
-            maxLength={255}
+            maxLength={150}
             value={bio}
-            overlayText={`${bio.length}/255`}
+            overlayText={`${bio.length}/150`}
             onChangeText={handleChange}
           ></TextArea>
         </Card.Content>
