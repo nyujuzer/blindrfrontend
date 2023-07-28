@@ -79,6 +79,7 @@ const RegSite = (prop: navProps) => {
   //#region validations
   const register = () => {
     if (/* Validate() */1 == 1) {
+      const test = new xhtmlrequestBuilder()
       const xhr = new xhtmlrequestBuilder()
       .to(ip)
       .atRoute("/register/")

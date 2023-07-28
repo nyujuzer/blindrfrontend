@@ -1,37 +1,101 @@
-import React, {useState} from 'react'
-import { getValueOf } from '../../../components/helpers/app.loginHelper';
-import { ip } from '../../../components/helpers/conf';
-import { View, Text} from 'react-native';
-import VideoUploadField from '../../../components/videoUploadField';
-import UploadField from '../../../components/uploadfield';
-
+import React, { useEffect, useState } from "react";
+import { getValueOf } from "../../../components/helpers/app.loginHelper";
+import { ip } from "../../../components/helpers/conf";
+import { View, Text, StyleSheet, Dimensions, Modal } from "react-native";
+import VideoUploadField from "../../../components/videoUploadField";
+import UploadField from "../../../components/uploadfield";
+import StyledButton from "../../../components/styledbutton";
+import InputField from "../../../components/inputfield";
+import { useNavigation } from "@react-navigation/native";
+// import { Modal } from "react-native-paper";
+const dimensions = Dimensions.get("window");
 const Vidupload = () => {
-  const [uid, setuid] = useState()
+  useEffect(() => {
+    getValueOf("uid").then((uid) => {
+      setuid(uid);
+    });
+  }, []);
+  const nav = useNavigation()
+  const [uid, setuid] = useState();
   const [selectedImage, setSelectedImage] = useState(null);
-  getValueOf("uid").then((uid) =>{setuid(uid)})
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState("");
+
   const uploadImage = async () => {
     const formData = new FormData();
     formData.append("video", selectedImage);
     formData.append("uid", uid);
+    formData.append("title", title)
     try {
       const response = await fetch(ip + "/uploadVideo/", {
         method: "POST",
         body: formData,
       });
       const data = await response.json();
-      console.log("Image uploaded successfully:", data);
+      if (data['success']){
+        nav.goBack()
+      }else if (data['reason'] === "tooShort"){
+        alert("The title is too long! The longest you can set the title to be is 100 characters")
+      }
       return data;
     } catch (error) {
       console.error("Error uploading image:", error);
       throw new Error("Failed to upload image");
     }
-  }
-  return(
-<View style={{}}>
-      <VideoUploadField handleSelection={(img) => setSelectedImage(img)} uid={uid} />
-      </View>
+  };
+  return (
+    <View style={style.container}>
+      <VideoUploadField
+        handleSelection={(img) => setSelectedImage(img)}
+        uid={uid}
+      />
+      {selectedImage ? (
+        <StyledButton
+          text="Continue!"
+          onPress={() => {
+            setOpen(true);
+          }}
+        ></StyledButton>
+      ) : null}
+      <Modal visible={open} transparent={true} animationType="slide">
+        <View
+          style={[
+            style.container,
+            {
+              alignSelf: "center",
+              width: dimensions.width * 0.8,
+              height: dimensions.height * 0.8,
+              backgroundColor: "rgba(0,0,0,0.8)",
+            },
+          ]}
+        >
+          <InputField
+            onChangeText={(text) => {
+              setTitle(text);
+            }}
+            placeholder="Title"
+          />
+          {title.length >= 5 ? (
+            <StyledButton
+              text="Upload!"
+              onPress={() => {
+                uploadImage();
+              }}
+            />
+          ) : null}
+        </View>
+      </Modal>
+    </View>
   );
-}
- 
+};
 
-export default Vidupload
+const style = StyleSheet.create({
+  container: {
+    flex: 2,
+    backgroundColor: "black",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+export default Vidupload;

@@ -20,13 +20,15 @@ import {
 } from "@react-navigation/native";
 import { ActionColor } from "../../../components/helpers/StyleVars";
 import { ScaleFromCenterAndroid } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/TransitionPresets";
+import Videos from "../../../components/videos";
 const ProfileScreen = ({ uid }) => {
   const isFocus = useIsFocused();
   const [profileImage, setProfileImage] = useState(null);
-  const [videos, setVideos] = useState([]);
+  const [videos, setVideos] = useState<Tthumbnail[]>([]);
   const video = useRef(null);
   const [status, setStatus] = useState({});
   const nav = useNavigation() as any;
+  
   useEffect(() => {
     if (isFocus) {
       console.log("isFocus :>> ", isFocus);
@@ -42,20 +44,13 @@ const ProfileScreen = ({ uid }) => {
 
   const fetchProfileImage = async () => {
     try {
-      const response = await fetch(`${ip}getFile/${uid}`);
+      const response = await fetch(`${ip}getProfileData/${uid}`);
+      const data = await response.json()
       if (response.status === 404) {
         console.log("null");
         setProfileImage(null);
       } else {
-        console.log("esle");
-        const imageBlob = await response.blob();
-
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setProfileImage(reader.result);
-          console.log("yay?");
-        };
-        reader.readAsDataURL(imageBlob);
+        setProfileImage(`${ip}/${data['profileImageRoute']}/`)
       }
     } catch (error) {
       console.log(error);
@@ -66,17 +61,14 @@ const ProfileScreen = ({ uid }) => {
   const fetchVideos = async () => {
     try {
       const response = await fetch(`${ip}getThumbs/${uid}`);
-      const videoBlob = await response.blob();
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setVideos([...videos, reader.result]);
-      };
-      reader.readAsDataURL(videoBlob);
-    } catch (error) {
-      console.log(videos);
-    }
-  };
+      var x = await response.json();
+      setVideos(x)
+      }
+    catch(error){
+    console.log(error)
+    console.log(x)
+  }
+};
   const renderElse = () => {
     return (
       <View style={styles.container}>
@@ -94,25 +86,29 @@ const ProfileScreen = ({ uid }) => {
   };
   const renderIf = () => {
     return (
-      <View style={{flex:2, flexDirection:"column"}}>
+      <View style={{flex:3,alignItems:"center", flexDirection:"column"}}>
         <View>
-          <Image source={{ uri: profileImage }} style={styles.profileImage} />
+            <Image source={{ uri: profileImage }} style={styles.profileImage} />
           <Text style={styles.title}>Profile</Text>
           <Text style={styles.subtitle}>Videos:</Text>
         </View>
-        
-        <TouchableOpacity
-          onPress={() => nav.navigate({ name: "Vid" })}
-          style={[styles.button, styles.add]}
-        >
-          <Text style={{ textAlign: "center" }}>{plus}</Text>
-        </TouchableOpacity>
+        <View>
+          
+        </View>
+        <Videos thumbnails={videos} ></Videos>
+ 
       </View>
     );
   };
   return (
     <View style={styles.container}>
       {profileImage ? renderIf() : renderElse()}
+      {profileImage?<TouchableOpacity 
+          onPress={() => nav.navigate({ name: "Vid" })}
+          style={[styles.button, styles.add, {}]}
+        >
+          <Text style={{ textAlign: "center" }}>{plus}</Text>
+        </TouchableOpacity>:null}
     </View>
   );
 };
@@ -156,8 +152,7 @@ const styles = StyleSheet.create({
 
   },
   button: {
-    bottom: 0,
-    left: 0,
+    bottom:0,
     borderRadius: 100,
     position: "absolute",
     width: 50,

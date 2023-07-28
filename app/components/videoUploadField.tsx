@@ -1,5 +1,5 @@
 import React, { useState, } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { ip } from './helpers/conf';
 import StyledButton from './styledbutton';
@@ -8,6 +8,7 @@ import { BackgroundColor, lightGray } from './helpers/StyleVars';
 import { getValueOf } from './helpers/app.loginHelper';
 import { imageUploadProps } from './helpers/interfaces';
 
+const dimensions = Dimensions.get("window")
 const UploadField = ({handleSelection , uid}:imageUploadProps) => {
   const myIcon = <Icon name="camera" size={30} color={lightGray} />;
   const [selectedImage, setSelectedImage] = useState(null);
@@ -81,16 +82,16 @@ const style = StyleSheet.create({
     flexWrap: 'wrap',
   },
   image: {
-    width: 150,
-    height: 150,
+    width: dimensions.width*0.80,
+    height: dimensions.height *0.80,
     borderRadius: 10,
     borderColor: "red",
   },
   square:{
     justifyContent: 'center',
     alignItems: 'center',
-    width:150,
-    height:150,
+    width:dimensions.width*0.80,
+    height:dimensions.height *0.80,
     backgroundColor:"#d1d1d1",
     borderRadius:10
   },

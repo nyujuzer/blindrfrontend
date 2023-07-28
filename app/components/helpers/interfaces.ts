@@ -1,3 +1,5 @@
+import { StyleProp, ViewStyle } from "react-native";
+
 interface AppropriateDatePickerProps {
     style: any;
     visibility: boolean;
@@ -20,4 +22,7 @@ interface imageUploadProps{
     handleSelection:(img:any)=>void
     uid:string
 }
-  export {AppropriateDatePickerProps, xhtmlrequestdetails, navProps, imageUploadProps}
+interface styledbuttonProps {
+  onPress:()=>void, text:string, style?:StyleProp<ViewStyle> 
+}
+  export {AppropriateDatePickerProps, xhtmlrequestdetails, navProps, imageUploadProps, styledbuttonProps}

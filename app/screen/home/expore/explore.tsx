@@ -14,12 +14,20 @@ import * as Location from "expo-location";
 import { ip } from "../../../components/helpers/conf";
 import { AntDesign } from "@expo/vector-icons";
 import { Green, Red, lightblue } from "../../../components/helpers/StyleVars";
+import xhtmlrequestBuilder from "../../../components/helpers/request";
 
 const ExploreScreen = ({ uid }) => {
   const HeartIcon = <AntDesign name="heart" size={30}></AntDesign>;
   const CrossIcon = <AntDesign name="close" size={30}></AntDesign>;
   const Message = <AntDesign name="message1" size={20}></AntDesign>;
+  const [uses, setUsers] = useState()
+  const getUsers = ()=>{
+    const xhr = new xhtmlrequestBuilder()
+    xhr.to(ip).asType("GET").atRoute("/getProfileData/"+uid).onCompletion((resp)=>console.log(resp)).send()
+  }
   const getPermissions = async () => {
+    console.log("hello");
+    
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
       console.log("Please grant location permissions");
@@ -32,14 +40,14 @@ const ExploreScreen = ({ uid }) => {
       longitude: currentLocation.coords.longitude,
     };
     setLocation(newLocation);
-    console.log(newLocation);
+    console.log("hello there");
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         console.log(this.response);
       }
     };
-    xhr.open("POST", ip + "getUsers/", true);
+    xhr.open("POST", ip + "updateLocation/", true);
     xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
     xhr.send(
       JSON.stringify({
@@ -52,6 +60,7 @@ const ExploreScreen = ({ uid }) => {
   const [location, setLocation] = useState({});
   useEffect(() => {
     getPermissions();
+    getUsers()
   }, [1]);
   const handleReaction = (reaction: "LIKE" | "DISLIKE" | "MESSAGE") => {
     switch (reaction) {
@@ -70,7 +79,7 @@ const ExploreScreen = ({ uid }) => {
   return (
     <View style={style.container}>
       <TouchableOpacity
-        onPress={() => handleReaction("LIKE")}
+        onPress={() => getPermissions()}
         style={[style.button, style.heart]}
       >
         <Text style={{ textAlign: "center" }}>{HeartIcon}</Text>

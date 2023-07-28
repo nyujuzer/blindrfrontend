@@ -1,8 +1,9 @@
 import React from "react";
 import { Pressable, Text, StyleSheet } from "react-native";
 import { ActionColor } from "./helpers/StyleVars";
+import { styledbuttonProps } from "./helpers/interfaces";
 
-const StyledButton = ({ onPress, text, style }: any) => {
+const StyledButton = ({ onPress, text, style }: styledbuttonProps) => {
   return (
     <Pressable
       style={({ pressed }) => [styles.button, style, pressed && styles.buttonPressed]}

@@ -50,7 +50,8 @@ class xhtmlrequestBuilder implements xhtmlrequestdetails{
           }
         } else {
           // Handle error case
-          console.error('Request failed:', xhr.status, xhr.statusText);
+          console.log(this.ip+this.route)
+          console.error('Request failed:', xhr.status, xhr.statusText,);
         }
       }
     };
