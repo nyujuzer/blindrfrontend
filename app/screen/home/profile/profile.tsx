@@ -25,8 +25,7 @@ const ProfileScreen = ({ uid }) => {
   const isFocus = useIsFocused();
   const [profileImage, setProfileImage] = useState(null);
   const [videos, setVideos] = useState<Tthumbnail[]>([]);
-  const video = useRef(null);
-  const [status, setStatus] = useState({});
+  const [user,setUser] = useState('')
   const nav = useNavigation() as any;
   
   useEffect(() => {
@@ -46,11 +45,14 @@ const ProfileScreen = ({ uid }) => {
     try {
       const response = await fetch(`${ip}getProfileData/${uid}`);
       const data = await response.json()
-      if (response.status === 404) {
+      console.log(data);
+      
+      if (!data['success']) {
         console.log("null");
         setProfileImage(null);
       } else {
         setProfileImage(`${ip}/${data['profileImageRoute']}/`)
+        setUser(data['username'])
       }
     } catch (error) {
       console.log(error);
@@ -89,7 +91,7 @@ const ProfileScreen = ({ uid }) => {
       <View style={{flex:3,alignItems:"center", flexDirection:"column"}}>
         <View>
             <Image source={{ uri: profileImage }} style={styles.profileImage} />
-          <Text style={styles.title}>Profile</Text>
+          <Text style={styles.title}>{user}</Text>
           <Text style={styles.subtitle}>Videos:</Text>
         </View>
         <View>
@@ -122,6 +124,7 @@ const styles = StyleSheet.create({
   },
   profileImage: {
     width: 100,
+    alignSelf:"center",
     height: 100,
     borderRadius: 100,
     marginBottom: 16,
@@ -130,10 +133,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 8,
+    textAlign:"center"
   },
   subtitle: {
     fontSize: 18,
     fontWeight: "bold",
+    textAlign:"center",
     marginBottom: 8,
   },
   videoContainer: {

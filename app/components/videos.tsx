@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ interface ThumbnailArrayProp {
 }
 const { width } = Dimensions.get("window");
 const Videos: React.FC<ThumbnailArrayProp> = ({ thumbnails }) => {
+  useEffect(()=>{console.log(thumbnails)},[])
   return (
     <ScrollView
       horizontal={false}

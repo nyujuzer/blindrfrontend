@@ -1,36 +1,134 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
 import {
   View,
-  ScrollView,
   Text,
-  Image,
   StyleSheet,
-  Alert,
-  Touchable,
   TouchableOpacity,
+  ListRenderItemInfo,
+  FlatList,
+  Dimensions,
 } from "react-native";
 
 import * as Location from "expo-location";
 import { ip } from "../../../components/helpers/conf";
 import { AntDesign } from "@expo/vector-icons";
-import { Green, Red, lightblue } from "../../../components/helpers/StyleVars";
+import {
+  Green,
+  Red,
+  lightblue,
+  secondaryBg,
+} from "../../../components/helpers/StyleVars";
 import xhtmlrequestBuilder from "../../../components/helpers/request";
+import Player from "../../../components/Player";
+import { LinearGradient } from "expo-linear-gradient";
+import { createNativeWrapper } from "react-native-gesture-handler";
+import Videos from "../../../components/videos";
+
+const { height, width } = Dimensions.get("window");
+
+// Define the type for the video object
+interface Video {
+  pk: number;
+  video_url: string;
+  title: string;
+  // Add more properties here if needed
+}
+
+// Define the type for the response data
+interface ExploreScreenResponse {
+  videos: Video[];
+}
 
 const ExploreScreen = ({ uid }) => {
-  const HeartIcon = <AntDesign name="heart" size={30}></AntDesign>;
-  const CrossIcon = <AntDesign name="close" size={30}></AntDesign>;
-  const Message = <AntDesign name="message1" size={20}></AntDesign>;
-  const [uses, setUsers] = useState()
-  const getUsers = ()=>{
-    const xhr = new xhtmlrequestBuilder()
-    xhr.to(ip).asType("GET").atRoute("/getProfileData/"+uid).onCompletion((resp)=>console.log(resp)).send()
-  }
-  const getPermissions = async () => {
-    console.log("hello");
+  const HeartIcon = useMemo(
+    () => <AntDesign name="heart" color={"#f0f0f0"} size={30}></AntDesign>,
+    []
+  );
+
+  const CrossIcon = useMemo(
+    () => <AntDesign name="close" color={"#f0f0f0"} size={30}></AntDesign>,
+    []
+  );
+
+  const Message = useMemo(
+    () => <AntDesign name="message1" color={"#f0f0f0"} size={20}></AntDesign>,
+    []
+  );
+  const [users, setUsers] = useState<Video[]>([]);
+
+  const [current, setCurrentIndex] = useState(0);
+  const getUsers = (): void => {
+    if (!uid) {
+      return;
+    }
+    const xhr = new xhtmlrequestBuilder();
+    xhr
+      .to(ip)
+      .asType("GET")
+      .atRoute(`getRandomVideos/${uid}/5`)
+      .onCompletion((resp) => {
+        const parsedResponse: ExploreScreenResponse = JSON.parse(resp);
+        var videoSet = new Set(parsedResponse.videos)
+        var videoArray = new Array(videoSet)
+        setUsers(parsedResponse.videos);
+      })
+      .send();
+  };
+  const sendLike = (uid: any, pk: number) => {
     
+    const xhr = new XMLHttpRequest()
+    xhr.open("POST", ip+"/setLikes/")
+    xhr.onreadystatechange = function(resp,){
+      console.log(resp, "safe")
+    }
+    const fd = new FormData()
+    fd.append('uid',uid)
+    fd.append('video',pk.toString())  
+    xhr.send(fd)
+    
+    // const xhr = new xhtmlrequestBuilder();
+    // console.log("helo");
+
+    // xhr
+    //   .to(ip)
+    //   .asType("POST")
+    //   .atRoute("/setLike/")
+    //   .message({ userId: uid, video: pk })
+    //   .onCompletion((ev) => {
+    //     console.log(ev);
+    //   })
+    //   .send();
+  };
+  const getMore = (): void => {
+    if (!uid) {
+      return;
+    }
+    var exclusions = users
+      .map((video: Video) => {
+        return video.pk;
+      })
+      .join("-");
+    const xhr = new xhtmlrequestBuilder();
+    xhr
+      .to(ip)
+      .asType("GET")
+      .atRoute(`getRandomVideos/${uid}/5/${exclusions}`)
+      .onCompletion((resp) => {
+        const parsedResponse: ExploreScreenResponse = JSON.parse(resp);
+        setUsers((prevUsers) => [...prevUsers, ...parsedResponse.videos]);
+      })
+      .send();
+  };
+  const getPermissions = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
-      console.log("Please grant location permissions");
+      alert("Please grant location permissions");
       return;
     }
 
@@ -40,14 +138,12 @@ const ExploreScreen = ({ uid }) => {
       longitude: currentLocation.coords.longitude,
     };
     setLocation(newLocation);
-    console.log("hello there");
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-        console.log(this.response);
       }
     };
-    xhr.open("POST", ip + "updateLocation/", true);
+    xhr.open("POST", ip + "updateLocation/" + uid, true);
     xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
     xhr.send(
       JSON.stringify({
@@ -60,26 +156,96 @@ const ExploreScreen = ({ uid }) => {
   const [location, setLocation] = useState({});
   useEffect(() => {
     getPermissions();
-    getUsers()
-  }, [1]);
-  const handleReaction = (reaction: "LIKE" | "DISLIKE" | "MESSAGE") => {
-    switch (reaction) {
-      case "LIKE":
-        console.log("yay");
-        break;
-      case "DISLIKE":
-        console.log("IMPLEMENT IN PROGRESS");
-        break;
-      case "MESSAGE":
-        console.log("IMPLEMENTATION IN PROGRESS");
-        break;
-    }
-  };
+    getUsers();
+  }, [uid]);
+  const handleReaction = useCallback(
+    (reaction: "LIKE" | "DISLIKE" | "MESSAGE") => {
+      switch (reaction) {
+        case "LIKE":
+          console.log("users -- ", users, "\ncurrent -- ", current);
+          sendLike(uid, users[current].pk);
+          break;
+        case "DISLIKE":
+          break;
+        case "MESSAGE":
+          break;
+      }
+    },
+    [current, users]
+  );
+  const onViewableItemsChanged = useCallback(
+    ({ viewableItems }) => {
+      if (viewableItems && viewableItems.length == 1) {
+        setCurrentIndex(viewableItems[0].index);
+        console.log(viewableItems[0]);
+      }
+    },
+    [setCurrentIndex]
+  );
 
   return (
     <View style={style.container}>
+      {users.length > 0 ? (
+        <>
+          <FlatList
+            data={users}
+            onViewableItemsChanged={onViewableItemsChanged}
+            snapToAlignment="start"
+            decelerationRate={"fast"}
+            snapToInterval={height}
+            onEndReachedThreshold={2}
+            extraData={users}
+            // keyExtractor={(item: Video) => item.pk.toString()}
+            onEndReached={() => getMore()}
+            renderItem={function(
+              info: ListRenderItemInfo<any>
+            ): React.ReactElement<
+              any,
+              string | React.JSXElementConstructor<any>
+            > {
+              return (
+                <Player
+                  shouldplay={info.index == current}
+                  url={`${ip}/${info.item.video_url}`}
+                />
+              );
+            }}
+          ></FlatList>
+          <LinearGradient
+            colors={["rgba(255,255,255,0)", secondaryBg]}
+            style={{
+              position: "absolute",
+              zIndex: 10,
+              bottom: 0,
+              height: 110,
+              paddingLeft: 30,
+              width: width,
+            }}
+          >
+            {users[current] && users[current].title && (
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  color: "white",
+                }}
+              >
+                {users[current].title}
+              </Text>
+            )}
+          </LinearGradient>
+        </>
+      ) : (
+        <>
+          <View style={style.fail}>
+            <Text style={style.failText}>
+              Sadly we ran out of videos to show you!
+            </Text>
+          </View>
+        </>
+      )}
       <TouchableOpacity
-        onPress={() => getPermissions()}
+        onPress={() => handleReaction("LIKE")}
         style={[style.button, style.heart]}
       >
         <Text style={{ textAlign: "center" }}>{HeartIcon}</Text>
@@ -103,7 +269,19 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
   },
+  fail: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  failText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 8,
+    textAlign: "center",
+  },
   button: {
+    zIndex: 100,
     opacity: 0.8,
     borderRadius: 100,
     position: "absolute",

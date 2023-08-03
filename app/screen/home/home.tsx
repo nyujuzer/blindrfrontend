@@ -58,7 +58,7 @@ const App = () => {
 
   const [routes] =useState([
     { key: 'explore', title: 'Explore', icon:<AntDesign name="camera" size={20} color={"#400"}></AntDesign> },
-    { key: 'matches', title: 'Matches' },
+    { key: 'matches', title: 'Matches', },
     { key: 'profile', title: 'Profile' },
     { key: 'Settings', title: 'Settings' },
   ]);

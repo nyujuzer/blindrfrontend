@@ -10,8 +10,6 @@ const InputField = ({onChangeText, placeholder}:props) => {
       style={styles.inputFieldStyle}
       placeholder={placeholder}
       onChangeText={(text)=>onChangeText(text)}
-      selectionColor={"green"}
-      cursorColor={"red"}
       placeholderTextColor={"white"}
     />
   );

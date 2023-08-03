@@ -27,7 +27,7 @@ export default AppNavigator;
 
 
 
-//TODO: add the register nav
+//DONE: add the register nav
 //TODO: add the other profile nav
 //TODO: add the matches nav
 //TODO: add the chats nav
