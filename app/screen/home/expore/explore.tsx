@@ -19,6 +19,7 @@ import * as Location from "expo-location";
 import { ip } from "../../../components/helpers/conf";
 import { AntDesign } from "@expo/vector-icons";
 import {
+  BackgroundColor,
   Green,
   Red,
   lightblue,
@@ -71,27 +72,26 @@ const ExploreScreen = ({ uid }) => {
     xhr
       .to(ip)
       .asType("GET")
-      .atRoute(`getRandomVideos/${uid}/5`)
+      .atRoute(`/getRandomVideos/${uid}/5`)
       .onCompletion((resp) => {
         const parsedResponse: ExploreScreenResponse = JSON.parse(resp);
-        var videoSet = new Set(parsedResponse.videos)
-        var videoArray = new Array(videoSet)
+        var videoSet = new Set(parsedResponse.videos);
+        var videoArray = new Array(videoSet);
         setUsers(parsedResponse.videos);
       })
       .send();
   };
   const sendLike = (uid: any, pk: number) => {
-    
-    const xhr = new XMLHttpRequest()
-    xhr.open("POST", ip+"/setLikes/")
-    xhr.onreadystatechange = function(resp,){
-      console.log(resp, "safe")
-    }
-    const fd = new FormData()
-    fd.append('uid',uid)
-    fd.append('video',pk.toString())  
-    xhr.send(fd)
-    
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", ip + "/setLikes/");
+    xhr.onreadystatechange = function(resp) {
+      console.log(resp, "safe");
+    };
+    const fd = new FormData();
+    fd.append("uid", uid);
+    fd.append("video", pk.toString());
+    xhr.send(fd);
+
     // const xhr = new xhtmlrequestBuilder();
     // console.log("helo");
 
@@ -118,7 +118,7 @@ const ExploreScreen = ({ uid }) => {
     xhr
       .to(ip)
       .asType("GET")
-      .atRoute(`getRandomVideos/${uid}/5/${exclusions}`)
+      .atRoute(`/getRandomVideos/${uid}/5/${exclusions}`)
       .onCompletion((resp) => {
         const parsedResponse: ExploreScreenResponse = JSON.parse(resp);
         setUsers((prevUsers) => [...prevUsers, ...parsedResponse.videos]);
@@ -188,6 +188,7 @@ const ExploreScreen = ({ uid }) => {
       {users.length > 0 ? (
         <>
           <FlatList
+          style={{backgroundColor:BackgroundColor}}
             data={users}
             onViewableItemsChanged={onViewableItemsChanged}
             snapToAlignment="start"
@@ -206,7 +207,7 @@ const ExploreScreen = ({ uid }) => {
               return (
                 <Player
                   shouldplay={info.index == current}
-                  url={`${ip}/${info.item.video_url}`}
+                  url={`${ip}${info.item.video_url}`}
                 />
               );
             }}
@@ -270,11 +271,13 @@ const style = StyleSheet.create({
     flex: 1,
   },
   fail: {
+    backgroundColor:BackgroundColor,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   failText: {
+    color:"white",
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 8,

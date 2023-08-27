@@ -9,17 +9,9 @@ const { width, height } = Dimensions.get("window");
 const Player = ({ url, shouldplay, }) => {
   const videoRef = useRef(null);
   const [status, setStatus] = useState({});
-  const _ = () => {
-    const xhr = new xhtmlrequestBuilder();
-    xhr
-      .to("https://www.boredapi.com/api/")
-      .atRoute("activity/")
-      .asType("GET")
-      .onCompletion((text) => {
-        console.log(text);
-      })
-      .send();
-  };
+  useEffect(()=>{
+    console.log(url)
+  },[])
   const like = <AntDesign name="like1"></AntDesign>
   return (
     <View style={styles.container}>      

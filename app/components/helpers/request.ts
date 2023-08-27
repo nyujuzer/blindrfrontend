@@ -42,7 +42,7 @@ class xhtmlrequestBuilder{
         } else {
           // Handle error case
           console.log('error')
-          console.log(xhr.readyState)
+          console.log(xhr)
         }
       }
     };

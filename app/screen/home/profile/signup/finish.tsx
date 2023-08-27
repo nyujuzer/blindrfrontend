@@ -54,6 +54,7 @@ const Finish = () => {
       }
     } catch (error) {
       console.error("Error uploading image:", error);
+      console.log()
       throw new Error("Failed to upload image");
     }
   };

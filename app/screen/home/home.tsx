@@ -1,36 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
-import { BottomNavigation, Provider as PaperProvider} from 'react-native-paper';
+import { BottomNavigation, Provider as PaperProvider } from 'react-native-paper';
 import { ActionColor, SecondaryColor, darkColor, secondaryBg } from '../../components/helpers/StyleVars';
 import ExploreScreen from './expore/explore';
 import { getValueOf } from '../../components/helpers/app.loginHelper';
 import ProfileScreen from './profile/profile';
 import { useNavigation } from '@react-navigation/native';
-import { AntDesign } from '@expo/vector-icons';
-
+import Icon from 'react-native-vector-icons/FontAwesome'
+import MatchScreen from './chat/matchscreen';
 
 const App = () => {
   const [index, setIndex] = useState(0);
-  const [uid, setUserId] = useState()
+  const [uid, setUserId] = useState();
   const handleNavigation = (newIndex) => {
     setIndex(newIndex);
   };
-  useEffect(()=>{
-    getValueOf("uid").then((res:any)=>{
-      setUserId(res)
-    })
-  },[])
-  const nav = useNavigation()
+
+  useEffect(() => {
+    getValueOf("uid").then((res: any) => {
+      setUserId(res);
+    });
+  }, []);
+
+  const nav = useNavigation();
+
   const renderScene = () => {
     switch (index) {
       case 0:
-        return (
-          <ExploreScreen uid={uid}/>
-        );
+        return <ExploreScreen uid={uid} />;
       case 1:
         return (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>{uid}</Text>
+            <MatchScreen />
           </View>
         );
       case 2:
@@ -56,30 +57,36 @@ const App = () => {
     }
   };
 
-  const [routes] =useState([
-    { key: 'explore', title: 'Explore', icon:<AntDesign name="camera" size={20} color={"#400"}></AntDesign> },
-    { key: 'matches', title: 'Matches', },
-    { key: 'profile', title: 'Profile' },
-    { key: 'Settings', title: 'Settings' },
-  ]);
+  const routes = [
+    { key: 'explore', title: 'Explore', icon: 'camera', },
+    { key: 'matches', title: 'Matches', icon: 'heart' },
+    { key: 'profile', title: 'Profile', icon: 'user' },
+    { key: 'settings', title: 'Settings', icon: 'cog' },
+  ];
 
-  
   return (
     <View style={{ flex: 1 }}>
       <PaperProvider>
-      <BottomNavigation
-        inactiveColor={SecondaryColor} 
-        activeColor={ActionColor}
-        labeled={true}
-        theme={{colors: {secondaryContainer: ActionColor}}}
-        barStyle={{backgroundColor:secondaryBg}}
-        navigationState={{ index, routes }}
-        onIndexChange={handleNavigation}
-        renderScene={renderScene}
-      />
+        <BottomNavigation
+          inactiveColor={SecondaryColor}
+          activeColor={ActionColor}
+          labeled={true}
+          theme={{ colors: { secondaryContainer: ActionColor } }}
+          barStyle={{ backgroundColor: secondaryBg }}
+          navigationState={{ index, routes }}
+          onIndexChange={handleNavigation}
+          renderScene={renderScene}
+          renderIcon={({ route, color }) => {
+            console.log(route.title , );
+            return(    <Icon
+              name={route.icon}
+              size={24}
+              color={index === routes.indexOf(route) ? secondaryBg : color}
+            />
+        )}}
+        />
       </PaperProvider>
     </View>
-      
   );
 };
 

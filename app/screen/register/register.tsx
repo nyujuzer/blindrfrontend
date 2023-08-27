@@ -355,7 +355,7 @@ const RegSite = (prop: navProps) => {
             onSelectHobby={(id) => {
               handleSelectHobby(id);
             }}
-            apiUrl={ip + "/getHobbies"}
+            apiUrl={ip + "/getHobbies/"}
           />
         </Card>
         <StyledButton

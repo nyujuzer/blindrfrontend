@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { Text, SafeAreaView, Image, Alert } from "react-native";
+import { Text, SafeAreaView, Image, View, TouchableOpacity } from "react-native";
 import { loginStyles } from "./loginStyle";
 import { save, getValueOf, getMultipleVals } from "../../components/helpers/app.loginHelper";
 import { ip } from "../../components/helpers/conf";
@@ -10,6 +10,7 @@ import xhtmlrequestBuilder from "../../components/helpers/request";
 import EmailField from "../../components/emailfield";
 import PasswordField from "../../components/passwordfield";
 import StyledButton from "../../components/styledbutton";
+import { registerIndieID } from 'native-notify';
 import { navProps } from "../../components/helpers/interfaces";
 
 
@@ -30,10 +31,11 @@ export const LoginScreen = (prop: navProps) => {
     const request = new xhtmlrequestBuilder();
     request
       .to(ip)
-      .atRoute("login/" + email + "+" + Pass + "/")
+      .atRoute("/login/" + email + "+" + Pass + "/")
       .asType("GET")
       .onCompletion((res) => {
         if (JSON.parse(res)["login"] === "successful") {
+          registerIndieID(JSON.parse(res)["uid"], 10776, 'bMAL30KDs4RJB8RaFqimlb');
           save("uid",JSON.parse(res)['uid'])
           save("email", email)
           save("pass", Pass)
@@ -48,22 +50,21 @@ export const LoginScreen = (prop: navProps) => {
   return (
     <SafeAreaView style={loginStyles.container}>
       <Card style={loginStyles.card}>
-        <Image
-          source={require("../../../img/knsz.png")}
-          style={{ height: 150, width: 150 }}
-        />
+        <View style={loginStyles.logoContainer}>
+          <Image
+            source={require("../../../img/knsz.png")}
+            style={loginStyles.logo}
+          />
+        </View>
         <EmailField onChangeText={(text) => setEmail(text)} />
         <PasswordField onChangeText={(text) => setPassword(text)} />
         <StyledButton text="Login" onPress={() => loginF(email, password)} />
-        <Text style={loginStyles.createAccountText}>
-          Don't have an account?{" "}
-          <Text
-            style={loginStyles.createAccountLink}
-            onPress={() => prop.navigation.navigate("Register")}
-          >
-            Create one
-          </Text>
-        </Text>
+        <TouchableOpacity
+          style={loginStyles.createAccountLink}
+          onPress={() => prop.navigation.navigate("Register")}
+        >
+          <Text style={loginStyles.createAccountText}>Create an account</Text>
+        </TouchableOpacity>
       </Card>
     </SafeAreaView>
   );

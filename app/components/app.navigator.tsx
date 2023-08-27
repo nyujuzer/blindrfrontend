@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createStackNavigator, TransitionPreset } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { LoginScreen } from "../screen/login/login";
@@ -7,9 +7,16 @@ import ProfileScreen from "../screen/home/profile/profile";
 import { RegSite } from "../screen/register/register";
 import Finish from "../screen/home/profile/signup/finish";
 import Vidupload from "../screen/home/profile/uploadVideos";
+import ChatScreen from "../screen/home/chat/ChatScreen";
+// import * as Notifications from "expo-notifications";
 const Stack = createStackNavigator();
 
+
 const AppNavigator = () => {
+    // useEffect(()=>{
+    //     // registerPushNotifsAsync()
+    // },[])
+
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={(({ headerShown: false }))} initialRouteName="Login">
@@ -19,6 +26,7 @@ const AppNavigator = () => {
                 <Stack.Screen name="Register" component={RegSite}/>
                 <Stack.Screen name="Finish" component={Finish}/>
                 <Stack.Screen name="Vid" component={Vidupload}/>
+                <Stack.Screen name="chatScreen" component={ChatScreen}/>
             </Stack.Navigator>
         </NavigationContainer>)
 }

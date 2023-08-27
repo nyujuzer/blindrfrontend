@@ -43,7 +43,7 @@ const ProfileScreen = ({ uid }) => {
 
   const fetchProfileImage = async () => {
     try {
-      const response = await fetch(`${ip}getProfileData/${uid}`);
+      const response = await fetch(`${ip}/getProfileData/${uid}/`);
       const data = await response.json()
       console.log(data);
       
@@ -51,7 +51,8 @@ const ProfileScreen = ({ uid }) => {
         console.log("null");
         setProfileImage(null);
       } else {
-        setProfileImage(`${ip}/${data['profileImageRoute']}/`)
+        console.log(`${ip}${data['profileImageRoute']}/`)
+        setProfileImage(`${ip}${data['profileImageRoute']}/`)
         setUser(data['username'])
       }
     } catch (error) {
@@ -62,7 +63,7 @@ const ProfileScreen = ({ uid }) => {
 
   const fetchVideos = async () => {
     try {
-      const response = await fetch(`${ip}getThumbs/${uid}`);
+      const response = await fetch(`${ip}/getThumbs/${uid}`);
       var x = await response.json();
       setVideos(x)
       }
