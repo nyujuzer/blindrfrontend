@@ -35,7 +35,7 @@ export const LoginScreen = (prop: navProps) => {
       .asType("GET")
       .onCompletion((res) => {
         if (JSON.parse(res)["login"] === "successful") {
-          registerIndieID(JSON.parse(res)["uid"], 10776, 'bMAL30KDs4RJB8RaFqimlb');
+          registerIndieID(JSON.parse(res)["uid"], 10776, 'bMAL30KDs4RJB8RaFqimlb').catch(e=>console.log(e));
           save("uid",JSON.parse(res)['uid'])
           save("email", email)
           save("pass", Pass)

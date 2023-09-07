@@ -11,16 +11,18 @@ import { ip } from "../../../components/helpers/conf";
 import { Video, ResizeMode } from "expo-av";
 import Player from "../../../components/Player";
 import StyledButton from "../../../components/styledbutton";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/Ionicons";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
   useIsFocused,
   useNavigation,
   useNavigationState,
 } from "@react-navigation/native";
+
 import { ActionColor } from "../../../components/helpers/StyleVars";
 import { ScaleFromCenterAndroid } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/TransitionPresets";
 import Videos from "../../../components/videos";
+import styles from "./profileStyle";
 const ProfileScreen = ({ uid }) => {
   const isFocus = useIsFocused();
   const [profileImage, setProfileImage] = useState(null);
@@ -29,6 +31,8 @@ const ProfileScreen = ({ uid }) => {
   const nav = useNavigation() as any;
   
   useEffect(() => {
+    console.log(uid);
+    
     if (isFocus) {
       console.log("isFocus :>> ", isFocus);
       // Fetch profile image from the server
@@ -39,7 +43,7 @@ const ProfileScreen = ({ uid }) => {
     }
   }, [isFocus]);
 
-  const plus = <Icon name="plus" size={40}></Icon>;
+  const plus = <Icon name="add" size={40}></Icon>;
 
   const fetchProfileImage = async () => {
     try {
@@ -116,57 +120,5 @@ const ProfileScreen = ({ uid }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 16,
-  },
-  profileImage: {
-    width: 100,
-    alignSelf:"center",
-    height: 100,
-    borderRadius: 100,
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 8,
-    textAlign:"center"
-  },
-  subtitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign:"center",
-    marginBottom: 8,
-  },
-  videoContainer: {
-    marginBottom: 8,
-  },
-  videoTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  videoDescription: {
-    fontSize: 14,
-    color: "#888",
-  },
-  add: {
-    backgroundColor: ActionColor,
-
-  },
-  button: {
-    bottom:0,
-    borderRadius: 100,
-    position: "absolute",
-    width: 50,
-    justifyContent: "center",
-    height: 50,
-    margin: 30,
-    alignContent: "center",
-  },
-});
 
 export default ProfileScreen;

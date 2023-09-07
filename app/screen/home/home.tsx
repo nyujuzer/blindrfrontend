@@ -77,7 +77,6 @@ const App = () => {
           onIndexChange={handleNavigation}
           renderScene={renderScene}
           renderIcon={({ route, color }) => {
-            console.log(route.title , );
             return(    <Icon
               name={route.icon}
               size={24}

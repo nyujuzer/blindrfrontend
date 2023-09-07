@@ -20,8 +20,10 @@ const UploadField = ({handleSelection , uid}:imageUploadProps) => {
     return name
   }
   const handleImageUpload = async () => {
+    
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
+    console.log("heyya");
+    
     if (permissionResult.granted === false) {
       alert('Permission to access the camera roll is required!');
       return;
@@ -40,7 +42,7 @@ const UploadField = ({handleSelection , uid}:imageUploadProps) => {
     const image = {
       uri: pickerResult.assets[0].uri,
       type: 'video/mp4', // Change this if your image is of a different type
-      name: uid+'.mp4', // Change this if you want a different name for your image file
+      name: pickerResult.assets[0].fileName+uid+'.mp4', // Change this if you want a different name for your image file
     };
 
     setSelectedImage(image);

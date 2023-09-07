@@ -20,12 +20,14 @@ const Vidupload = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
+  const [tags, settags] = useState("");
 
   const uploadImage = async () => {
     const formData = new FormData();
     formData.append("video", selectedImage);
     formData.append("uid", uid);
     formData.append("title", title)
+    formData.append("tags", tags)
     try {
       const response = await fetch(ip + "/uploadVideo/", {
         method: "POST",
@@ -33,7 +35,8 @@ const Vidupload = () => {
       });
       const data = await response.json();
       if (data['success']){
-        nav.goBack()
+                
+        // nav.goBack()
       }else if (data['reason'] === "tooShort"){
         alert("The title is too long! The longest you can set the title to be is 100 characters")
       }
@@ -45,6 +48,7 @@ const Vidupload = () => {
   };
   return (
     <View style={style.container}>
+      <Text style={{color:"white", fontSize:30, fontWeight:"bold"}}>Select a video</Text>
       <VideoUploadField
         handleSelection={(img) => setSelectedImage(img)}
         uid={uid}
@@ -69,11 +73,16 @@ const Vidupload = () => {
             },
           ]}
         >
+          <Text style={{color:"white", fontSize:22}}>Give it a Great title!</Text>
           <InputField
             onChangeText={(text) => {
               setTitle(text);
             }}
             placeholder="Title"
+          />
+          <InputField
+            onChangeText={(text)=>{settags(text)}}
+            placeholder="tags"
           />
           {title.length >= 5 ? (
             <StyledButton

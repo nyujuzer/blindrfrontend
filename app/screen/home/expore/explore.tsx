@@ -28,8 +28,8 @@ import {
 import xhtmlrequestBuilder from "../../../components/helpers/request";
 import Player from "../../../components/Player";
 import { LinearGradient } from "expo-linear-gradient";
-import { createNativeWrapper } from "react-native-gesture-handler";
-import Videos from "../../../components/videos";
+import FloatingIsland from "../../../components/floatingisland";
+
 
 const { height, width } = Dimensions.get("window");
 
@@ -157,6 +157,7 @@ const ExploreScreen = ({ uid }) => {
   useEffect(() => {
     getPermissions();
     getUsers();
+    console.log(uid,"HHHHHHHHHHHHHHHHHHHH")
   }, [uid]);
   const handleReaction = useCallback(
     (reaction: "LIKE" | "DISLIKE" | "MESSAGE") => {
@@ -212,6 +213,7 @@ const ExploreScreen = ({ uid }) => {
               );
             }}
           ></FlatList>
+          {/* <FloatingIsland uid={uid}></FloatingIsland> */}
           <LinearGradient
             colors={["rgba(255,255,255,0)", secondaryBg]}
             style={{
@@ -235,6 +237,7 @@ const ExploreScreen = ({ uid }) => {
               </Text>
             )}
           </LinearGradient>
+
         </>
       ) : (
         <>
@@ -284,7 +287,7 @@ const style = StyleSheet.create({
     textAlign: "center",
   },
   button: {
-    zIndex: 100,
+    zIndex: 10,
     opacity: 0.8,
     borderRadius: 100,
     position: "absolute",
