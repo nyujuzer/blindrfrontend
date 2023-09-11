@@ -7,6 +7,7 @@ import UploadField from "../../../components/uploadfield";
 import StyledButton from "../../../components/styledbutton";
 import InputField from "../../../components/inputfield";
 import { useNavigation } from "@react-navigation/native";
+import { ActivityIndicator } from "react-native-paper";
 // import { Modal } from "react-native-paper";
 const dimensions = Dimensions.get("window");
 const Vidupload = () => {
@@ -19,6 +20,7 @@ const Vidupload = () => {
   const [uid, setuid] = useState();
   const [selectedImage, setSelectedImage] = useState(null);
   const [open, setOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [tags, settags] = useState("");
 
@@ -29,22 +31,41 @@ const Vidupload = () => {
     formData.append("title", title)
     formData.append("tags", tags)
     try {
-      const response = await fetch(ip + "/uploadVideo/", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await response.json();
-      if (data['success']){
-                
-        // nav.goBack()
-      }else if (data['reason'] === "tooShort"){
-        alert("The title is too long! The longest you can set the title to be is 100 characters")
-      }
-      return data;
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", ip + "/uploadVideo/", true);
+      
+      xhr.onreadystatechange = function () {
+        console.log(this.readyState);
+        
+        if (xhr.readyState!==4){
+          setLoading(true)
+          console.log(isLoading);
+          
+        } 
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            setLoading(false)
+            const data = JSON.parse(xhr.responseText);
+    
+            if (data['success']) {
+              console.log("should go back");
+              nav.goBack()
+            } else if (data['reason'] === "tooShort") {
+              alert("The title is too long! The longest you can set the title to be is 100 characters");
+            }
+          } else {
+            console.error("Error uploading image:", xhr.statusText);
+            throw new Error("Failed to upload image");
+          }
+        }
+      };
+    
+      xhr.send(formData);
     } catch (error) {
       console.error("Error uploading image:", error);
       throw new Error("Failed to upload image");
     }
+    
   };
   return (
     <View style={style.container}>
@@ -80,13 +101,14 @@ const Vidupload = () => {
             }}
             placeholder="Title"
           />
-          <InputField
+          {/* <InputField
             onChangeText={(text)=>{settags(text)}}
             placeholder="tags"
-          />
+          /> */}
           {title.length >= 5 ? (
             <StyledButton
-              text="Upload!"
+            isDisabled = {isLoading}
+              text={isLoading?<ActivityIndicator size={"small"}/>:"Upload"}
               onPress={() => {
                 uploadImage();
               }}

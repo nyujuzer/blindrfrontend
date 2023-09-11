@@ -3,9 +3,10 @@ import { Pressable, Text, StyleSheet } from "react-native";
 import { ActionColor } from "./helpers/StyleVars";
 import { styledbuttonProps } from "./helpers/interfaces";
 
-const StyledButton = ({ onPress, text, style }: styledbuttonProps) => {
+const StyledButton = ({ onPress, text, style, isDisabled }: styledbuttonProps) => {
   return (
     <Pressable
+    disabled={isDisabled}
       style={({ pressed }) => [styles.button, style, pressed && styles.buttonPressed]}
       onPress={onPress}
     >

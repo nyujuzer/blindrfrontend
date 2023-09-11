@@ -1,3 +1,3 @@
-const ip = "http://127.0.0.1:8000"
+const ip = "http://192.168.19.56:8000"
 const socketIp = ip.replace("http://", "ws://")
 export {ip, socketIp}

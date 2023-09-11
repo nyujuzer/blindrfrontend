@@ -23,6 +23,9 @@ interface imageUploadProps{
     uid:string
 }
 interface styledbuttonProps {
-  onPress:()=>void, text:string, style?:StyleProp<ViewStyle> 
-}
+  onPress:()=>void, 
+text:string|JSX.Element,
+   style?:StyleProp<ViewStyle> 
+  isDisabled?:boolean
+  }
   export {AppropriateDatePickerProps, xhtmlrequestdetails, navProps, imageUploadProps, styledbuttonProps}
