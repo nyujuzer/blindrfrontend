@@ -33,7 +33,7 @@ const Videos: React.FC<ThumbnailArrayProp> = ({ thumbnails }) => {
             }}
           >
             <Image
-              source={{ uri: ip + thumbnail.thumbnail_url }}
+              source={{ uri: ip+thumbnail.video_url }}
               style={{ width: width * 0.3, height: 150 }}
             />
           </TouchableOpacity>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -21,24 +21,27 @@ import {
 
 import { ActionColor } from "../../../components/helpers/StyleVars";
 import { ScaleFromCenterAndroid } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/TransitionPresets";
-import Videos from "../../../components/videos";
+
+import * as VideoThumbnails from 'expo-video-thumbnails';
+
 import styles from "./profileStyle";
+
 const ProfileScreen = ({ uid }) => {
   const isFocus = useIsFocused();
   const [profileImage, setProfileImage] = useState(null);
-  const [videos, setVideos] = useState<Tthumbnail[]>([]);
-  const [user,setUser] = useState('')
+  const [videos, setVideos] = useState([]);
+  const [user, setUser] = useState('');
   const nav = useNavigation() as any;
-  
+
   useEffect(() => {
     console.log(uid);
-    
+
     if (isFocus) {
       console.log("isFocus :>> ", isFocus);
       // Fetch profile image from the server
       fetchProfileImage();
 
-      // Fetch videos from the server
+      // Fetch videos from the server and generate thumbnails
       fetchVideos();
     }
   }, [isFocus]);
@@ -50,7 +53,7 @@ const ProfileScreen = ({ uid }) => {
       const response = await fetch(`${ip}/getProfileData/${uid}/`);
       const data = await response.json()
       console.log(data);
-      
+
       if (!data['success']) {
         console.log("null");
         setProfileImage(null);
@@ -67,15 +70,38 @@ const ProfileScreen = ({ uid }) => {
 
   const fetchVideos = async () => {
     try {
-      const response = await fetch(`${ip}/getThumbs/${uid}`);
-      var x = await response.json();
-      setVideos(x)
-      }
-    catch(error){
-    console.log(error)
-    console.log(x)
-  }
-};
+      const response = await fetch(`${ip}/videos/${uid}`);
+      const videoData = await response.json();
+
+      // Generate thumbnails for each video
+      const videosWithThumbnails = await Promise.all(
+        videoData.map(async (video:Tthumbnail) => {
+          try {
+            const { uri } = await VideoThumbnails.getThumbnailAsync(
+              ip+video.video_url,
+              {
+                time: 15000, // Adjust the timestamp as needed
+              }
+            );
+            console.log(uri, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            
+            return {
+              ...video,
+              thumbnail: uri,
+            };
+          } catch (error) {
+            console.warn(error, video);
+            return video;
+          }
+        })
+      );
+
+      setVideos(videosWithThumbnails);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const renderElse = () => {
     return (
       <View style={styles.container}>
@@ -91,34 +117,44 @@ const ProfileScreen = ({ uid }) => {
       </View>
     );
   };
+
   const renderIf = () => {
+    console.log(videos);
+    
     return (
-      <View style={{flex:3,alignItems:"center", flexDirection:"column"}}>
+      <View style={{ flex: 3, alignItems: "center", flexDirection: "column" }}>
         <View>
-            <Image source={{ uri: profileImage }} style={styles.profileImage} />
+          <Image source={{ uri: profileImage }} style={styles.profileImage} />
           <Text style={styles.title}>{user}</Text>
           <Text style={styles.subtitle}>Videos:</Text>
         </View>
         <View>
-          
+          {/* Render the video thumbnails as regular images in a FlatList */}
+          <FlatList
+            data={videos}
+            keyExtractor={(item) => item.pk.toString()}
+            renderItem={({ item }) => (
+              <Image source={{ uri: item.thumbnail }} style={styles.videoThumbnail} />
+            )}
+          />
         </View>
-        <Videos thumbnails={videos} ></Videos>
- 
       </View>
     );
   };
+
   return (
     <View style={styles.container}>
       {profileImage ? renderIf() : renderElse()}
-      {profileImage?<TouchableOpacity 
+      {profileImage ? (
+        <TouchableOpacity
           onPress={() => nav.navigate({ name: "Vid" })}
           style={[styles.button, styles.add, {}]}
         >
           <Text style={{ textAlign: "center" }}>{plus}</Text>
-        </TouchableOpacity>:null}
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
-
 
 export default ProfileScreen;

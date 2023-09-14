@@ -45,7 +45,7 @@ const Finish = () => {
         method: "POST",
         body: formData,
       });
-      
+      console.log(response);
       const data = await response.json();
       console.log(data);
       

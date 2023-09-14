@@ -1,3 +1,3 @@
-const ip = "http://192.168.19.56:8000"
+const ip = "https://blindr-api.vercel.app"
 const socketIp = ip.replace("http://", "ws://")
 export {ip, socketIp}

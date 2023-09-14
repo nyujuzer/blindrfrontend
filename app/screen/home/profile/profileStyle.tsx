@@ -1,6 +1,13 @@
-import {StyleSheet} from 'react-native'
+import {Dimensions, StyleSheet} from 'react-native'
 import { ActionColor, BackgroundColor } from '../../../components/helpers/StyleVars';
+const {width} = Dimensions.get("screen");
 const styles = StyleSheet.create({
+  videoThumbnail: {
+    height:width/3-5,
+    widthr:width/3-5,
+    margin: 5,
+    resizeMode: 'cover', // Adjust the resizeMode as needed
+  },
     container: {
         backgroundColor:BackgroundColor,
       flex: 1,

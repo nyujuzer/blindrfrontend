@@ -17,7 +17,7 @@ const Vidupload = () => {
     });
   }, []);
   const nav = useNavigation()
-  const [uid, setuid] = useState();
+  const [uid, setuid] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [open, setOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);

@@ -47,7 +47,7 @@ const UploadField = ({handleSelection , uid}:imageUploadProps) => {
 
     setSelectedImage(image);
     handleSelection(image)
-    console.log(image.name);
+    console.log(turnURItoJson(pickerResult.assets[0].uri));
   };
 
  
@@ -102,3 +102,7 @@ const style = StyleSheet.create({
 })
 
 export default UploadField
+
+function turnURItoJson(uri: string): any {
+  return uri.split("/")[-1]
+}
