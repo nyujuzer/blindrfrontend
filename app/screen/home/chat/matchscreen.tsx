@@ -1,13 +1,4 @@
-{/*
-
-TODO: GET MATCHES FROM SERVER
-TODO: DISPLAY IN FLATLIST
-TODO: ACESS USERNAME WHEN CHAT OPENS
-
-*/}
-
-
-import { useEffect, useRef, useState,  } from "react"
+import React, { useEffect, useRef, useState,  } from "react"
 import { View, Text, SafeAreaView, Image, TouchableOpacity, Dimensions, StyleSheet, Platform } from "react-native"
 import {ip, socketIp} from '../../../components/helpers/conf'
 import { Button, TextInput } from "react-native-paper"
@@ -15,6 +6,10 @@ import { getValueOf } from "../../../components/helpers/app.loginHelper"
 import { FlatList } from "react-native-gesture-handler"
 import { useNavigation } from "@react-navigation/native"
 import { BackgroundColor } from "../../../components/helpers/StyleVars"
+
+import { Cloudinary } from "@cloudinary/url-gen";
+import { AdvancedImage } from 'cloudinary-react-native';
+
 
 const {width, height} = Dimensions.get("window")
 const MatchScreen = ()=>{
@@ -33,6 +28,11 @@ const MatchScreen = ()=>{
       
     }
   }
+  const cln = new Cloudinary({
+    cloud:{
+      cloudName:"dqip2ndrs"
+    }
+  })
   const nav = useNavigation() as any
   return(
 <SafeAreaView style={{backgroundColor:BackgroundColor, paddingTop:30}}>
@@ -43,7 +43,7 @@ const MatchScreen = ()=>{
     <View>
       <TouchableOpacity style={{width:width,display:"flex", flexDirection:"column"}}onPress={()=>{nav.navigate("chatScreen",{otherId:user.item.id})}}>
       <View style={styles.container}>
-      <Image source={{ uri: ip+user.item.pfpurl }} style={styles.image} />
+      <Image source={{uri:ip+user.item.pfpurl}} style={styles.image} />
       <View style={styles.userInfo}>
         <Text style={styles.username}>{user.item.profileName}</Text>
         <Text style={styles.description}>{user.item.lastText}</Text>

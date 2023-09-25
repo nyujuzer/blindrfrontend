@@ -1,8 +1,18 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { Text, SafeAreaView, Image, View, TouchableOpacity } from "react-native";
+import {
+  Text,
+  SafeAreaView,
+  Image,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import { loginStyles } from "./loginStyle";
-import { save, getValueOf, getMultipleVals } from "../../components/helpers/app.loginHelper";
+import {
+  save,
+  getValueOf,
+  getMultipleVals,
+} from "../../components/helpers/app.loginHelper";
 import { ip } from "../../components/helpers/conf";
 
 import { Card } from "react-native-paper";
@@ -10,16 +20,15 @@ import xhtmlrequestBuilder from "../../components/helpers/request";
 import EmailField from "../../components/emailfield";
 import PasswordField from "../../components/passwordfield";
 import StyledButton from "../../components/styledbutton";
-import { registerIndieID } from 'native-notify';
+import { registerIndieID } from "native-notify";
 import { navProps } from "../../components/helpers/interfaces";
-
 
 export const LoginScreen = (prop: navProps) => {
   useEffect(() => {
-    getMultipleVals(['email', 'pass']).then((vals)=>{
-      console.log(vals)
+    getMultipleVals(["email", "pass"]).then((vals) => {
+      console.log(vals);
       loginF(vals["email"], vals["pass"]);
-    })
+    });
   }, []);
   const login = () => {
     prop.navigation.navigate("Home");
@@ -34,17 +43,25 @@ export const LoginScreen = (prop: navProps) => {
       .atRoute("/login/" + email + "+" + Pass + "/")
       .asType("GET")
       .onCompletion((res) => {
+        console.log(res);
         if (JSON.parse(res)["login"] === "successful") {
-          registerIndieID(JSON.parse(res)["uid"], 10776, 'bMAL30KDs4RJB8RaFqimlb').catch(e=>console.log(e));
-          save("uid",JSON.parse(res)['uid'])
-          save("email", email)
-          save("pass", Pass)
+          registerIndieID(
+            JSON.parse(res)["uid"],
+            10776,
+            "bMAL30KDs4RJB8RaFqimlb"
+          ).catch((e) => console.log(e));
+          save("uid", JSON.parse(res)["uid"]);
+          save("email", email);
+          save("pass", Pass);
           login();
         } else {
           alert("password or email is incorrect");
         }
       })
-      .setHeaders({ "Content-Type": "application/json",})
+      .setHeaders({
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "69420",
+      })
       .send();
   }
   return (

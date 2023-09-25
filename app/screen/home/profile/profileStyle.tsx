@@ -1,15 +1,15 @@
 import {Dimensions, StyleSheet} from 'react-native'
 import { ActionColor, BackgroundColor } from '../../../components/helpers/StyleVars';
-const {width} = Dimensions.get("screen");
+const {width, height} = Dimensions.get("window");
 const styles = StyleSheet.create({
   videoThumbnail: {
-    height:width/3-5,
-    widthr:width/3-5,
-    margin: 5,
-    resizeMode: 'cover', // Adjust the resizeMode as needed
+    width: width/3.33, // Each video takes up 1/3 of the container width
+    aspectRatio: 9 / 16, // Adjust the aspect ratio as needed
+    margin: 5, // Adjust the margin as needed
   },
     container: {
-        backgroundColor:BackgroundColor,
+      width:"100%",
+      backgroundColor:BackgroundColor,
       flex: 1,
       alignItems: "center",
       justifyContent: "center",
@@ -37,7 +37,16 @@ const styles = StyleSheet.create({
       marginBottom: 8,
     },
     videoContainer: {
-      marginBottom: 8,
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignContent:"center",
+      justifyContent:"center",
+    },
+    videoItem: {
+      aspectRatio:0.75/1.25,
+      width:width/4,
+      margin:3,
+      height:height/3
     },
     videoTitle: {
       fontSize: 16,

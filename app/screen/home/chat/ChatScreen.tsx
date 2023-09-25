@@ -25,12 +25,13 @@ const ChatScreen = ({ route }) => {
   const [userId, setUserId] = useState(null);
   const [inputText, setInputText] = useState("");
 
-  // Get otherId from navigation prop
+  // Getw otherId from navigation prop
   const otherId = route.params.otherId;
   useEffect(() => {
     getValueOf("uid").then((res) => {
       setUserId(res);
     });
+    console.log(socketIp)
     if (userId != null) {
       var sock = new WebSocket(`${socketIp}/ws/${userId}/${otherId}/`);
       sock.onopen = () => {

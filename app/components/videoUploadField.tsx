@@ -42,7 +42,7 @@ const UploadField = ({handleSelection , uid}:imageUploadProps) => {
     const image = {
       uri: pickerResult.assets[0].uri,
       type: 'video/mp4', // Change this if your image is of a different type
-      name: pickerResult.assets[0].fileName+uid+'.mp4', // Change this if you want a different name for your image file
+      name: uid+'.mp4', // Change this if you want a different name for your image file
     };
 
     setSelectedImage(image);

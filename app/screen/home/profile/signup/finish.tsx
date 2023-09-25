@@ -16,46 +16,64 @@ import {
 import { Card, TextInput } from "react-native-paper";
 import TextArea from "../../../../components/textArea";
 import { useNavigation } from "@react-navigation/native";
+import { upload } from "cloudinary-react-native";
+import { Cloudinary } from "@cloudinary/url-gen";
+
+interface ImageProp {
+  uri: string;
+  type: string;
+  name: string;
+}
+
+const cln = new Cloudinary({
+  cloud: {
+    cloudName: "dqip2ndrs",
+    apiKey: "698476445837844",
+    apiSecret: "1frMkxQ6GisX3lE3GXtPqYhUgPI",
+  },
+  url: {
+    secure: true,
+  },
+});
 
 const Finish = () => {
-  const nav = useNavigation()
-  const [selectedImage, setSelectedImages] = useState(null);
+  const nav = useNavigation();
+  const [selectedImage, setSelectedImages] = useState<any |ImageProp>(null);
   const [bio, setBio] = useState<string>("");
   const [maxDist, setMaxDist] = useState(1);
   const [UID, setuid] = useState();
+
   useEffect(() => {
     getValueOf("uid").then((uid) => setuid(uid));
   }, [UID]);
+
   const handleSelection = (selection) => {
     setSelectedImages(selection);
-    console.log(selection);
-  };
+      };
   const handleChange = (text) => {
-    console.log(text.length);
-    setBio(text);
+        setBio(text);
   };
   const uploadImage = async () => {
     const formData = new FormData();
     formData.append("image", selectedImage);
     formData.append("uid", UID);
     formData.append("bio", bio);
-    formData.append("maxDist",maxDist.toString() );
+    formData.append("maxDist", maxDist.toString());
+
     try {
       const response = await fetch(ip + "/finishSignup/", {
         method: "POST",
         body: formData,
       });
-      console.log(response);
-      const data = await response.json();
-      console.log(data);
+            const data = await response.json();
       
-      if (data['success'] == true){
-        nav.goBack()
+      if (data["success"] == true) {
+        nav.goBack();
+      }
+      else{
       }
     } catch (error) {
-      console.error("Error uploading image:", error);
-      console.log()
-      throw new Error("Failed to upload image");
+                  throw new Error("Failed to upload image");
     }
   };
   return (
@@ -90,14 +108,17 @@ const Finish = () => {
             }}
             value={maxDist}
             style={{ width: "100%", height: 20 }}
-          ></Slider><Text style={{color:"white"}}>{maxDist < 100 ? maxDist : "Global"}KM</Text>
+          ></Slider>
+          <Text style={{ color: "white" }}>
+            {maxDist < 100 ? maxDist : "Global"}KM
+          </Text>
         </Card.Content>
       </Card>
-
       <StyledButton text={"Upload Image"} onPress={uploadImage} />
     </View>
   );
 };
+
 const style = StyleSheet.create({
   container: {
     height: "100%",
@@ -111,7 +132,7 @@ const style = StyleSheet.create({
     backgroundColor: secondaryBg,
     borderRadius: 10,
     elevation: 5,
-    marginBottom:20,
+    marginBottom: 20,
     shadowColor: SecondaryColor,
     shadowOffset: {
       width: 0,

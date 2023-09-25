@@ -207,6 +207,7 @@ const ExploreScreen = ({ uid }) => {
             > {
               return (
                 <Player
+                isThumbnail = {false}
                   shouldplay={info.index == current}
                   url={`${ip}${info.item.video_url}`}
                 // url={"http://192.168.1.9:8000/media/videos/undefined46d87b5b-86a7-4866-9ee5-5badf07a6929.mp4"}
