@@ -52,6 +52,7 @@
     "react-dom": "18.2.0",
     "react-native": "0.71.8",
     "react-native-cli": "^2.0.1",
+    "react-native-compressor": "^1.8.4",
     "react-native-create-thumbnail": "^1.6.4",
     "react-native-date-picker": "^4.2.13",
     "react-native-device-info": "9.0.2",

@@ -12,6 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { ActionColor, darkColor, secondaryBg } from "./helpers/StyleVars";
 import { AntDesign } from "@expo/vector-icons";
 import ConvertToProxyUrl from 'react-native-video-cache'
+import { isDev } from "./helpers/conf";
 
 const { width, height } = Dimensions.get("window");
 
@@ -54,12 +55,12 @@ const Player = ({ shouldplay, url, style, isThumbnail }: Iplayerprops) => {
       onLoadStart={()=>console.log("SRC = ",videoRef.current.props.source)}
       
       onLoad={()=>{
-        console.log("FINISHED")
+        console.log("FINISHED - "+videoRef.current.props.source.uri)
       }}
         posterSource={require("../../assets/favicon.png")}
         ref={videoRef}
         style={[isThumbnail === true ? {} : styles.video, style]}
-        isMuted={isThumbnail}
+        isMuted={isThumbnail }
         resizeMode={ResizeMode.COVER}
         source={{ uri: (url) }}
         isLooping
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   video: {
-s    alignSelf: "center",
+    alignSelf: "center",
     width: width,
     height: height,
   },
