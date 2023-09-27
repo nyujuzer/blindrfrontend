@@ -88,13 +88,16 @@ const ChatScreen = ({ route }) => {
             text={inputText}
             onTextChanged={setInputText}
             onSend={() => {
-              handleSend([
-                {
-                  text: inputText,
-                  createdAt: Date.now(),
-                  user: { _id: userId },
-                },
-              ]);
+              if (inputText.length > 0){
+                handleSend([
+                  {
+                    _id:Date.now()+userId,
+                    text: inputText,
+                    createdAt: Date.now(),
+                    user: { _id: userId },
+                  },
+                ]);
+              }
             }}
           />
         )}

@@ -157,7 +157,6 @@ const ExploreScreen = ({ uid }) => {
   useEffect(() => {
     getPermissions();
     getUsers();
-    console.log(uid,"HHHHHHHHHHHHHHHHHHHH")
   }, [uid]);
   const handleReaction = useCallback(
     (reaction: "LIKE" | "DISLIKE" | "MESSAGE") => {
