@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from '@expo/vector-icons/FontAwesome'
 import { useNavigation } from '@react-navigation/native';
 

@@ -7,8 +7,6 @@ import { FlatList } from "react-native-gesture-handler"
 import { useNavigation } from "@react-navigation/native"
 import { BackgroundColor } from "../../../components/helpers/StyleVars"
 
-import { Cloudinary } from "@cloudinary/url-gen";
-import { AdvancedImage } from 'cloudinary-react-native';
 
 
 const {width, height} = Dimensions.get("window")
@@ -28,11 +26,7 @@ const MatchScreen = ()=>{
       
     }
   }
-  const cln = new Cloudinary({
-    cloud:{
-      cloudName:"dqip2ndrs"
-    }
-  })
+
   const nav = useNavigation() as any
   return(
 <SafeAreaView style={{backgroundColor:BackgroundColor, paddingTop:30}}>

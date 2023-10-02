@@ -3,16 +3,9 @@ import {
   View,
   StyleSheet,
   Dimensions,
-  Text,
-  ActivityIndicator,
 } from "react-native";
 import { ResizeMode, Video } from "expo-av";
-import xhtmlrequestBuilder from "./helpers/request";
-import { LinearGradient } from "expo-linear-gradient";
-import { ActionColor, darkColor, secondaryBg } from "./helpers/StyleVars";
 import { AntDesign } from "@expo/vector-icons";
-import ConvertToProxyUrl from 'react-native-video-cache'
-import { isDev } from "./helpers/conf";
 
 const { width, height } = Dimensions.get("window");
 
