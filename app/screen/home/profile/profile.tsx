@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, FlatList, TouchableOpacity, Dimensions } from "react-native";
+import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
 import { ip } from "../../../components/helpers/conf";
 import StyledButton from "../../../components/styledbutton";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { Cloudinary } from "@cloudinary/url-gen";
-import { AdvancedImage } from "cloudinary-react-native";
-import * as VideoThumbnails from "expo-video-thumbnails";
 import styles from "./profileStyle";
-import Video from 'react-native-video'
 import Player from "../../../components/Player";
-import { ResizeMode } from "expo-av";
 const ProfileScreen = ({ uid }) => {
   const isFocus = useIsFocused();
   const [profileImage, setProfileImage] = useState<string>(null);
