@@ -11,7 +11,7 @@ class xhtmlrequestBuilder{
   }
     setHeaders(headers: Record<string, string>) {
     this.builder._headers = { ...this.builder._headers, ...headers };
-    return this;
+    return this
   }
     atRoute(_route:string){
     this.builder.route = _route
