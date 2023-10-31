@@ -31,7 +31,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import FloatingIsland from "../../../components/floatingisland";
 import { useNavigation } from "@react-navigation/native";
 
-
 const { height, width } = Dimensions.get("window");
 
 // Define the type for the video object
@@ -48,7 +47,13 @@ interface ExploreScreenResponse {
   videos: Video[];
 }
 const ExploreScreen = ({ uid }) => {
+<<<<<<< HEAD
   const nav = useNavigation() as any;
+=======
+  const [current, setCurrentIndex] = useState(0);
+  const [users, setUsers] = useState<Video[]>([]);
+
+>>>>>>> eb47efea84703bbca855e74576b672acd0b8aa82
   const HeartIcon = useMemo(
     () => <AntDesign name="heart" color={"#f0f0f0"} size={30}></AntDesign>,
     []
@@ -63,6 +68,7 @@ const ExploreScreen = ({ uid }) => {
     () => <AntDesign name="user" color={"#f0f0f0"} size={20}></AntDesign>,
     []
   );
+<<<<<<< HEAD
   const [users, setUsers] = useState<Video[]>([]);
 
   const [current, setCurrentIndex] = useState(0);
@@ -102,6 +108,20 @@ const ExploreScreen = ({ uid }) => {
     users[current].hasBeenLiked = true
     
   };
+=======
+  
+
+  const onViewableItemsChanged = useCallback(
+    ({ viewableItems }) => {
+      if (viewableItems && viewableItems.length == 1) {
+        setCurrentIndex(viewableItems[0].index);
+        console.log(viewableItems[0]);
+      }
+    },
+    [setCurrentIndex]
+  );
+  
+>>>>>>> eb47efea84703bbca855e74576b672acd0b8aa82
   const getMore = (): void => {
     if (!uid) {
       return;
@@ -122,39 +142,20 @@ const ExploreScreen = ({ uid }) => {
       })
       .send();
   };
-  const getPermissions = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      alert("Please grant location permissions");
-      return;
-    }
 
-    let currentLocation = await Location.getCurrentPositionAsync({});
-    const newLocation = {
-      latitude: currentLocation.coords.latitude,
-      longitude: currentLocation.coords.longitude,
-    };
-    setLocation(newLocation);
+  const sendLike = (uid: any, pk: number) => {
     const xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-      }
+    xhr.open("POST", ip + "/setLikes/");
+    xhr.onreadystatechange = function(resp) {
+      console.log(resp, "safe");
     };
-    xhr.open("POST", ip + "updateLocation/" + uid, true);
-    xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
-    xhr.send(
-      JSON.stringify({
-        uid: uid,
-        location: newLocation,
-      })
-    );
-  };
+    const fd = new FormData();
+    fd.append("uid", uid);
+    fd.append("video", pk.toString());
+    xhr.send(fd);
+  }
 
-  const [location, setLocation] = useState({});
-  useEffect(() => {
-    getPermissions();
-    getUsers();
-  }, [uid]);
+
   const handleReaction = useCallback(
     (reaction: "LIKE" | "DISLIKE" | "USER") => {
       console.log(users[current].hasBeenLiked)
@@ -171,16 +172,8 @@ const ExploreScreen = ({ uid }) => {
     },
     [current, users]
   );
-  const onViewableItemsChanged = useCallback(
-    ({ viewableItems }) => {
-      if (viewableItems && viewableItems.length == 1) {
-        setCurrentIndex(viewableItems[0].index);
-        console.log(viewableItems[0]);
-      }
-    },
-    [setCurrentIndex]
-  );
 
+<<<<<<< HEAD
     const renderIf = ()=>{
       return (
         <View style={style.container}>
@@ -276,19 +269,105 @@ const ExploreScreen = ({ uid }) => {
           </View>
         </>
       )}
+=======
+  return(
+    <View style={style.container}>
+    {users.length > 0 ? (
+      <>
+        <FlatList
+        style={{backgroundColor:BackgroundColor}}
+          data={users}
+          onViewableItemsChanged={onViewableItemsChanged}
+          snapToAlignment="start"
+          decelerationRate={"fast"}
+          snapToInterval={height}
+          onEndReachedThreshold={2}
+          extraData={users}
+          // keyExtractor={(item: Video) => item.pk.toString()}
+          onEndReached={() => getMore()}
+          renderItem={function(
+            info: ListRenderItemInfo<any>
+          ): React.ReactElement<
+            any,
+            string | React.JSXElementConstructor<any>
+          > {
+            return (
+              <Player
+              isThumbnail = {false}
+                shouldplay={info.index == current}
+                url={`${ip}${info.item.video_url}`}
+                />
+            );
+          }}
+        ></FlatList>
+        <LinearGradient
+          colors={["rgba(255,255,255,0)", secondaryBg]}
+          style={{
+            position: "absolute",
+            zIndex: 10,
+            bottom: 0,
+            height: 110,
+            paddingLeft: 30,
+            width: width,
+          }}
+        >
+          {users[current] && users[current].title && (
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: "bold",
+                color: "white",
+              }}
+            >
+              {users[current].title}
+            </Text>
+          )}
+        </LinearGradient>
+
+      </>
+    ) : (
+      <>
+        <View style={style.fail}>
+          <Text style={style.failText}>
+            Sadly we ran out of videos to show you!
+          </Text>
+        </View>
+      </>
+    )}
+    <TouchableOpacity
+      onPress={() => handleReaction("LIKE")}
+      style={[style.button, style.heart]}
+    >
+      <Text style={{ textAlign: "center" }}>{HeartIcon}</Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => handleReaction("MESSAGE")}
+      style={[style.button, style.msg]}
+    >
+      <Text style={{ textAlign: "center" }}>{Message}</Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => handleReaction("DISLIKE")}
+      style={[style.button, style.cross]}
+    >
+      <Text style={{ textAlign: "center" }}>{CrossIcon}</Text>
+    </TouchableOpacity>
+  </View>
+  )
+>>>>>>> eb47efea84703bbca855e74576b672acd0b8aa82
 };
 const style = StyleSheet.create({
   container: {
     flex: 1,
   },
   fail: {
-    backgroundColor:BackgroundColor,
+    backgroundColor: BackgroundColor,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   failText: {
-    color:"white",
+    color: "white",
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 8,

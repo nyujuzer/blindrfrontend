@@ -1,6 +1,6 @@
 import React from 'react';
-import {SafeAreaView ,View, TextInput, TouchableOpacity, StyleSheet, Text } from 'react-native';
-import { ActionColor, SecondaryColor, darkColor, darkGray, lightGray, secondaryBg } from './helpers/StyleVars';
+import {SafeAreaView ,TextInput, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { ActionColor, SecondaryColor, secondaryBg } from './helpers/StyleVars';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 const CustomInputToolbar = (props) => {

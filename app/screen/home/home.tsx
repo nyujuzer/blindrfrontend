@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { BottomNavigation, Provider as PaperProvider } from 'react-native-paper';
-import { ActionColor, SecondaryColor, darkColor, secondaryBg } from '../../components/helpers/StyleVars';
+import { ActionColor, SecondaryColor, secondaryBg } from '../../components/helpers/StyleVars';
 import ExploreScreen from './expore/explore';
 import { getValueOf } from '../../components/helpers/app.loginHelper';
 import ProfileScreen from './profile/profile';

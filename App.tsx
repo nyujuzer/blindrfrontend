@@ -1,4 +1,4 @@
-import { Provider as PaperProvider, Title } from "react-native-paper";
+import { Provider as PaperProvider } from "react-native-paper";
 import AppNavigator from "./app/components/app.navigator";
 import registerNNPushToken from 'native-notify';
 import React from "react";
@@ -11,5 +11,9 @@ export default function App() {
       <AppNavigator />
     </PaperProvider>
   );
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> eb47efea84703bbca855e74576b672acd0b8aa82

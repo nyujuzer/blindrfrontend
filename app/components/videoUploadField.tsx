@@ -1,10 +1,8 @@
 import React, { useState, } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { ip } from './helpers/conf';
-import StyledButton from './styledbutton';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { BackgroundColor, lightGray } from './helpers/StyleVars';
+import { lightGray } from './helpers/StyleVars';
 import { getValueOf } from './helpers/app.loginHelper';
 import { imageUploadProps } from './helpers/interfaces';
 
