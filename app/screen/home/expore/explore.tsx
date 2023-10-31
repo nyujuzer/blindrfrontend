@@ -29,12 +29,14 @@ import xhtmlrequestBuilder from "../../../components/helpers/request";
 import Player from "../../../components/Player";
 import { LinearGradient } from "expo-linear-gradient";
 import FloatingIsland from "../../../components/floatingisland";
+import { useNavigation } from "@react-navigation/native";
 
 
 const { height, width } = Dimensions.get("window");
 
 // Define the type for the video object
-interface Video {
+type Video = {
+  hasBeenLiked?: boolean;
   pk: number;
   video_url: string;
   title: string;
@@ -45,8 +47,8 @@ interface Video {
 interface ExploreScreenResponse {
   videos: Video[];
 }
-
 const ExploreScreen = ({ uid }) => {
+  const nav = useNavigation() as any;
   const HeartIcon = useMemo(
     () => <AntDesign name="heart" color={"#f0f0f0"} size={30}></AntDesign>,
     []
@@ -58,7 +60,7 @@ const ExploreScreen = ({ uid }) => {
   );
 
   const Message = useMemo(
-    () => <AntDesign name="message1" color={"#f0f0f0"} size={20}></AntDesign>,
+    () => <AntDesign name="user" color={"#f0f0f0"} size={20}></AntDesign>,
     []
   );
   const [users, setUsers] = useState<Video[]>([]);
@@ -69,19 +71,24 @@ const ExploreScreen = ({ uid }) => {
       return;
     }
     const xhr = new xhtmlrequestBuilder();
+    const test = uid;
+    console.log(test )
     xhr
       .to(ip)
       .asType("GET")
-      .atRoute(`/getRandomVideos/${uid}/5`)
+      .atRoute(`/getRandomVideos/${test}/5`)
       .onCompletion((resp) => {
+        console.log(test);
         const parsedResponse: ExploreScreenResponse = JSON.parse(resp);
-        var videoSet = new Set(parsedResponse.videos);
-        var videoArray = new Array(videoSet);
+
         setUsers(parsedResponse.videos);
       })
       .send();
   };
-  const sendLike = (uid: any, pk: number) => {
+  const sendLike = (uid: any, pk: number, action:"ADD"|"DECREASE") => {
+    if (users[current].hasBeenLiked){
+      return
+    }
     const xhr = new XMLHttpRequest();
     xhr.open("POST", ip + "/setLikes/");
     xhr.onreadystatechange = function(resp) {
@@ -90,20 +97,10 @@ const ExploreScreen = ({ uid }) => {
     const fd = new FormData();
     fd.append("uid", uid);
     fd.append("video", pk.toString());
+    fd.append("action", action)
     xhr.send(fd);
-
-    // const xhr = new xhtmlrequestBuilder();
-    // console.log("helo");
-
-    // xhr
-    //   .to(ip)
-    //   .asType("POST")
-    //   .atRoute("/setLike/")
-    //   .message({ userId: uid, video: pk })
-    //   .onCompletion((ev) => {
-    //     console.log(ev);
-    //   })
-    //   .send();
+    users[current].hasBeenLiked = true
+    
   };
   const getMore = (): void => {
     if (!uid) {
@@ -159,16 +156,17 @@ const ExploreScreen = ({ uid }) => {
     getUsers();
   }, [uid]);
   const handleReaction = useCallback(
-    (reaction: "LIKE" | "DISLIKE" | "MESSAGE") => {
+    (reaction: "LIKE" | "DISLIKE" | "USER") => {
+      console.log(users[current].hasBeenLiked)
       switch (reaction) {
         case "LIKE":
-          console.log("users -- ", users, "\ncurrent -- ", current);
-          sendLike(uid, users[current].pk);
+          sendLike(uid, users[current].pk, "ADD");
           break;
         case "DISLIKE":
+          sendLike(uid, users[current].pk, "DECREASE");
           break;
-        case "MESSAGE":
-          break;
+        case "USER":
+          nav.navigate("Profile", {uid:uid})
       }
     },
     [current, users]
@@ -183,64 +181,93 @@ const ExploreScreen = ({ uid }) => {
     [setCurrentIndex]
   );
 
-  return (
-    <View style={style.container}>
-      {users.length > 0 ? (
-        <>
+    const renderIf = ()=>{
+      return (
+        <View style={style.container}>
           <FlatList
-          style={{backgroundColor:BackgroundColor}}
-            data={users}
-            onViewableItemsChanged={onViewableItemsChanged}
-            snapToAlignment="start"
-            decelerationRate={"fast"}
-            snapToInterval={height}
-            onEndReachedThreshold={2}
-            extraData={users}
-            // keyExtractor={(item: Video) => item.pk.toString()}
-            onEndReached={() => getMore()}
-            renderItem={function(
-              info: ListRenderItemInfo<any>
-            ): React.ReactElement<
-              any,
-              string | React.JSXElementConstructor<any>
-            > {
-              return (
-                <Player
-                isThumbnail = {false}
-                  shouldplay={info.index == current}
-                  url={`${ip}${info.item.video_url}`}
-                // url={"http://192.168.1.9:8000/media/videos/undefined46d87b5b-86a7-4866-9ee5-5badf07a6929.mp4"}
-                  />
-              );
-            }}
-          ></FlatList>
-          {/* <FloatingIsland uid={uid}></FloatingIsland> */}
-          <LinearGradient
-            colors={["rgba(255,255,255,0)", secondaryBg]}
-            style={{
-              position: "absolute",
-              zIndex: 10,
-              bottom: 0,
-              height: 110,
-              paddingLeft: 30,
-              width: width,
-            }}
-          >
-            {users[current] && users[current].title && (
-              <Text
+              style={{backgroundColor:BackgroundColor}}
+                data={users}
+                onViewableItemsChanged={onViewableItemsChanged}
+                snapToAlignment="start"
+                decelerationRate={"fast"}
+                snapToInterval={height}
+                onEndReachedThreshold={2}
+                extraData={users}
+                // keyExtractor={(item: Video) => item.pk.toString()}
+                onEndReached={() => getMore()}
+                renderItem={function(
+                  info: ListRenderItemInfo<any>
+                ): React.ReactElement<
+                  any,
+                  string | React.JSXElementConstructor<any>
+                > {
+                  return (
+                    <Player
+                    isThumbnail = {false}
+                      shouldplay={info.index == current}
+                      url={`${ip}${info.item.video_url}`}
+                    // url={"http://192.168.1.9:8000/media/videos/undefined46d87b5b-86a7-4866-9ee5-5badf07a6929.mp4"}
+                      />
+                  );
+                }}
+              ></FlatList>
+               <LinearGradient
+                colors={["rgba(255,255,255,0)", secondaryBg]}
                 style={{
-                  fontSize: 15,
-                  fontWeight: "bold",
-                  color: "white",
+                  position: "absolute",
+                  zIndex: 10,
+                  bottom: 0,
+                  height: 110,
+                  paddingLeft: 30,
+                  width: width,
                 }}
               >
-                {users[current].title}
-              </Text>
-            )}
-          </LinearGradient>
+                {users[current] && users[current].title && (
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "bold",
+                      color: "white",
+                    }}
+                  >
+                    {users[current].title}
+                  </Text>
+                )}
+              </LinearGradient>
+              <TouchableOpacity
+        disabled = {users[current].hasBeenLiked}
+        onPress={() => handleReaction("LIKE")}
+        // style = {()=>{
+        //   if (users[current].hasBeenLiked){
+        //     return {BackgroundColor:BackgroundColor}
+        //   }
+        // }}
+        style={[style.button, users[current].hasBeenLiked && style.disabledInteractButton, style.heart]}
+      >
+        <Text style={{ textAlign: "center" }}>{HeartIcon}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => handleReaction("USER")}
+        style={[style.button, style.msg]}
+      >
+        <Text style={{ textAlign: "center" }}>{Message}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => handleReaction("DISLIKE")}
+        style={[style.button, users[current].hasBeenLiked ? style.disabledInteractButton:style.cross]}
+      >
+        <Text style={{ textAlign: "center" }}>{CrossIcon}</Text>
+      </TouchableOpacity>
+        </View>
 
-        </>
-      ) : (
+   )
+             
+  }
+
+  if (users.length > 0){
+    return renderIf()
+  }else {
+    return(
         <>
           <View style={style.fail}>
             <Text style={style.failText}>
@@ -249,26 +276,6 @@ const ExploreScreen = ({ uid }) => {
           </View>
         </>
       )}
-      <TouchableOpacity
-        onPress={() => handleReaction("LIKE")}
-        style={[style.button, style.heart]}
-      >
-        <Text style={{ textAlign: "center" }}>{HeartIcon}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => handleReaction("MESSAGE")}
-        style={[style.button, style.msg]}
-      >
-        <Text style={{ textAlign: "center" }}>{Message}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => handleReaction("DISLIKE")}
-        style={[style.button, style.cross]}
-      >
-        <Text style={{ textAlign: "center" }}>{CrossIcon}</Text>
-      </TouchableOpacity>
-    </View>
-  );
 };
 const style = StyleSheet.create({
   container: {
@@ -305,6 +312,11 @@ const style = StyleSheet.create({
   },
   cross: {
     backgroundColor: Red,
+    bottom: 0,
+    left: 0,
+  },
+  disabledInteractButton: {
+    backgroundColor: "gray",
     bottom: 0,
     left: 0,
   },

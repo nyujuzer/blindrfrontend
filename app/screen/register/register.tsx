@@ -1,11 +1,10 @@
-import react, { useState, useCallback, useMemo } from "react";
+import react, { useState, useMemo } from "react";
 import {
   SafeAreaView,
-  TouchableOpacity,
-  Image,
   Text,
   View,
   ScrollView,
+  Platform,
 } from "react-native";
 // import NumberField from 'react-number-field'
 import { ip } from "../../components/helpers/conf";
@@ -22,6 +21,7 @@ import StyledButton from "../../components/styledbutton";
 import AppropriateDatePicker from "../../components/datepicker";
 import xhtmlrequestBuilder from "../../components/helpers/request";
 import { navProps } from "../../components/helpers/interfaces";
+import React from "react";
 
 const RegSite = (prop: navProps) => {
   enum Groups {
@@ -211,7 +211,7 @@ const RegSite = (prop: navProps) => {
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
       >
-        <Card style={RegisterStyles.card}>
+        <Card style={[RegisterStyles.card]}>
           <Card.Title
             titleStyle={{ color: "white" }}
             title="Let's start with some personal details!"

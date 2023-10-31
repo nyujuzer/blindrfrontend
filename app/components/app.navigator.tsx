@@ -19,7 +19,7 @@ const AppNavigator = () => {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator screenOptions={(({ headerShown: false }))} initialRouteName="Login">
+            <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Login">
                 <Stack.Screen name="Profile" component={ProfileScreen} />
                 <Stack.Screen name="Login" component={LoginScreen}/>
                 <Stack.Screen name="Home" component={Home}/>
@@ -39,5 +39,5 @@ export default AppNavigator;
 //TODO: add the other profile nav
 //TODO: add the matches nav
 //TODO: add the chats nav
-//TODO: add the specific chat nav
+//DONE: add the specific chat nav
 //TODO: add the settings navnp

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { BackgroundColor, Red } from "../../components/helpers/StyleVars";
 export const RegisterStyles = StyleSheet.create({
   center: {
@@ -20,7 +20,8 @@ export const RegisterStyles = StyleSheet.create({
     padding: 30,
     marginTop: 30,
     backgroundColor: "#252525",
-    alignContent:"center"
+    alignContent:"center",
+    maxWidth:Platform.OS === "android" ? null:"33%"
   },
   container: {
     flex: 1,

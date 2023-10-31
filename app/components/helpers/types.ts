@@ -14,3 +14,9 @@ type Tuser = {
     lastText:string
     id:any
 }
+
+  type loginNav = {
+    Home: undefined;
+    Register: undefined;
+  };
+    
