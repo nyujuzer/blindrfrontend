@@ -4,7 +4,6 @@ import registerNNPushToken from 'native-notify';
 
 export default function App() {
   registerNNPushToken(10776, 'bMAL30KDs4RJB8RaFqimlb');
-  console.log("PAIN")
     return (
     <PaperProvider>
       <AppNavigator />
