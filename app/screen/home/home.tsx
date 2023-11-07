@@ -5,7 +5,6 @@ import { ActionColor, SecondaryColor, secondaryBg } from '../../components/helpe
 import ExploreScreen from './expore/explore';
 import { getValueOf } from '../../components/helpers/app.loginHelper';
 import ProfileScreen from './profile/profile';
-import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import MatchScreen from './chat/matchscreen';
 
@@ -22,7 +21,6 @@ const App = () => {
     });
   }, []);
 
-  const nav = useNavigation();
 
   const renderScene = () => {
     switch (index) {

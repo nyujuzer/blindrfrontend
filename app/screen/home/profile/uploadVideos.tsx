@@ -14,6 +14,8 @@ import InputField from "../../../components/inputfield";
 import { useNavigation } from "@react-navigation/native";
 import { ActivityIndicator } from "react-native-paper";
 import { BackgroundColor } from "../../../components/helpers/StyleVars";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../../components/helpers/types";
 
 const dimensions = Dimensions.get("window");
 
@@ -24,13 +26,13 @@ const Vidupload = () => {
     });
   }, []);
 
-  const nav = useNavigation();
+  const nav = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [uid, setUid] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [open, setOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
-  const [tags, setTags] = useState("");
+  const [desc, setDesc] = useState("");
 
   const uploadImage = async () => {
     setLoading(true);
@@ -39,8 +41,8 @@ const Vidupload = () => {
     formData.append("video", selectedImage);
     formData.append("uid", uid);
     formData.append("title", title);
-    formData.append("tags", tags);
-
+    formData.append("description", desc);
+    console.log(formData)
     try {
       const response = await fetch(ip + "/uploadVideo/", {
         method: "POST",
@@ -111,10 +113,10 @@ const Vidupload = () => {
             }}
             placeholder="Title"
           />
-          {/* <InputField
-            onChangeText={(text)=>{setTags(text)}}
-            placeholder="tags"
-          /> */}
+          <InputField
+            onChangeText={(text)=>{setDesc(text)}}
+            placeholder="description"
+          />
           {title.length >= 5 ? (
             <StyledButton
               isDisabled={isLoading}

@@ -6,17 +6,21 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import styles from "./profileStyle";
 import Player from "../../../components/Player";
-const ProfileScreen = ({ uid }) => {
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../../components/helpers/types";
+const ProfileScreen = ({ uid, }) => {
   const isFocus = useIsFocused();
   const [profileImage, setProfileImage] = useState<string>(null);
   const [videos, setVideos] = useState([]);
   const [user, setUser] = useState("");
   const [thumbnails, setThumbnails] = useState([]);
-  const nav = useNavigation() as any;
+  const nav = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const {width,height} = Dimensions.get("window")
 
   useEffect(() => {
+    console.log();
+    
     console.log(uid);
 
     if (isFocus) {
@@ -112,7 +116,7 @@ const ProfileScreen = ({ uid }) => {
       {profileImage ? renderIf() : renderElse()}
       {profileImage ? (
         <TouchableOpacity
-          onPress={() => nav.navigate({ name: "Vid" })}
+          onPress={() => nav.navigate("Vid" )}
           style={[styles.button, styles.add, {}]}
         >
           <Text style={{ textAlign: "center" }}>{plus}</Text>

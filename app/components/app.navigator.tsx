@@ -20,7 +20,7 @@ const AppNavigator = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={(({ headerShown: false }))} initialRouteName="Login">
-                <Stack.Screen name="Profile" component={ProfileScreen} />
+                <Stack.Screen name="Profile" component={ProfileScreen}/>
                 <Stack.Screen name="Login" component={LoginScreen}/>
                 <Stack.Screen name="Home" component={Home}/>
                 <Stack.Screen name="Register" component={RegSite}/>

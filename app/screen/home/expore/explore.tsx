@@ -1,6 +1,5 @@
 import React, {
   useEffect,
-  useRef,
   useState,
   useMemo,
   useCallback,
@@ -15,7 +14,6 @@ import {
   Dimensions,
 } from "react-native";
 
-import * as Location from "expo-location";
 import { ip } from "../../../components/helpers/conf";
 import { AntDesign } from "@expo/vector-icons";
 import {
@@ -28,10 +26,11 @@ import {
 import xhtmlrequestBuilder from "../../../components/helpers/request";
 import Player from "../../../components/Player";
 import { LinearGradient } from "expo-linear-gradient";
-import FloatingIsland from "../../../components/floatingisland";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../../components/helpers/types";
 
 const { height, width } = Dimensions.get("window");
-
 // Define the type for the video object
 interface Video {
   pk: number;
@@ -45,7 +44,8 @@ interface ExploreScreenResponse {
   videos: Video[];
 }
 
-const ExploreScreen = ({ uid }) => {
+const ExploreScreen = ({uid}) => {
+  const nav = useNavigation<StackNavigationProp<RootStackParamList>>()
   const [current, setCurrentIndex] = useState(0);
   const [users, setUsers] = useState<Video[]>([]);
 
@@ -64,6 +64,9 @@ const ExploreScreen = ({ uid }) => {
     []
   );
   
+    useEffect(()=>{
+      getVideos();
+    },[uid])
 
   const onViewableItemsChanged = useCallback(
     ({ viewableItems }) => {
@@ -75,16 +78,8 @@ const ExploreScreen = ({ uid }) => {
     [setCurrentIndex]
   );
   
-  const getMore = (): void => {
-    if (!uid) {
-      return;
-    }
-    var exclusions = users
-      .map((video: Video) => {
-        return video.pk;
-      })
-      .join("-");
-    const xhr = new xhtmlrequestBuilder();
+const getVideos = (exclusions?:string) =>{
+  const xhr = new xhtmlrequestBuilder();
     xhr
       .to(ip)
       .asType("GET")
@@ -94,9 +89,21 @@ const ExploreScreen = ({ uid }) => {
         setUsers((prevUsers) => [...prevUsers, ...parsedResponse.videos]);
       })
       .send();
+}
+
+  const getMore = (): void => {
+    if (!uid) {
+      return;
+    }
+    var exclusions = users
+      .map((video: Video) => {
+        return video.pk;
+      })
+      .join("-");
+    getVideos(exclusions)
   };
 
-  const sendLike = (uid: any, pk: number) => {
+  const sendLike = (uid: any, pk: number, action:"ADD"|"DISLIKE") => {
     const xhr = new XMLHttpRequest();
     xhr.open("POST", ip + "/setLikes/");
     xhr.onreadystatechange = function(resp) {
@@ -104,21 +111,25 @@ const ExploreScreen = ({ uid }) => {
     };
     const fd = new FormData();
     fd.append("uid", uid);
+    fd.append("action", action);
     fd.append("video", pk.toString());
     xhr.send(fd);
   }
 
 
   const handleReaction = useCallback(
-    (reaction: "LIKE" | "DISLIKE" | "MESSAGE") => {
+    (reaction: "LIKE" | "DISLIKE" | "PROFILE") => {
       switch (reaction) {
         case "LIKE":
           console.log("users -- ", users, "\ncurrent -- ", current);
-          sendLike(uid, users[current].pk);
+          sendLike(uid, users[current].pk, "ADD");
           break;
         case "DISLIKE":
-          break;
-        case "MESSAGE":
+          sendLike(uid, users[current].pk, "DISLIKE");
+          break; 
+        case "PROFILE":
+        nav.navigate("Profile", {uid})
+        // {uid:"21205b5a-5483-4872-8b1c-70428f12943c"}
           break;
       }
     },
@@ -196,7 +207,7 @@ const ExploreScreen = ({ uid }) => {
       <Text style={{ textAlign: "center" }}>{HeartIcon}</Text>
     </TouchableOpacity>
     <TouchableOpacity
-      onPress={() => handleReaction("MESSAGE")}
+      onPress={() => handleReaction("PROFILE")}
       style={[style.button, style.msg]}
     >
       <Text style={{ textAlign: "center" }}>{Message}</Text>
@@ -209,6 +220,7 @@ const ExploreScreen = ({ uid }) => {
     </TouchableOpacity>
   </View>
   )
+
 };
 const style = StyleSheet.create({
   container: {
