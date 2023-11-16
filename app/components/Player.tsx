@@ -45,11 +45,10 @@ const Player = ({ shouldplay, url, style, isThumbnail }: Iplayerprops) => {
       ]}
     >
       <Video
-      onLoadStart={()=>console.log("SRC = ",videoRef.current.props.source)}
-      
-      onLoad={()=>{
-        console.log("FINISHED - "+videoRef.current.props.source.uri)
-      }}
+      // onLoadStart={()=>console.log("SRC = ",videoRef.current.props.source)}      
+      // onLoad={()=>{
+      //   console.log("FINISHED - "+videoRef.current.props.source.uri)
+      // }}
         posterSource={require("../../assets/favicon.png")}
         ref={videoRef}
         style={[isThumbnail === true ? {} : styles.video, style]}

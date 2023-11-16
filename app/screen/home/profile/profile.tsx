@@ -8,7 +8,7 @@ import styles from "./profileStyle";
 import Player from "../../../components/Player";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../components/helpers/types";
-const ProfileScreen = ({ uid, }) => {
+const ProfileScreen = (route,uid:string) => {
   const isFocus = useIsFocused();
   const [profileImage, setProfileImage] = useState<string>(null);
   const [videos, setVideos] = useState([]);
@@ -19,19 +19,26 @@ const ProfileScreen = ({ uid, }) => {
   const {width,height} = Dimensions.get("window")
 
   useEffect(() => {
-    console.log();
-    
-    console.log(uid);
-
+    try{
+      uid = route.route.params.uid
+      console.log(route.route);
+      
+      console.log("route");
+    }catch{
+      console.log("id");
+      
+      uid = route.uid
+    }
     if (isFocus) {
-      console.log("isFocus :>> ", isFocus);
       // Fetch profile image from the server
       fetchProfileImage();
 
       // Fetch videos from the server and generate thumbnails
       fetchVideos();
     }
-  }, [isFocus]);
+
+    
+  }, [isFocus, uid]);
 
   const plus = <Icon name="add" size={40}></Icon>;
 
@@ -50,7 +57,7 @@ const ProfileScreen = ({ uid, }) => {
       }
     } catch (error) {
       console.log(error);
-      console.log(profileImage);
+      console.log(uid, route);
     }
   };
 
@@ -81,7 +88,6 @@ const ProfileScreen = ({ uid, }) => {
 
   const renderIf = () => {
     console.log(videos);
-    console.log();
     return (
       <View style={{ flex: 3, alignItems: "center", flexDirection: "column" }}>
         <View>
@@ -127,3 +133,6 @@ const ProfileScreen = ({ uid, }) => {
 };
 
 export default ProfileScreen;
+
+//045c6906-3c7f-4318-917a-6e36601cb01edd
+//

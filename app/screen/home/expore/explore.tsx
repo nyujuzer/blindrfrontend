@@ -36,6 +36,7 @@ interface Video {
   pk: number;
   video_url: string;
   title: string;
+  otherid:string
   // Add more properties here if needed
 }
 
@@ -128,7 +129,7 @@ const getVideos = (exclusions?:string) =>{
           sendLike(uid, users[current].pk, "DISLIKE");
           break; 
         case "PROFILE":
-        nav.navigate("Profile", {uid})
+        nav.navigate("Profile", {uid:users[current].otherid})
         // {uid:"21205b5a-5483-4872-8b1c-70428f12943c"}
           break;
       }
@@ -146,7 +147,7 @@ const getVideos = (exclusions?:string) =>{
           onViewableItemsChanged={onViewableItemsChanged}
           snapToAlignment="start"
           decelerationRate={"fast"}
-          snapToInterval={height}
+          snapToInterval={height+(height*0.1)}
           onEndReachedThreshold={2}
           extraData={users}
           // keyExtractor={(item: Video) => item.pk.toString()}
@@ -157,10 +158,14 @@ const getVideos = (exclusions?:string) =>{
             any,
             string | React.JSXElementConstructor<any>
           > {
+            const isOnViewport = info.index == current
+            // if (isOnViewport){
+            //   setuid(info.item.otherid)
+            // }
             return (
               <Player
               isThumbnail = {false}
-                shouldplay={info.index == current}
+                shouldplay={isOnViewport}
                 url={`${ip}${info.item.video_url}`}
                 />
             );

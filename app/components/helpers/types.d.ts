@@ -14,11 +14,12 @@ type Tuser = {
     profileName:string
     lastText:string
     id:any
+    ephemeral:boolean
 }
 
 type RootStackParamList={
     Profile:{uid:string} | undefined,
     Finish:{}|undefined,
     Vid:{}|undefined,
-    ChatScreen:{otherId}| undefined
+    chatScreen:{otherId:string, ephemeral:boolean}| undefined
 }

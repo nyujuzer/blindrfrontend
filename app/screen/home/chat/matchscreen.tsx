@@ -37,7 +37,7 @@ const MatchScreen = ()=>{
     console.log(user.item.profileName, ip+user.item.pfpurl)
     return(
     <View>
-      <TouchableOpacity style={{width:width,display:"flex", flexDirection:"column"}}onPress={()=>{nav.navigate("ChatScreen",{otherId:user.item.id})}}>
+      <TouchableOpacity style={{width:width,display:"flex", flexDirection:"column"}}onPress={()=>{nav.navigate("chatScreen",{otherId:user.item.id, ephemeral:user.item.ephemeral})}}>
       <View style={styles.container}>
       <Image source={{uri:ip+user.item.pfpurl}} style={styles.image} />
       <View style={styles.userInfo}>
