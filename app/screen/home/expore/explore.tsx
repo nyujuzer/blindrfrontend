@@ -147,7 +147,7 @@ const getVideos = (exclusions?:string) =>{
           onViewableItemsChanged={onViewableItemsChanged}
           snapToAlignment="start"
           decelerationRate={"fast"}
-          snapToInterval={height+(height*0.1)}
+          snapToInterval={height}
           onEndReachedThreshold={2}
           extraData={users}
           // keyExtractor={(item: Video) => item.pk.toString()}
