@@ -61,10 +61,6 @@ export const LoginScreen: React.FC<navProps> = (props:navProps) => {
           alert('password or email is incorrect');
         }
       })
-      .setHeaders({
-        "Content-Type": "application/json",
-      })
-      .send();
   }
 
   return (
