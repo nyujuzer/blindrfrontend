@@ -17,9 +17,3 @@ type Tuser = {
     ephemeral:boolean
 }
 
-type RootStackParamList={
-    Profile:{uid:string} | undefined,
-    Finish:{}|undefined,
-    Vid:{}|undefined,
-    chatScreen:{otherId:string, ephemeral:boolean}| undefined
-}

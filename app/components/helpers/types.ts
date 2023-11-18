@@ -12,11 +12,15 @@ type Tuser = {
     pfpurl:string
     profileName:string
     lastText:string
-    id:any
+    id:any,
+    ephemeral:boolean
 }
-
-  type loginNav = {
-    Home: undefined;
-    Register: undefined;
-  };
+  type RootStackParamList={
+    Register:{}|undefined,
+    Home:{}|undefined,
+    Profile:{uid:string} | undefined,
+    Finish:{}|undefined,
+    Vid:{}|undefined,
+    chatScreen:{otherId:string, ephemeral:boolean}| undefined
+}
     

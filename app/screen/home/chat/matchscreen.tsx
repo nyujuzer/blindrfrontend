@@ -6,7 +6,6 @@ import { getValueOf } from "../../../components/helpers/app.loginHelper"
 import { FlatList } from "react-native-gesture-handler"
 import { useNavigation } from "@react-navigation/native"
 import { BackgroundColor } from "../../../components/helpers/StyleVars"
-import { RootStackParamList, Tuser } from "../../../components/helpers/types"
 import { StackNavigationProp } from "@react-navigation/stack"
 
 

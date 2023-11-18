@@ -15,7 +15,6 @@ import { useNavigation } from "@react-navigation/native";
 import { ActivityIndicator } from "react-native-paper";
 import { BackgroundColor } from "../../../components/helpers/StyleVars";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../../components/helpers/types";
 
 const dimensions = Dimensions.get("window");
 
