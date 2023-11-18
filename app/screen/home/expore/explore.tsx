@@ -28,7 +28,7 @@ import Player from "../../../components/Player";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../../components/helpers/types";
+import {RootStackParamList} from "../../../components/helpers/types.d"
 
 const { height, width } = Dimensions.get("window");
 // Define the type for the video object

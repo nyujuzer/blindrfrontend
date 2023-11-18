@@ -20,41 +20,45 @@ import EmailField from "../../components/emailfield";
 import PasswordField from "../../components/passwordfield";
 import StyledButton from "../../components/styledbutton";
 import { registerIndieID } from "native-notify";
-import { navProps } from "../../components/helpers/interfaces";
+import { LoginScreenNavProps, navProps } from "../../components/helpers/interfaces";
 
-export const LoginScreen = (prop: navProps) => {
+
+
+export const LoginScreen: React.FC<navProps> = (props:navProps) => {
   useEffect(() => {
     getMultipleVals(["email", "pass"]).then((vals) => {
       console.log(vals);
       loginF(vals["email"], vals["pass"]);
     });
   }, []);
+
   const login = () => {
-    prop.navigation.navigate("Home");
+    props.navigation.navigate("Home");
   };
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  function loginF(email: any, Pass: any) {
-    const request = new xhtmlrequestBuilder();
-    request
-      .to(ip)
-      .atRoute("/login/" + email + "+" + Pass + "/")
-      .asType("GET")
-      .onCompletion((res) => {
-        console.log(res);
-        if (JSON.parse(res)["login"] === "successful") {
-          registerIndieID(
-            JSON.parse(res)["uid"],
-            10776,
-            "bMAL30KDs4RJB8RaFqimlb"
-          ).catch((e) => console.log(e));
-          save("uid", JSON.parse(res)["uid"]);
-          save("email", email);
-          save("pass", Pass);
+  function loginF(email: string, Pass: string) {
+    const url = `${ip}/login/${email}+${Pass}/`;
+
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+      .then(response => response.json())
+      .then(LoginData => {
+        console.log(LoginData);
+        if (LoginData.login === 'successful') {
+          registerIndieID(LoginData.uid, 10776, 'bMAL30KDs4RJB8RaFqimlb')
+            .catch(e => console.log(e));
+          save('uid', LoginData.uid);
+          save('email', email);
+          save('pass', Pass);
           login();
         } else {
-          alert("password or email is incorrect");
+          alert('password or email is incorrect');
         }
       })
       .setHeaders({
@@ -62,6 +66,7 @@ export const LoginScreen = (prop: navProps) => {
       })
       .send();
   }
+
   return (
     <SafeAreaView style={loginStyles.container}>
       <Card style={loginStyles.card}>
@@ -71,12 +76,12 @@ export const LoginScreen = (prop: navProps) => {
             style={loginStyles.logo}
           />
         </View>
-        <EmailField onChangeText={(text) => setEmail(text)} />
-        <PasswordField onChangeText={(text) => setPassword(text)} />
+        <EmailField onChangeText={(text: string) => setEmail(text)} />
+        <PasswordField onChangeText={(text: string) => setPassword(text)} />
         <StyledButton text="Login" onPress={() => loginF(email, password)} />
         <TouchableOpacity
           style={loginStyles.createAccountLink}
-          onPress={() => prop.navigation.navigate("Register")}
+          onPress={() => props.navigation.navigate("Register")}
         >
           <Text style={loginStyles.createAccountText}>Create an account</Text>
         </TouchableOpacity>

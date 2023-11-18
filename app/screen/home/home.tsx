@@ -7,10 +7,12 @@ import { getValueOf } from '../../components/helpers/app.loginHelper';
 import ProfileScreen from './profile/profile';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import MatchScreen from './chat/matchscreen';
+import Stack from '../../components/app.navigator';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 const App = () => {
   const [index, setIndex] = useState(0);
-  const [uid, setUserId] = useState();
+  const [uid, setUserId] = useState("");
   const handleNavigation = (newIndex) => {
     setIndex(newIndex);
   };
@@ -25,7 +27,7 @@ const App = () => {
   const renderScene = () => {
     switch (index) {
       case 0:
-        return <ExploreScreen uid={uid} />;
+        return <ExploreScreen uid={uid}/>;
       case 1:
         return (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

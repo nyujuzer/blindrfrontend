@@ -41,27 +41,25 @@ const Finish = () => {
     setBio(text);
   };
   const uploadImage = async () => {
-    const formData = new FormData();
-    formData.append("image", selectedImage);
-    formData.append("uid", UID);
-    formData.append("bio", bio);
-    formData.append("maxDist", maxDist.toString());
-    formData.append("maxAge", maxAge.toString());
+    const data = new FormData();
+data.append("uid", UID);
+data.append("maxDist", maxDist.toString());
+data.append("maxAge", maxAge.toString());
+data.append("image", selectedImage);
+data.append("bio", bio);
 
-    try {
-      const response = await fetch(ip + "/finishSignup/", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await response.json();
+const xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
 
-      if (data["success"] == true) {
-        nav.goBack();
-      } else {
-      }
-    } catch (error) {
-      throw new Error("Failed to upload image");
-    }
+xhr.addEventListener("readystatechange", function () {
+  if (this.readyState === this.DONE) {
+    console.log(this.responseText);
+  }
+});
+
+xhr.open("POST", "http://127.0.0.1:8000/finishSignup/");
+
+xhr.send(data);
   };
   return (
     <View style={style.container}>
