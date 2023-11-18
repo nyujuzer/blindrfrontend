@@ -6,6 +6,8 @@ import { getValueOf } from "../../../components/helpers/app.loginHelper"
 import { FlatList } from "react-native-gesture-handler"
 import { useNavigation } from "@react-navigation/native"
 import { BackgroundColor } from "../../../components/helpers/StyleVars"
+import { RootStackParamList, Tuser } from "../../../components/helpers/types"
+import { StackNavigationProp } from "@react-navigation/stack"
 
 
 
@@ -27,7 +29,7 @@ const MatchScreen = ()=>{
     }
   }
 
-  const nav = useNavigation() as any
+  const nav = useNavigation<StackNavigationProp<RootStackParamList>>()
   return(
 <SafeAreaView style={{backgroundColor:BackgroundColor, paddingTop:30}}>
   <FlatList data={users} 
@@ -35,7 +37,7 @@ const MatchScreen = ()=>{
     console.log(user.item.profileName, ip+user.item.pfpurl)
     return(
     <View>
-      <TouchableOpacity style={{width:width,display:"flex", flexDirection:"column"}}onPress={()=>{nav.navigate("chatScreen",{otherId:user.item.id})}}>
+      <TouchableOpacity style={{width:width,display:"flex", flexDirection:"column"}}onPress={()=>{nav.navigate("chatScreen",{otherId:user.item.id, ephemeral:user.item.ephemeral})}}>
       <View style={styles.container}>
       <Image source={{uri:ip+user.item.pfpurl}} style={styles.image} />
       <View style={styles.userInfo}>

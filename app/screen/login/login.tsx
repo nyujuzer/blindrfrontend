@@ -61,7 +61,6 @@ export const LoginScreen: React.FC<navProps> = (props:navProps) => {
           alert('password or email is incorrect');
         }
       })
-      .catch(error => {console.error(error);console.log(url)});
   }
 
   return (

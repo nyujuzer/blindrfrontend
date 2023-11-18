@@ -13,10 +13,6 @@ const Stack = createStackNavigator();
 
 
 const AppNavigator = () => {
-    // useEffect(()=>{
-    //     // registerPushNotifsAsync()
-    // },[])
-
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Login">

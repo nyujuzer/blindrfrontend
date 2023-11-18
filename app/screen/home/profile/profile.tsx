@@ -6,28 +6,39 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import styles from "./profileStyle";
 import Player from "../../../components/Player";
-const ProfileScreen = ({ uid }) => {
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../../components/helpers/types";
+const ProfileScreen = (route,uid:string) => {
   const isFocus = useIsFocused();
   const [profileImage, setProfileImage] = useState<string>(null);
   const [videos, setVideos] = useState([]);
   const [user, setUser] = useState("");
   const [thumbnails, setThumbnails] = useState([]);
-  const nav = useNavigation() as any;
+  const nav = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const {width,height} = Dimensions.get("window")
 
   useEffect(() => {
-    console.log(uid);
-
+    try{
+      uid = route.route.params.uid
+      console.log(route.route);
+      
+      console.log("route");
+    }catch{
+      console.log("id");
+      
+      uid = route.uid
+    }
     if (isFocus) {
-      console.log("isFocus :>> ", isFocus);
       // Fetch profile image from the server
       fetchProfileImage();
 
       // Fetch videos from the server and generate thumbnails
       fetchVideos();
     }
-  }, [isFocus]);
+
+    
+  }, [isFocus, uid]);
 
   const plus = <Icon name="add" size={40}></Icon>;
 
@@ -46,7 +57,7 @@ const ProfileScreen = ({ uid }) => {
       }
     } catch (error) {
       console.log(error);
-      console.log(profileImage);
+      console.log(uid, route);
     }
   };
 
@@ -77,7 +88,6 @@ const ProfileScreen = ({ uid }) => {
 
   const renderIf = () => {
     console.log(videos);
-    console.log();
     return (
       <View style={{ flex: 3, alignItems: "center", flexDirection: "column" }}>
         <View>
@@ -112,7 +122,7 @@ const ProfileScreen = ({ uid }) => {
       {profileImage ? renderIf() : renderElse()}
       {profileImage ? (
         <TouchableOpacity
-          onPress={() => nav.navigate({ name: "Vid" })}
+          onPress={() => nav.navigate("Vid" )}
           style={[styles.button, styles.add, {}]}
         >
           <Text style={{ textAlign: "center" }}>{plus}</Text>
@@ -123,3 +133,6 @@ const ProfileScreen = ({ uid }) => {
 };
 
 export default ProfileScreen;
+
+//045c6906-3c7f-4318-917a-6e36601cb01edd
+//

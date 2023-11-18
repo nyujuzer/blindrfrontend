@@ -9,13 +9,10 @@
     "web": "expo start --web"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@ant-design/icons": "^5.2.5",
     "@babel/core": "^7.23.0",
     "@dicebear/collection": "^6.0.4",
     "@dicebear/core": "^6.0.4",
-=======
->>>>>>> eb47efea84703bbca855e74576b672acd0b8aa82
     "@expo/vector-icons": "^13.0.0",
     "@react-native-async-storage/async-storage": "1.17.11",
     "@react-native-community/datetimepicker": "6.2.0",
@@ -29,7 +26,6 @@
     "expo-location": "~15.1.1",
     "expo-notifications": "~0.18.1",
     "expo-secure-store": "~12.1.1",
-<<<<<<< HEAD
     "expo-status-bar": "~1.4.4",
     "expo-updates": "~0.16.4",
     "expo-video-thumbnails": "~7.2.1",
@@ -38,12 +34,11 @@
     "import-meta-resolve": "^3.0.0",
     "lottie-ios": "3.4.0",
     "lottie-react-native": "5.1.4",
-=======
->>>>>>> eb47efea84703bbca855e74576b672acd0b8aa82
+
     "native-notify": "^3.0.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "0.71.13",
+    "react-native": "0.71.8",
     "react-native-cli": "^2.0.1",
     "react-native-gifted-chat": "^2.4.0",
 <<<<<<< HEAD
