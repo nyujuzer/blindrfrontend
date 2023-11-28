@@ -195,6 +195,8 @@ const getVideos = (exclusions?:string) =>{
         </LinearGradient>
 
       </>
+
+
     ) : (
       <>
         <View style={style.fail}>
@@ -277,5 +279,13 @@ const style = StyleSheet.create({
     margin: 30,
     alignContent: "center",
   },
+  gradient:{
+    position: "absolute",
+    zIndex: 10,
+    bottom: 0,
+    height: 110,
+    paddingLeft: 30,
+    width: width,
+  }
 });
 export default ExploreScreen;

@@ -10,9 +10,4 @@ export default function App() {
       <AppNavigator />
     </PaperProvider>
   );
-<<<<<<< HEAD
 }
-
-=======
-}
->>>>>>> eb47efea84703bbca855e74576b672acd0b8aa82
