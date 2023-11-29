@@ -1,9 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useMemo,
-  useCallback,
-} from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import {
   View,
   Text,
@@ -35,7 +30,7 @@ interface Video {
   pk: number;
   video_url: string;
   title: string;
-  otherid:string
+  otherid: string;
   // Add more properties here if needed
 }
 
@@ -44,8 +39,8 @@ interface ExploreScreenResponse {
   videos: Video[];
 }
 
-const ExploreScreen = ({uid}) => {
-  const nav = useNavigation<StackNavigationProp<RootStackParamList>>()
+const ExploreScreen = ({ uid }) => {
+  const nav = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [current, setCurrentIndex] = useState(0);
   const [users, setUsers] = useState<Video[]>([]);
 
@@ -63,23 +58,24 @@ const ExploreScreen = ({uid}) => {
     () => <AntDesign name="user" color={"#f0f0f0"} size={20}></AntDesign>,
     []
   );
-  
-    useEffect(()=>{
-      getVideos();
-    },[uid])
+
+  useEffect(() => {
+    getVideos();
+  }, [uid]);
 
   const onViewableItemsChanged = useCallback(
     ({ viewableItems }) => {
       if (viewableItems && viewableItems.length == 1) {
         setCurrentIndex(viewableItems[0].index);
-        console.log(viewableItems[0]);
+
+        console.log(viewableItems[0]) ;
       }
     },
     [setCurrentIndex]
   );
-  
-const getVideos = (exclusions?:string) =>{
-  const xhr = new xhtmlrequestBuilder();
+
+  const getVideos = (exclusions?: string) => {
+    const xhr = new xhtmlrequestBuilder();
     xhr
       .to(ip)
       .asType("GET")
@@ -89,7 +85,7 @@ const getVideos = (exclusions?:string) =>{
         setUsers((prevUsers) => [...prevUsers, ...parsedResponse.videos]);
       })
       .send();
-}
+  };
 
   const getMore = (): void => {
     if (!uid) {
@@ -100,10 +96,10 @@ const getVideos = (exclusions?:string) =>{
         return video.pk;
       })
       .join("-");
-    getVideos(exclusions)
+    getVideos(exclusions);
   };
 
-  const sendLike = (uid: any, pk: number, action:"ADD"|"DISLIKE") => {
+  const sendLike = (uid: any, pk: number, action: "ADD" | "DISLIKE") => {
     const xhr = new XMLHttpRequest();
     xhr.open("POST", ip + "/setLikes/");
     xhr.onreadystatechange = function(resp) {
@@ -114,8 +110,7 @@ const getVideos = (exclusions?:string) =>{
     fd.append("action", action);
     fd.append("video", pk.toString());
     xhr.send(fd);
-  }
-
+  };
 
   const handleReaction = useCallback(
     (reaction: "LIKE" | "DISLIKE" | "PROFILE") => {
@@ -126,111 +121,111 @@ const getVideos = (exclusions?:string) =>{
           break;
         case "DISLIKE":
           sendLike(uid, users[current].pk, "DISLIKE");
-          break; 
+          break;
         case "PROFILE":
-        nav.navigate("Profile", {uid:users[current].otherid})
-        // {uid:"21205b5a-5483-4872-8b1c-70428f12943c"}
+          nav.navigate("Profile", { uid: users[current].otherid });
+          // {uid:"21205b5a-5483-4872-8b1c-70428f12943c"}
           break;
       }
     },
     [current, users]
   );
 
-  return(
+  return (
     <View style={style.container}>
-    {users.length > 0 ? (
-      <>
-        <FlatList
-        style={{backgroundColor:BackgroundColor}}
-          data={users}
-          onViewableItemsChanged={onViewableItemsChanged}
-          snapToAlignment="start"
-          decelerationRate={"fast"}
-          snapToInterval={height}
-          onEndReachedThreshold={2}
-          extraData={users}
-          // keyExtractor={(item: Video) => item.pk.toString()}
-          onEndReached={() => getMore()}
-          renderItem={function(
-            info: ListRenderItemInfo<any>
-          ): React.ReactElement<
-            any,
-            string | React.JSXElementConstructor<any>
-          > {
-            const isOnViewport = info.index == current
-            // if (isOnViewport){
-            //   setuid(info.item.otherid)
-            // }
-            return (
-              <Player
-              isThumbnail = {false}
-                shouldplay={isOnViewport}
-                url={`${ip}${info.item.video_url}`}
-                />
-            );
-          }}
-        ></FlatList>
-        <LinearGradient
-          colors={["rgba(255,255,255,0)", secondaryBg]}
-          style={{
-            position: "absolute",
-            zIndex: 10,
-            bottom: 0,
-            height: 110,
-            paddingLeft: 30,
-            width: width,
-          }}
-        >
-          {users[current] && users[current].title && (
-            <Text
-              style={{
-                fontSize: 15,
-                fontWeight: "bold",
-                color: "white",
-              }}
-            >
-              {users[current].title}
+      {users.length > 0 ? (
+        <>
+          <FlatList
+            contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
+            data={users}
+            style={{}}
+            onViewableItemsChanged={onViewableItemsChanged}
+            snapToAlignment="start"
+            decelerationRate={"fast"}
+            snapToInterval={height}
+            onEndReachedThreshold={2}
+            extraData={users}
+            onEndReached={() => getMore()}
+            renderItem={function(
+              info: ListRenderItemInfo<any>
+            ): React.ReactElement<
+              any,
+              string | React.JSXElementConstructor<any>
+            > {
+              const isOnViewport = info.index == current;              
+              return (
+                <View style={{aspectRatio:"auto",  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',}}>
+                   <Player
+                   style={{width:"33%",height:height, aspectRatio:16/9,}}
+                     isThumbnail={false}
+                     shouldplay={isOnViewport}
+                     url={`${ip}${info.item.video_url}`}
+                  />
+                </View>
+              );
+            }}
+          ></FlatList>
+          <LinearGradient
+            colors={["rgba(255,255,255,0)", secondaryBg]}
+            style={{
+              position: "absolute",
+              zIndex: 10,
+              bottom: 0,
+              height: 110,
+              paddingLeft: 30,
+              width: width,
+            }}
+          >
+            {users[current] && users[current].title && (
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  color: "white",
+                }}
+              >
+                {users[current].title}
+              </Text>
+            )}
+          </LinearGradient>
+        </>
+      ) : (
+        <>
+          <View style={style.fail}>
+            <Text style={style.failText}>
+              Sadly we ran out of videos to show you!
             </Text>
-          )}
-        </LinearGradient>
-
-      </>
-
-
-    ) : (
-      <>
-        <View style={style.fail}>
-          <Text style={style.failText}>
-            Sadly we ran out of videos to show you!
-          </Text>
-        </View>
-      </>
-    )}
-    <TouchableOpacity
-      onPress={() => handleReaction("LIKE")}
-      style={[style.button, style.heart]}
-    >
-      <Text style={{ textAlign: "center" }}>{HeartIcon}</Text>
-    </TouchableOpacity>
-    <TouchableOpacity
-      onPress={() => handleReaction("PROFILE")}
-      style={[style.button, style.msg]}
-    >
-      <Text style={{ textAlign: "center" }}>{Message}</Text>
-    </TouchableOpacity>
-    <TouchableOpacity
-      onPress={() => handleReaction("DISLIKE")}
-      style={[style.button, style.cross]}
-    >
-      <Text style={{ textAlign: "center" }}>{CrossIcon}</Text>
-    </TouchableOpacity>
-  </View>
-  )
-
+          </View>
+        </>
+      )}
+      <TouchableOpacity
+        onPress={() => handleReaction("LIKE")}
+        style={[style.button, style.heart]}
+      >
+        <Text style={{ textAlign: "center" }}>{HeartIcon}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => handleReaction("PROFILE")}
+        style={[style.button, style.msg]}
+      >
+        <Text style={{ textAlign: "center" }}>{Message}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => handleReaction("DISLIKE")}
+        style={[style.button, style.cross]}
+      >
+        <Text style={{ textAlign: "center" }}>{CrossIcon}</Text>
+      </TouchableOpacity>
+    </View>
+  );
 };
 const style = StyleSheet.create({
   container: {
     flex: 1,
+    alignContent:"center",
+    justifyContent:"center"
   },
   fail: {
     backgroundColor: BackgroundColor,
@@ -256,6 +251,10 @@ const style = StyleSheet.create({
     margin: 30,
     alignContent: "center",
   },
+  listview: {
+    flex: 1,
+    justifyContent: "center",
+  },
   heart: {
     backgroundColor: Green,
     bottom: 0,
@@ -279,13 +278,13 @@ const style = StyleSheet.create({
     margin: 30,
     alignContent: "center",
   },
-  gradient:{
+  gradient: {
     position: "absolute",
     zIndex: 10,
     bottom: 0,
     height: 110,
     paddingLeft: 30,
     width: width,
-  }
+  },
 });
 export default ExploreScreen;
