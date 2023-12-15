@@ -20,11 +20,13 @@ import EmailField from "../../components/emailfield";
 import PasswordField from "../../components/passwordfield";
 import StyledButton from "../../components/styledbutton";
 import { registerIndieID } from "native-notify";
-import { LoginScreenNavProps, navProps } from "../../components/helpers/interfaces";
+import { useNavigation } from "@react-navigation/core";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 
 
-export const LoginScreen: React.FC<navProps> = (props:navProps) => {
+export const LoginScreen = () => {
+  const nav = useNavigation<StackNavigationProp<RootStackParamList>>();
   useEffect(() => {
     getMultipleVals(["email", "pass"]).then((vals) => {
       console.log(vals);
@@ -33,7 +35,7 @@ export const LoginScreen: React.FC<navProps> = (props:navProps) => {
   }, []);
 
   const login = () => {
-    props.navigation.navigate("Home");
+    nav.navigate("Home")
   };
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -77,7 +79,7 @@ export const LoginScreen: React.FC<navProps> = (props:navProps) => {
         <StyledButton text="Login" onPress={() => loginF(email, password)} />
         <TouchableOpacity
           style={loginStyles.createAccountLink}
-          onPress={() => props.navigation.navigate("Register")}
+          onPress={() => nav.navigate("Register")}
         >
           <Text style={loginStyles.createAccountText}>Create an account</Text>
         </TouchableOpacity>

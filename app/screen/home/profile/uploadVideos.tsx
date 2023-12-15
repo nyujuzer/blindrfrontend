@@ -15,7 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ActivityIndicator } from "react-native-paper";
 import { BackgroundColor } from "../../../components/helpers/StyleVars";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../../components/helpers/types";
+import { getExpiration } from "../../../components/helpers/idempotence";
 
 const dimensions = Dimensions.get("window");
 
@@ -43,13 +43,19 @@ const Vidupload = () => {
     formData.append("title", title);
     formData.append("description", desc);
     console.log(formData)
+    const date = new Date()
+    const day = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`
+    const timestamp = `${date.getHours()}-${date.getMinutes()}`
+    const expiration = getExpiration(day, timestamp, 3);
     try {
       const response = await fetch(ip + "/uploadVideo/", {
         method: "POST",
         body: formData,
         headers: {
+          // "idempotenceToken":`${day}/${timestamp};${expiration};${uid}/videoUpload`,
           "Content-Type": "multipart/form-data",
-        },
+          // "access-control-allow-origin":"http://localhost:19006"
+        }
       });
 
       if (response.status === 200) {
@@ -64,11 +70,9 @@ const Vidupload = () => {
         }
       } else {
         console.error("Error uploading image:", response.statusText);
-        throw new Error("Failed to upload image");
       }
     } catch (error) {
       console.error("Error uploading image:", error);
-      throw new Error("Failed to upload image");
     } finally {
       setLoading(false);
     }
@@ -122,6 +126,7 @@ const Vidupload = () => {
               isDisabled={isLoading}
               text={isLoading ? <ActivityIndicator size={"small"} color={BackgroundColor}/> : "Upload"}
               onPress={() => {
+                setLoading(true)
                 uploadImage();
               }}
             />

@@ -7,7 +7,6 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import styles from "./profileStyle";
 import Player from "../../../components/Player";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../../components/helpers/types";
 const ProfileScreen = (route,uid:string) => {
   const isFocus = useIsFocused();
   const [profileImage, setProfileImage] = useState<string>(null);

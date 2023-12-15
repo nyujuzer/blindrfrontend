@@ -30,18 +30,10 @@ interface styledbuttonProps {
   isDisabled?: boolean;
 }
 
-
-interface LoginScreenNavProps {
-  navigation: StackNavigationProp<loginNav>;
-}
-
-
 export {
   AppropriateDatePickerProps,
   xhtmlrequestdetails,
   navProps,
   imageUploadProps,
-  styledbuttonProps,
-  LoginScreenNavProps,
-  
+  styledbuttonProps,  
 };  

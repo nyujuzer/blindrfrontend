@@ -3,6 +3,7 @@ import {
   View,
   StyleSheet,
   Dimensions,
+  ImageStyle,
 } from "react-native";
 import { ResizeMode, Video } from "expo-av";
 import { AntDesign } from "@expo/vector-icons";
@@ -12,7 +13,7 @@ const { width, height } = Dimensions.get("window");
 interface Iplayerprops {
   shouldplay: boolean;
   isThumbnail: boolean;
-  style?: any;
+  style?: ImageStyle;
   url: string;
 }
 
@@ -51,9 +52,9 @@ const Player = ({ shouldplay, url, style, isThumbnail }: Iplayerprops) => {
       // }}
         posterSource={require("../../assets/favicon.png")}
         ref={videoRef}
-        style={[isThumbnail === true ? {} : styles.video, style]}
-        isMuted={isThumbnail }
-        resizeMode={ResizeMode.COVER}
+        style={[isThumbnail === true ? {} :  style]}
+        isMuted={true} //TODO: CHANGE TO ISTHUMBNAIL IN PROD!
+        resizeMode={ResizeMode.CONTAIN}
         source={{ uri: (url) }}
         isLooping
         shouldPlay={shouldplay}

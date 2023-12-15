@@ -1,9 +1,5 @@
 import React from "react";
-<<<<<<< HEAD
 import { Modal, View, Platform, StyleSheet, Button } from "react-native";
-=======
-import { Modal, View } from "react-native";
->>>>>>> eb47efea84703bbca855e74576b672acd0b8aa82
 import DatePicker from "react-native-modern-datepicker";
 import { ActionColor, BackgroundColor, SecondaryColor } from "./helpers/StyleVars";
 import StyledButton from "./styledbutton";
