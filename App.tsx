@@ -1,12 +1,12 @@
 import { Provider as PaperProvider } from "react-native-paper";
 import AppNavigator from "./app/components/app.navigator";
-import registerNNPushToken from 'native-notify';
 import React from "react";
+import { withTheme } from 'react-native-paper';
+import { theme } from "./app/components/helpers/StyleVars";
 
 export default function App() {
-  registerNNPushToken(10776, 'bMAL30KDs4RJB8RaFqimlb');
     return (
-    <PaperProvider>
+    <PaperProvider >
       <AppNavigator />
     </PaperProvider>
   );

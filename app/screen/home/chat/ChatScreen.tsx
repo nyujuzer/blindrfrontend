@@ -13,9 +13,7 @@ import { ip, socketIp } from "../../../components/helpers/conf";
 import xhtmlrequestBuilder from "../../../components/helpers/request";
 import { View } from "react-native";
 import {
-  ActionColor,
-  BackgroundColor,
-  lightGray,
+theme
 } from "../../../components/helpers/StyleVars";
 import CustomInputToolbar from "../../../components/inputbar";
 
@@ -81,7 +79,7 @@ const ChatScreen = ({ route }) => {
   };
 
   return (
-    <View style={{flex:1, backgroundColor:BackgroundColor, paddingBottom:10}}>
+    <View style={{flex:1, backgroundColor:theme.primary, paddingBottom:10}}>
       <GiftedChat
         renderInputToolbar={(props) => (
           <CustomInputToolbar
@@ -104,7 +102,7 @@ const ChatScreen = ({ route }) => {
         )}
         renderMessage={(props) => {
           return (
-            <View style={{ backgroundColor: BackgroundColor, padding: 10 }}>
+            <View style={{ backgroundColor: theme.primary, padding: 10 }}>
               <Message {...props} />
             </View>
           );
@@ -120,10 +118,10 @@ const ChatScreen = ({ route }) => {
               }}
               wrapperStyle={{
                 left: {
-                  backgroundColor: lightGray,
+                  backgroundColor: theme.accent,
                 },
                 right: {
-                  backgroundColor: ActionColor,
+                  backgroundColor: theme.secondary,
                 },
               }}
             />

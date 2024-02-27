@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, View, Platform, StyleSheet, Button } from "react-native";
 import DatePicker from "react-native-modern-datepicker";
-import { ActionColor, BackgroundColor, SecondaryColor } from "./helpers/StyleVars";
+import { theme } from "./helpers/StyleVars";
 import StyledButton from "./styledbutton";
 import { AppropriateDatePickerProps } from "./helpers/interfaces";
 
@@ -20,11 +20,11 @@ const AppropriateDatePicker: React.FC<AppropriateDatePickerProps> = ({
               mode="calendar"
               onDateChange={(value) => onChange(value)} // Corrected prop name
               options={{
-                backgroundColor: BackgroundColor,
-                textHeaderColor: SecondaryColor,
+                backgroundColor: theme.primary,
+                textHeaderColor: theme.secondary,
                 textDefaultColor: "white",
                 selectedTextColor: "black",
-                mainColor: ActionColor,
+                mainColor: theme.accent
               }}
               maximumDate={'2005-05-10'}
               minimumDate={'1970-01-01'}

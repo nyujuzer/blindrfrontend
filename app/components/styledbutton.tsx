@@ -1,6 +1,6 @@
 import React from "react";
 import { Pressable, Text, StyleSheet } from "react-native";
-import { ActionColor } from "./helpers/StyleVars";
+import { theme } from "./helpers/StyleVars";
 import { styledbuttonProps } from "./helpers/interfaces";
 
 const StyledButton = ({ onPress, text, style, isDisabled }: styledbuttonProps) => {
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    backgroundColor: ActionColor,
+    backgroundColor: theme.accent,
   },
   buttonPressed: {
     opacity: 0.8,

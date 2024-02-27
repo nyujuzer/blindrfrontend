@@ -12,26 +12,28 @@ import {
 import { ip } from "../../../components/helpers/conf";
 import { AntDesign } from "@expo/vector-icons";
 import {
-  BackgroundColor,
   Green,
   Red,
+  androidAreaStyle,
   lightblue,
-  secondaryBg,
+  theme,
 } from "../../../components/helpers/StyleVars";
 import xhtmlrequestBuilder from "../../../components/helpers/request";
 import Player from "../../../components/Player";
-import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { getValueOf } from "../../../components/helpers/app.loginHelper";
 
 const { height, width } = Dimensions.get("window");
 // Define the type for the video object
 interface Video {
   pk: number;
-  video_url: string;
   title: string;
+  video_url: string;
   otherid: string;
-  // Add more properties here if needed
+  user: TUser;
+  description: string;
+  likes: number;
 }
 
 // Define the type for the response data
@@ -39,10 +41,11 @@ interface ExploreScreenResponse {
   videos: Video[];
 }
 
-const ExploreScreen = ({ uid }) => {
+const ExploreScreen = () => {
   const nav = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [current, setCurrentIndex] = useState(0);
   const [users, setUsers] = useState<Video[]>([]);
+  const [uid, setUserId] = useState<string>("");
 
   const HeartIcon = useMemo(
     () => <AntDesign name="heart" color={"#f0f0f0"} size={30}></AntDesign>,
@@ -61,25 +64,25 @@ const ExploreScreen = ({ uid }) => {
 
   useEffect(() => {
     getVideos();
-  }, [uid]);
-
+  }, []);
   const onViewableItemsChanged = useCallback(
     ({ viewableItems }) => {
       if (viewableItems && viewableItems.length == 1) {
         setCurrentIndex(viewableItems[0].index);
 
-        console.log(viewableItems[0]) ;
+        console.log(viewableItems[0]);
       }
     },
     [setCurrentIndex]
   );
 
-  const getVideos = (exclusions?: string) => {
+  const getVideos = async (exclusions?: string) => {
     const xhr = new xhtmlrequestBuilder();
+    const userid = await getValueOf("uid");
     xhr
       .to(ip)
       .asType("GET")
-      .atRoute(`/getRandomVideos/${uid}/5/${exclusions}`)
+      .atRoute(`/getRandomVideos/${userid}/5/${exclusions}`)
       .onCompletion((resp) => {
         const parsedResponse: ExploreScreenResponse = JSON.parse(resp);
         setUsers((prevUsers) => [...prevUsers, ...parsedResponse.videos]);
@@ -102,7 +105,7 @@ const ExploreScreen = ({ uid }) => {
   const sendLike = (uid: any, pk: number, action: "ADD" | "DISLIKE") => {
     const xhr = new XMLHttpRequest();
     xhr.open("POST", ip + "/setLikes/");
-    xhr.onreadystatechange = function(resp) {
+    xhr.onreadystatechange = function (resp) {
       console.log(resp, "safe");
     };
     const fd = new FormData();
@@ -135,8 +138,9 @@ const ExploreScreen = ({ uid }) => {
     <View style={style.container}>
       {users.length > 0 ? (
         <>
+
           <FlatList
-            contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
+            contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
             data={users}
             style={{}}
             onViewableItemsChanged={onViewableItemsChanged}
@@ -146,50 +150,49 @@ const ExploreScreen = ({ uid }) => {
             onEndReachedThreshold={2}
             extraData={users}
             onEndReached={() => getMore()}
-            renderItem={function(
+            renderItem={function (
               info: ListRenderItemInfo<any>
             ): React.ReactElement<
               any,
               string | React.JSXElementConstructor<any>
             > {
-              const isOnViewport = info.index == current;              
+              const isOnViewport = info.index == current;
               return (
-                <View style={{aspectRatio:"auto",  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',}}>
-                   <Player
-                   style={{width:"33%",height:height, aspectRatio:16/9,}}
-                     isThumbnail={false}
-                     shouldplay={isOnViewport}
-                     url={`${ip}${info.item.video_url}`}
+                <View
+                  style={{
+                    aspectRatio: "auto",
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Player
+                    style={{
+                      width: "33%",
+                      height: height,
+                      aspectRatio: 16 / 9,
+                    }}
+                    isThumbnail={false}
+                    shouldplay={isOnViewport}
+                    url={`${ip}${info.item.video_url}`}
                   />
                 </View>
               );
             }}
           ></FlatList>
-          <LinearGradient
-            colors={["rgba(255,255,255,0)", secondaryBg]}
-            style={{
-              position: "absolute",
-              zIndex: 10,
-              bottom: 0,
-              height: 110,
-              paddingLeft: 30,
-              width: width,
-            }}
-          >
-            {users[current] && users[current].title && (
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontWeight: "bold",
-                  color: "white",
-                }}
-              >
-                {users[current].title}
+          <View style={{
+            backgroundColor:theme.primary,
+            width: width,
+          }}>
+              <Text style={
+                {
+                  color: theme.secondary,
+                  fontSize:20,
+                  paddingBottom:5,
+                }}>
+                {users[current].user.username} - {users[current].user.age} - {users[current].user.gender}
               </Text>
-            )}
-          </LinearGradient>
+          </View>
         </>
       ) : (
         <>
@@ -223,12 +226,14 @@ const ExploreScreen = ({ uid }) => {
 };
 const style = StyleSheet.create({
   container: {
-    flex: 1,
-    alignContent:"center",
-    justifyContent:"center"
+    borderBlockColor: "red",
+    borderWidth: 3,
+    height: height,
+    alignContent: "center",
+    justifyContent: "center",
   },
   fail: {
-    backgroundColor: BackgroundColor,
+    backgroundColor: theme.secondary,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -251,6 +256,7 @@ const style = StyleSheet.create({
     margin: 30,
     alignContent: "center",
   },
+
   listview: {
     flex: 1,
     justifyContent: "center",
@@ -272,9 +278,7 @@ const style = StyleSheet.create({
     opacity: 0.8,
     borderRadius: 100,
     position: "absolute",
-    width: 35,
     justifyContent: "center",
-    height: 35,
     margin: 30,
     alignContent: "center",
   },
@@ -285,6 +289,9 @@ const style = StyleSheet.create({
     height: 110,
     paddingLeft: 30,
     width: width,
+  },
+  info: {
+
   },
 });
 export default ExploreScreen;

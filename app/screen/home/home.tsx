@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar } from 'react-native';
 import { BottomNavigation, Provider as PaperProvider } from 'react-native-paper';
-import { ActionColor, SecondaryColor, secondaryBg } from '../../components/helpers/StyleVars';
+import { theme } from '../../components/helpers/StyleVars';
 import ExploreScreen from './expore/explore';
 import { getValueOf } from '../../components/helpers/app.loginHelper';
 import ProfileScreen from './profile/profile';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import MatchScreen from './chat/matchscreen';
-import Stack from '../../components/app.navigator';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { transparent } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import { CustomBottomTab, CustomBottomTabElement, IconType, iconProp } from '../../components/customBottomNav';
+
+import { FontAwesome, MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 const App = () => {
   const [index, setIndex] = useState(0);
@@ -16,7 +18,7 @@ const App = () => {
   const handleNavigation = (newIndex) => {
     setIndex(newIndex);
   };
-
+  const CameraIcon:iconProp = {icon:{value: {name:'camera',type:IconType.FontAweomseIcon}, size: 24}}
   useEffect(() => {
     getValueOf("uid").then((res: any) => {
       setUserId(res);
@@ -27,7 +29,11 @@ const App = () => {
   const renderScene = () => {
     switch (index) {
       case 0:
-        return <ExploreScreen uid={uid}/>;
+        return(
+          <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+          <ExploreScreen/>
+        </View>
+          )
       case 1:
         return (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -61,28 +67,38 @@ const App = () => {
     { key: 'explore', title: 'Explore', icon: 'camera', },
     { key: 'matches', title: 'Matches', icon: 'heart' },
     { key: 'profile', title: 'Profile', icon: 'user' },
-    { key: 'settings', title: 'Settings', icon: 'cog' },
   ];
-
+  
   return (
     <View style={{ flex: 1 }}>
+      {/* <CustomBottomTab>
+        <CustomBottomTabElement icon={{value: {name:'camera',type:IconType.FontAweomseIcon}, size: 24}}/>
+        <CustomBottomTabElement icon={{value: {name:'heart',type:IconType.FontAweomseIcon}, size: 24}}/>
+        <CustomBottomTabElement icon={{value: {name:'user',type:IconType.FontAweomseIcon}, size: 24}}/>
+        <CustomBottomTabElement icon={{value: {name:'cog',type:IconType.FontAweomseIcon}, size: 24}}/>
+      </CustomBottomTab> */}
       <PaperProvider>
         <BottomNavigation
-          inactiveColor={SecondaryColor}
-          activeColor={ActionColor}
-          labeled={true}
-          theme={{ colors: { secondaryContainer: ActionColor } }}
-          barStyle={{ backgroundColor: secondaryBg }}
+          inactiveColor={theme.accent}
+          activeColor={theme.primary}
+          labeled={false}
+          theme={{ colors: { secondaryContainer: theme.secondary } }}
+          compact
+          
+          style={{ paddingBottom:4, }}
+          barStyle={{backgroundColor: theme.primary, height:50, }}
           navigationState={{ index, routes }}
           onIndexChange={handleNavigation}
           renderScene={renderScene}
           renderIcon={({ route, color }) => {
             return(    <Icon
               name={route.icon}
-              size={24}
-              color={index === routes.indexOf(route) ? secondaryBg : color}
+              size={20}
+              color={index === routes.indexOf(route) ? theme.primary : color}
             />
-        )}}
+        )
+      }
+    }
         />
       </PaperProvider>
     </View>

@@ -14,18 +14,18 @@ import {
 } from "../../components/helpers/app.loginHelper";
 import { ip } from "../../components/helpers/conf";
 
-import { Card } from "react-native-paper";
+import { Card, useTheme } from "react-native-paper";
 import xhtmlrequestBuilder from "../../components/helpers/request";
 import EmailField from "../../components/emailfield";
 import PasswordField from "../../components/passwordfield";
 import StyledButton from "../../components/styledbutton";
-import { registerIndieID } from "native-notify";
 import { useNavigation } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 
 
 export const LoginScreen = () => {
+  const theme = useTheme()
   const nav = useNavigation<StackNavigationProp<RootStackParamList>>();
   useEffect(() => {
     getMultipleVals(["email", "pass"]).then((vals) => {
@@ -40,38 +40,39 @@ export const LoginScreen = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  function loginF(email: string, Pass: string) {
-    const url = `${ip}/login/${email}+${Pass}/`;
-
-    fetch(url, {
-      method: 'GET',
+  async function loginF(email: string, pass: string) {
+    
+    const url = `${ip}/login/`;
+    const formdata = new FormData();
+    formdata.append("email",email)
+    formdata.append("password",pass)
+    console.log(url)
+    const response = await fetch(url, {
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-      }
+        "Content-Type": "multipart/form-data",
+      },
+      body:formdata
     })
-      .then(response => response.json())
-      .then(LoginData => {
-        console.log(LoginData);
-        if (LoginData.login === 'successful') {
-          registerIndieID(LoginData.uid, 10776, 'bMAL30KDs4RJB8RaFqimlb')
-            .catch(e => console.log(e));
-          save('uid', LoginData.uid);
-          save('email', email);
-          save('pass', Pass);
-          login();
+      const json = await response.json()
+      if (json.login === 'successful'){
+        save('uid', json.uid);
+        console.log("uid", json.uid)
+        save('email', email);
+        save('pass', pass);
+        login();
         } else {
           alert('password or email is incorrect');
         }
-      })
-  }
+      }
 
   return (
     <SafeAreaView style={loginStyles.container}>
       <Card style={loginStyles.card}>
         <View style={loginStyles.logoContainer}>
           <Image
-            source={require("../../../img/knsz.png")}
-            style={loginStyles.logo}
+            source={require("../../../img/ClipCrush2.png")}
+            style={{}}
           />
         </View>
         <EmailField onChangeText={(text: string) => setEmail(text)} />
