@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { ActionColor } from "./helpers/StyleVars";
+import { theme } from "./helpers/StyleVars";
 
 const Hobbies = ({ apiUrl, onSelectHobby }: any) => {
   const [data, setData] = useState([]);
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
   selectedItem: {
     opacity:1.0,
-    backgroundColor: ActionColor,
+    backgroundColor: theme.accent,
   },
   buttonText: {
     fontSize: 14,

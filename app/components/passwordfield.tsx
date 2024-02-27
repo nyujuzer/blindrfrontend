@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   inputFieldStyle: {
     padding: 10,
     height: 45,
-    width: 300,
+    // width: 300,
     fontSize: 20,
     opacity: 0.4,
     color: "white",

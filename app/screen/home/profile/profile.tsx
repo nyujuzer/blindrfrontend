@@ -7,41 +7,64 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import styles from "./profileStyle";
 import Player from "../../../components/Player";
 import { StackNavigationProp } from "@react-navigation/stack";
-const ProfileScreen = (route,uid:string) => {
+import { theme } from "../../../components/helpers/StyleVars";
+import { getValueOf } from "../../../components/helpers/app.loginHelper";
+const ProfileScreen = (route) => {
   const isFocus = useIsFocused();
   const [profileImage, setProfileImage] = useState<string>(null);
   const [videos, setVideos] = useState([]);
   const [user, setUser] = useState("");
+  const [userId, setUID] = useState<string>(null);
+  const [source, setsource] = useState<string>(null);
   const [thumbnails, setThumbnails] = useState([]);
   const nav = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const {width,height} = Dimensions.get("window")
-
   useEffect(() => {
-    try{
-      uid = route.route.params.uid
-      console.log(route.route);
-      
-      console.log("route");
-    }catch{
-      console.log("id");
-      
-      uid = route.uid
+    let uid;
+    if (route.uid){
+      setsource("route")
+      setUID(route.uid)
+
+      uid = route.uid;
     }
-    if (isFocus) {
-      // Fetch profile image from the server
-      fetchProfileImage();
+    else if(route.route.params.uid){
+      setsource("params")
+      console.log(route.route.params.uid, "route.route.params.uid");
+      setUID(route.route.params.uid)
+      uid = route.route.params.uid
+    }
+          // Fetch profile image from the server
+      fetchProfileImage(uid);
 
       // Fetch videos from the server and generate thumbnails
-      fetchVideos();
-    }
+      fetchVideos(uid);
+  },[])
+  // useEffect(() => {
+  //   try{
+  //     uid = route.route.params.uid
+  //     console.log(route.route);
+      
+  //     console.log("route");
+  //   }catch{
+  //     console.log("id");
+      
+  //     uid = route.uid
+  //   }
+  //   if (isFocus) {
+  //     // Fetch profile image from the server
+  //     fetchProfileImage();
+
+  //     // Fetch videos from the server and generate thumbnails
+  //     fetchVideos();
+  //   }
 
     
-  }, [isFocus, uid]);
+  // }, [isFocus]);
 
   const plus = <Icon name="add" size={40}></Icon>;
 
-  const fetchProfileImage = async () => {
+  const fetchProfileImage = async (uid:string) => {
     try {
       const response = await fetch(`${ip}/getProfileData/${uid}/`);
       const data = await response.json();
@@ -60,7 +83,7 @@ const ProfileScreen = (route,uid:string) => {
     }
   };
 
-  const fetchVideos = async () => {
+  const fetchVideos = async (uid:string) => {
     try {
       const response = await fetch(`${ip}/videos/${uid}`);
       const videoData = await response.json();
@@ -116,15 +139,22 @@ const ProfileScreen = (route,uid:string) => {
     );
   };
 
+  async function isItTheSameUid() {
+    
+    const savedid = await getValueOf("uid");
+    console.log(savedid === userId);
+    return savedid === userId
+  }
+
   return (
     <View style={styles.container}>
       {profileImage ? renderIf() : renderElse()}
-      {profileImage ? (
+      {source === "route" && profileImage ? (
         <TouchableOpacity
           onPress={() => nav.navigate("Vid" )}
           style={[styles.button, styles.add, {}]}
         >
-          <Text style={{ textAlign: "center" }}>{plus}</Text>
+          <Text style={{ textAlign: "center"}}>{plus}</Text>
         </TouchableOpacity>
       ) : null}
     </View>

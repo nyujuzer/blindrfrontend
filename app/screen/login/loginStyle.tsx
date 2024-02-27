@@ -1,16 +1,15 @@
 import { StyleSheet } from "react-native";
-import { BackgroundColor, secondaryBg } from "../../components/helpers/StyleVars";
-
+import { theme } from "../../components/helpers/StyleVars";
 export const loginStyles = StyleSheet.create({
   container: {
-    backgroundColor: BackgroundColor,
+    backgroundColor: theme.secondary,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
   },
   card: {
-    backgroundColor: secondaryBg,
+    backgroundColor: theme.primary,
     borderRadius: 10,
     padding: 20,
     elevation: 5,
@@ -24,7 +23,7 @@ export const loginStyles = StyleSheet.create({
     width: 150,
   },
   createAccountText: {
-    color: "white",
+    color: theme.accent,
     textAlign: "center",
   },
   createAccountLink: {

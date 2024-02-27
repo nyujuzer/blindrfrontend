@@ -1,3 +1,5 @@
+import { View } from "react-native"
+
 type Tthumbnail={
     title:string,
     video_url:string,
@@ -8,19 +10,17 @@ type Tmessage = {
     sender:string,
     message:string
 }
-type Tuser = {
+type TmessageUser = {
     pfpurl:string
     profileName:string
     lastText:string
     id:any,
     ephemeral:boolean
 }
-  type RootStackParamList={
-    Register:{}|undefined,
-    Home:{}|undefined,
-    Profile:{uid:string} | undefined,
-    Finish:{}|undefined,
-    Vid:{}|undefined,
-    chatScreen:{otherId:string, ephemeral:boolean}| undefined
+type TUser = {
+    username: string,
+    gender: String,
+    age:number
 }
+
     

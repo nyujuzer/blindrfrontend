@@ -1,5 +1,5 @@
 import {Dimensions, StyleSheet} from 'react-native'
-import { ActionColor, BackgroundColor } from '../../../components/helpers/StyleVars';
+import { theme } from '../../../components/helpers/StyleVars';
 const {width, height} = Dimensions.get("window");
 const styles = StyleSheet.create({
   videoThumbnail: {
@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   },
     container: {
       width:"100%",
-      backgroundColor:BackgroundColor,
+      backgroundColor:theme.primary,
       flex: 1,
       alignItems: "center",
       justifyContent: "center",
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
       marginBottom: 16,
     },
     title: {
-        color:"white",
+        color:theme.secondary,
       fontSize: 24,
       fontWeight: "bold",
       marginBottom: 8,
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
       color: "#888",
     },
     add: {
-      backgroundColor: ActionColor,
+      backgroundColor: theme.accent,
   
     },
     button: {

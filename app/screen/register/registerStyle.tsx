@@ -1,5 +1,5 @@
 import { Platform, StyleSheet } from "react-native";
-import { BackgroundColor, Red } from "../../components/helpers/StyleVars";
+import { theme, Red } from "../../components/helpers/StyleVars";
 export const RegisterStyles = StyleSheet.create({
   center: {
     flex: 1,
@@ -10,7 +10,7 @@ export const RegisterStyles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: BackgroundColor,
+    backgroundColor: theme.secondary,
   },
   borderTest: {
     borderColor: "#fff",
@@ -19,7 +19,7 @@ export const RegisterStyles = StyleSheet.create({
   card: {
     padding: 30,
     marginTop: 30,
-    backgroundColor: "#252525",
+    backgroundColor: theme.primary,
     alignContent:"center",
     maxWidth:Platform.OS === "android" ? null:"33%"
   },
@@ -59,10 +59,10 @@ export const RegisterStyles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
+},
   modalView: {
     alignSelf: "center",
-    width: "90%",
+    width: Platform.OS === "web"?"33%":"90%",
     borderRadius: 20,
   },
   header: {

@@ -57,7 +57,7 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("POST", "http://127.0.0.1:8000/finishSignup/");
+xhr.open("POST", ip+"/finishSignup/");
 
 xhr.send(data);
   };

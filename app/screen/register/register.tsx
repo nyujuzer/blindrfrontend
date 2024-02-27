@@ -10,7 +10,7 @@ import {
 import { ip } from "../../components/helpers/conf";
 import { save, getValueOf } from "../../components/helpers/app.loginHelper";
 import { RegisterStyles } from "./registerStyle";
-import { ActionColor, global } from "../../components/helpers/StyleVars";
+import { theme, global } from "../../components/helpers/StyleVars";
 import { RadioButton, Card, FAB } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
 import InputField from "../../components/inputfield";
@@ -59,7 +59,6 @@ const RegSite = (prop: navProps) => {
   }
 
   function openModal() {
-    console.log("trugg");
     setOpen(!open);
   }
   const handleSelectHobby = (id) => {
@@ -201,13 +200,19 @@ const RegSite = (prop: navProps) => {
   //#endregion
   const back = useMemo(
     () => (
-      <AntDesign color={ActionColor} size={50} name="leftcircle"></AntDesign>
+      <AntDesign color={theme.accent} size={50} name="leftcircle"></AntDesign>
     ),
     []
   );
   return (
-    <SafeAreaView style={[RegisterStyles.box]}>
+    <View style={[RegisterStyles.box]}>
       <ScrollView
+        contentContainerStyle={Platform.OS === "web"?{
+          flex:1,
+          justifyContent: "center",
+          alignItems: "center",
+          }:{}
+        }
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
       >
@@ -281,21 +286,21 @@ const RegSite = (prop: navProps) => {
           >
             <View style={{ flex: 3, flexDirection: "row" }}>
               <RadioButton.Item
-                color={ActionColor}
+                color={theme.accent}
                 labelStyle={handleStylehange("male", Groups.GENDER)}
                 status={formData.gender === "male" ? "checked" : "unchecked"}
                 value="male"
                 label="male"
               />
               <RadioButton.Item
-                color={ActionColor}
+                color={theme.accent}
                 labelStyle={handleStylehange("female", Groups.GENDER)}
                 value="female"
                 label="female"
                 status={formData.gender === "female" ? "checked" : "unchecked"}
               />
               <RadioButton.Item
-                color={ActionColor}
+                color={theme.accent}
                 labelStyle={handleStylehange("enby", Groups.GENDER)}
                 value="enby"
                 label="enby"
@@ -317,7 +322,7 @@ const RegSite = (prop: navProps) => {
           >
             <View style={{ flex: 3, flexDirection: "row" }}>
               <RadioButton.Item
-                color={ActionColor}
+                color={theme.accent}
                 labelStyle={handleStylehange("male", Groups.PREFERENCES)}
                 status={
                   formData.preferences === "male" ? "checked" : "unchecked"
@@ -326,7 +331,7 @@ const RegSite = (prop: navProps) => {
                 label="male"
               />
               <RadioButton.Item
-                color={ActionColor}
+                color={theme.accent}
                 labelStyle={handleStylehange("female", Groups.PREFERENCES)}
                 value="female"
                 status={
@@ -335,7 +340,7 @@ const RegSite = (prop: navProps) => {
                 label="female"
               />
               <RadioButton.Item
-                color={ActionColor}
+                color={theme.accent}
                 status={
                   formData.preferences === "any" ? "checked" : "unchecked"
                 }
@@ -359,13 +364,14 @@ const RegSite = (prop: navProps) => {
           />
         </Card>
         <StyledButton
+        style={Platform.OS==="web"?{width: "33%"}:{}}
           text={"Continue"}
           onPress={() => {
             register();
           }}
         />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 export { RegSite };
