@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { TextInput, StyleSheet } from "react-native";
 type props = {
   onChangeText:(text)=>void,
@@ -14,7 +14,6 @@ const InputField = ({onChangeText, placeholder}:props) => {
     />
   );
 };
-
 const styles = StyleSheet.create({
   inputFieldStyle: {
     padding:10,

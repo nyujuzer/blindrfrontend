@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
+import { View, Text, Image, TouchableOpacity, Dimensions, ScrollView } from "react-native";
 import { ip } from "../../../components/helpers/conf";
 import StyledButton from "../../../components/styledbutton";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -7,11 +7,10 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import styles from "./profileStyle";
 import Player from "../../../components/Player";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { theme } from "../../../components/helpers/StyleVars";
-import { getValueOf } from "../../../components/helpers/app.loginHelper";
+import Thumbnail from "../../../components/helpers/thumbnail";
 const ProfileScreen = (route) => {
   const isFocus = useIsFocused();
-  const [profileImage, setProfileImage] = useState<string>(null);
+  const [profileImage, setProfileImage] = useState<string>("");
   const [videos, setVideos] = useState([]);
   const [user, setUser] = useState("");
   const [userId, setUID] = useState<string>(null);
@@ -25,7 +24,6 @@ const ProfileScreen = (route) => {
     if (route.uid){
       setsource("route")
       setUID(route.uid)
-
       uid = route.uid;
     }
     else if(route.route.params.uid){
@@ -39,29 +37,8 @@ const ProfileScreen = (route) => {
 
       // Fetch videos from the server and generate thumbnails
       fetchVideos(uid);
-  },[])
-  // useEffect(() => {
-  //   try{
-  //     uid = route.route.params.uid
-  //     console.log(route.route);
-      
-  //     console.log("route");
-  //   }catch{
-  //     console.log("id");
-      
-  //     uid = route.uid
-  //   }
-  //   if (isFocus) {
-  //     // Fetch profile image from the server
-  //     fetchProfileImage();
-
-  //     // Fetch videos from the server and generate thumbnails
-  //     fetchVideos();
-  //   }
-
-    
-  // }, [isFocus]);
-
+  },[route, isFocus])// runs 
+ 
   const plus = <Icon name="add" size={40}></Icon>;
 
   const fetchProfileImage = async (uid:string) => {
@@ -112,40 +89,31 @@ const ProfileScreen = (route) => {
     console.log(videos);
     return (
       <View style={{ flex: 3, alignItems: "center", flexDirection: "column" }}>
-        <View>
+        <>
           <Image
             source={{ uri: ip + profileImage }}
             style={styles.profileImage}
           />
           <Text style={styles.title}>{user}</Text>
           <Text style={styles.subtitle}>Videos:</Text>
-        </View>
-        <View style={styles.videoContainer}>
-          {videos.map((item)=>{
+        </>
+        <ScrollView contentContainerStyle={styles.videoContainer}>         
+          {/*
+          TODO:Create Singular Video View... Somehow...
+          */}
+          {videos.flatMap((video)=>{
             return(
-              <View key={item.pk.toString()}>
-                <Player
-                isThumbnail={true}
-                  url={ip+item.video_url}
+                <Thumbnail
+                  key={video.pk}
+                  url={ip+video.video_url}
                   style={styles.videoItem}
-                  shouldplay={false}
-                />
-              </View>
+                  />
             )
-          })
-          }
-        </View>
+          })}
+        </ScrollView>
       </View>
     );
   };
-
-  async function isItTheSameUid() {
-    
-    const savedid = await getValueOf("uid");
-    console.log(savedid === userId);
-    return savedid === userId
-  }
-
   return (
     <View style={styles.container}>
       {profileImage ? renderIf() : renderElse()}
@@ -164,4 +132,3 @@ const ProfileScreen = (route) => {
 export default ProfileScreen;
 
 //045c6906-3c7f-4318-917a-6e36601cb01edd
-//

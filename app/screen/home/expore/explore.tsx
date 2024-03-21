@@ -167,12 +167,12 @@ const ExploreScreen = () => {
                   }}
                 >
                   <Player
-                    style={{
-                      width: "33%",
-                      height: height,
-                      aspectRatio: 16 / 9,
-                    }}
-                    isThumbnail={false}
+                    // style={{
+                    //   flex:1,
+                    //   width: width,
+                    //   height: height,
+                    //   aspectRatio: 16 / 9,
+                    // }}
                     shouldplay={isOnViewport}
                     url={`${ip}${info.item.video_url}`}
                   />
@@ -189,7 +189,7 @@ const ExploreScreen = () => {
                   color: theme.secondary,
                   fontSize:20,
                   paddingBottom:5,
-                }}>
+                }}> 
                 {users[current].user.username} - {users[current].user.age} - {users[current].user.gender}
               </Text>
           </View>

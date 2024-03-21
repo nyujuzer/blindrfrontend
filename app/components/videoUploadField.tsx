@@ -2,13 +2,13 @@ import React, { useState, } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { lightGray } from './helpers/StyleVars';
 import { getValueOf } from './helpers/app.loginHelper';
 import { imageUploadProps } from './helpers/interfaces';
+import { theme } from './helpers/StyleVars';
 
 const dimensions = Dimensions.get("window")
 const UploadField = ({handleSelection , uid}:imageUploadProps) => {
-  const myIcon = <Icon name="camera" size={30} color={lightGray} />;
+  const myIcon = <Icon name="camera" size={30} color={theme.accent} />;
   const [selectedImage, setSelectedImage] = useState(null);
   const generateName = ()=>{
     let name
@@ -31,6 +31,7 @@ const UploadField = ({handleSelection , uid}:imageUploadProps) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Videos,
       allowsEditing: true,
       quality: 1,
+      
     });
 
     if (pickerResult.canceled === true) {

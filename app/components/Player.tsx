@@ -1,78 +1,56 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  ImageStyle,
-} from "react-native";
+import React, {Children, useRef} from "react";
+import { View, StyleSheet, Dimensions, ImageStyle, TouchableWithoutFeedback, TouchableOpacity } from "react-native";
 import { ResizeMode, Video } from "expo-av";
-import { AntDesign } from "@expo/vector-icons";
+import { ip } from "./helpers/conf";
 
 const { width, height } = Dimensions.get("window");
 
-interface Iplayerprops {
-  shouldplay: boolean;
-  isThumbnail: boolean;
-  style?: ImageStyle;
-  url: string;
+
+interface IWrapperProps{
+  isThumbnail:boolean,
+  onPress?:()=>void,
 }
-
-const Player = ({ shouldplay, url, style, isThumbnail }: Iplayerprops) => {
+// const VideoTouchWrapper:React.FC<any> = ({isThumbnail, onPress}:IWrapperProps)=>{
+//   if (isThumbnail){
+//     return (
+//       {{Children}}
+//     )
+//   }else{return (
+//     <TouchableOpacity>
+//       {{Children}}
+//     </TouchableOpacity>
+//   )}
+// }
+const Player = ({ shouldplay, url, style }: Iplayerprops) => {
   const videoRef = useRef(null);
-  const [status, setStatus] = useState({});
-
-  useEffect(() => {
-    console.log(url);
-  }, []);
-
-  const like = <AntDesign name="like1"></AntDesign>;
-  const tryGettingImg = async ()=>{
-    try {
-      const img_fetch = await fetch(url, {
-        method:"GET"
-      })
-      console.log(img_fetch)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-  // tryGettingImg()
   return (
-    <View
-      style={[
-        isThumbnail === true
-          ? {  flexDirection:"row"}
-          : styles.container,
-      ]}
-    >
       <Video
-      // onLoadStart={()=>console.log("SRC = ",videoRef.current.props.source)}      
-      // onLoad={()=>{
-      //   console.log("FINISHED - "+videoRef.current.props.source.uri)
-      // }}
-        posterSource={require("../../assets/favicon.png")}
+      posterSource={{uri:"../../img/ClipCrush2.png"}}
+      usePoster={true}
+        onLoadStart={()=>console.log("SRC = ",videoRef.current.props.source)}
+        onLoad={()=>{
+          console.log("FINISHED - "+videoRef.current.props.source.uri)
+        }}
         ref={videoRef}
-        style={[isThumbnail === true ? {} :  style]}
-        isMuted={true} //TODO: CHANGE TO ISTHUMBNAIL IN PROD!
+        style={style?style:styles.video}
+        isMuted={true}
         resizeMode={ResizeMode.CONTAIN}
-        source={{ uri: (url) }}
+        source={{ uri: url }}
         isLooping
         shouldPlay={shouldplay}
-        onPlaybackStatusUpdate={(status) => setStatus(() => status)}
       />
-    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: "center",
   },
   video: {
-    alignSelf: "center",
-    width: width,
+    flex: 1,
+    width: "33%",
     height: height,
+    aspectRatio: 16 / 9,
   },
 });
 

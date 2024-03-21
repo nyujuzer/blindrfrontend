@@ -18,7 +18,7 @@ import PasswordField from "../../components/passwordfield";
 import EmailField from "../../components/emailfield";
 import Hobbies from "../../components/hobbies";
 import StyledButton from "../../components/styledbutton";
-import AppropriateDatePicker from "../../components/datepicker";
+import CCDatePicker from "../../components/datepicker";
 import xhtmlrequestBuilder from "../../components/helpers/request";
 import { navProps } from "../../components/helpers/interfaces";
 import React from "react";
@@ -81,9 +81,10 @@ const RegSite = (prop: navProps) => {
   };
 
   //#region validations
-  const register = () => {
+  const register = async () => {
     if (Validate()) {
-      const test = new xhtmlrequestBuilder();
+
+
       const xhr = new xhtmlrequestBuilder()
         .to(ip)
         .atRoute("/register/")
@@ -259,7 +260,7 @@ const RegSite = (prop: navProps) => {
               }}
             />
           </View>
-          <AppropriateDatePicker
+          <CCDatePicker
             visibility={open}
             onPress={() => {
               openModal();

@@ -1,4 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack';
+import { ImageStyle } from 'react-native';
 export {}
 declare global{
     type RootStackParamList={
@@ -9,7 +10,12 @@ declare global{
         Vid:{}|undefined,
         chatScreen:{otherId:string, ephemeral:boolean}| undefined
     }
-    
+
+    interface Iplayerprops {
+        shouldplay?: boolean;
+        style?: ImageStyle;
+        url: string;
+      }
     type Tthumbnail={
         title:string,
         video_url:string,

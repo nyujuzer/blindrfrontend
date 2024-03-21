@@ -5,7 +5,7 @@ import { theme } from "./helpers/StyleVars";
 import StyledButton from "./styledbutton";
 import { AppropriateDatePickerProps } from "./helpers/interfaces";
 
-const AppropriateDatePicker: React.FC<AppropriateDatePickerProps> = ({
+const CCDatePicker: React.FC<AppropriateDatePickerProps> = ({
   style,
   visibility,
   onPress,
@@ -43,4 +43,4 @@ const AppropriateDatePicker: React.FC<AppropriateDatePickerProps> = ({
   );
   };
 
-export default AppropriateDatePicker;
+export default CCDatePicker;
