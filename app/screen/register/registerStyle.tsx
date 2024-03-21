@@ -17,7 +17,7 @@ export const RegisterStyles = StyleSheet.create({
     borderWidth: 3,
   },
   card: {
-    padding: 30,
+    paddingVertical: 30,
     marginTop: 30,
     backgroundColor: theme.primary,
     alignContent:"center",

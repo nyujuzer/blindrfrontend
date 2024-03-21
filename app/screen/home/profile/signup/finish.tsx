@@ -5,13 +5,7 @@ import Slider from "@react-native-community/slider";
 import StyledButton from "../../../../components/styledbutton";
 import { getValueOf } from "../../../../components/helpers/app.loginHelper";
 import { ip } from "../../../../components/helpers/conf";
-import {
-  ActionColor,
-  BackgroundColor,
-  SecondaryColor,
-  darkColor,
-  secondaryBg,
-} from "../../../../components/helpers/StyleVars";
+import { theme } from "../../../../components/helpers/StyleVars";
 import { Card } from "react-native-paper";
 import TextArea from "../../../../components/textArea";
 import { useNavigation } from "@react-navigation/native";
@@ -54,6 +48,7 @@ xhr.withCredentials = true;
 xhr.addEventListener("readystatechange", function () {
   if (this.readyState === this.DONE) {
     console.log(this.responseText);
+    nav.goBack()
   }
 });
 
@@ -85,9 +80,9 @@ xhr.send(data);
             minimumValue={1}
             maximumValue={110}
             step={1}
-            minimumTrackTintColor={ActionColor}
-            maximumTrackTintColor={ActionColor}
-            thumbTintColor={darkColor}
+            minimumTrackTintColor={theme.secondary}
+            maximumTrackTintColor={theme.secondary}
+            thumbTintColor={theme.accent}
             onValueChange={(dist) => {
               setMaxDist(dist);
             }}
@@ -109,9 +104,9 @@ xhr.send(data);
             minimumValue={18}
             maximumValue={110}
             step={1}
-            minimumTrackTintColor={ActionColor}
-            maximumTrackTintColor={ActionColor}
-            thumbTintColor={darkColor}
+            minimumTrackTintColor={theme.secondary}
+            maximumTrackTintColor={theme.secondary}
+            thumbTintColor={theme.accent}
             onValueChange={(dist) => {
               setMaxAge(dist);
             }}
@@ -133,16 +128,15 @@ const style = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: BackgroundColor,
+    backgroundColor: theme.secondary,
   },
   card: {
     minWidth: "80%",
     width: "80%",
-    backgroundColor: secondaryBg,
+    backgroundColor: theme.primary,
     borderRadius: 10,
     elevation: 5,
     marginBottom: 20,
-    shadowColor: SecondaryColor,
     shadowOffset: {
       width: 0,
       height: 2,

@@ -22,15 +22,18 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.pawntocode.blindr"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "oneSignalAppId": "a3a2cf6a-469b-4058-950e-75edac47c428"
+      "oneSignalAppId": "a3a2cf6a-469b-4058-950e-75edac47c428",
+      "eas": {
+        "projectId": "069fa2aa-f464-4761-b8dd-827554ab105f"
+      }
     },
-    "plugins": [
-    ]
+    "plugins": []
   }
 }

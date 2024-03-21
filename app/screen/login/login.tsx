@@ -61,7 +61,7 @@ export const LoginScreen = () => {
         save('email', email);
         save('pass', pass);
         login();
-        } else {
+        } else if (json.login !== 'successful' && email !== null && pass !== null) {
           alert('password or email is incorrect');
         }
       }
@@ -72,7 +72,6 @@ export const LoginScreen = () => {
         <View style={loginStyles.logoContainer}>
           <Image
             source={require("../../../img/ClipCrush2.png")}
-            style={{}}
           />
         </View>
         <EmailField onChangeText={(text: string) => setEmail(text)} />

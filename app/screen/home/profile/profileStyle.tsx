@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     container: {
       width:"100%",
       backgroundColor:theme.primary,
-      flex: 1,
+      flex: 2,
       alignItems: "center",
       justifyContent: "center",
       padding: 16,
@@ -43,9 +43,10 @@ const styles = StyleSheet.create({
       justifyContent:"center",
     },
     videoItem: {
-      aspectRatio:0.75/1.25,
-      width:width/4,
-      margin:3,
+      borderWidth:1,
+      borderColor:'red',
+      margin: 5,
+      width:width/3,
       height:height/3
     },
     videoTitle: {
