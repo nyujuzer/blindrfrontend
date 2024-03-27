@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "blindr",
-    "slug": "blindr",
+    "slug": "clipcrush",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,11 +29,11 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "oneSignalAppId": "a3a2cf6a-469b-4058-950e-75edac47c428",
       "eas": {
-        "projectId": "069fa2aa-f464-4761-b8dd-827554ab105f"
+        "projectId": "8a41cda2-31a9-40fd-9a7d-ed0a62d838fd"
       }
     },
-    "plugins": []
+    "plugins": [],
+    "owner": "clip-crush"
   }
 }
