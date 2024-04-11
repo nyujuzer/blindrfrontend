@@ -36,6 +36,8 @@ import { imageUploadProps } from './helpers/interfaces';
       setSelectedImage(image);
       handleSelection(image)
       console.log(image.name);
+      //pain
+    
     };
 
    
