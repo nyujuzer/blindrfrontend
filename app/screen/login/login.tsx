@@ -49,9 +49,7 @@ export const LoginScreen = () => {
     console.log(url)
     const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+
       body:formdata
     })
       const json = await response.json()

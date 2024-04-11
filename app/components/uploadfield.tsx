@@ -2,20 +2,12 @@
   import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
   import * as ImagePicker from 'expo-image-picker';
   import Icon from 'react-native-vector-icons/FontAwesome';
-import { lightGray } from './helpers/StyleVars';
 import { getValueOf } from './helpers/app.loginHelper';
 import { imageUploadProps } from './helpers/interfaces';
 
   const UploadField = ({handleSelection , uid}:imageUploadProps) => {
-    const myIcon = <Icon name="camera" size={30} color={lightGray} />;
     const [selectedImage, setSelectedImage] = useState(null);
-    const generateName = ()=>{
-      let name
-      getValueOf("email").then((text) =>{ name = text.split("@")[0];})
-      console.log(name);
-      
-      return name
-    }
+
     const handleImageUpload = async () => {
       const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -59,7 +51,6 @@ import { imageUploadProps } from './helpers/interfaces';
         return (
           <TouchableOpacity onPress={handleImageUpload}>
             <View style={style.square} >
-              <Text>{myIcon}</Text>
               </View>
           </TouchableOpacity>
         );

@@ -1,4 +1,4 @@
-const ip = "https://srobert.pythonanywhere.com"
+const ip = "http://192.168.32.56:80"
 const socketIp = ip.replace("http://", "ws://")
 const isDev = true
 export {ip, socketIp, isDev}

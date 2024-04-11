@@ -35,15 +35,15 @@ const Finish = () => {
     setBio(text);
   };
   const uploadImage = async () => {
-    const data = new FormData();
+  const data = new FormData();
 data.append("uid", UID);
 data.append("maxDist", maxDist.toString());
 data.append("maxAge", maxAge.toString());
 data.append("image", selectedImage);
 data.append("bio", bio);
-
+console.log(selectedImage,"\n", data, "THIS IS IT!!!")
 const xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
+// xhr.withCredentials = true;
 
 xhr.addEventListener("readystatechange", function () {
   if (this.readyState === this.DONE) {
@@ -58,7 +58,7 @@ xhr.send(data);
   };
   return (
     <View style={style.container}>
-      <UploadField handleSelection={(img) => handleSelection(img)} uid={UID} />
+      <UploadField handleSelection={handleSelection} uid={UID} />
       <Card style={style.card}>
         <Card.Title titleStyle={{ color: "white" }} title="Bio" />
         <Card.Content>
