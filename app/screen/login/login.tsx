@@ -41,27 +41,28 @@ export const LoginScreen = () => {
   const [email, setEmail] = useState("");
 
   async function loginF(email: string, pass: string) {
-    
-    const url = `${ip}/login/`;
-    const formdata = new FormData();
-    formdata.append("email",email)
-    formdata.append("password",pass)
-    console.log(url)
-    const response = await fetch(url, {
-      method: 'POST',
-      mode:"no-cors",
-      body:formdata
-    })
-      const json = await response.json()
+      const url = `${ip}/login/`;
+      const formdata = new FormData();
+      formdata.append("email",email);
+      formdata.append("password",pass);
+      const response = await fetch(url, {
+        method: 'POST',
+        body:formdata
+      });
+      // console.log(response.status);
+      const text = await response.text()
+      console.log(text);
+      
+      const json = JSON.parse(text);
       if (json.login === 'successful'){
-        save('uid', json.uid);
-        console.log("uid", json.uid)
-        save('email', email);
-        save('pass', pass);
-        login();
-        } else if (json.login !== 'successful' && email !== null && pass !== null) {
-          alert('password or email is incorrect');
-        }
+          save('uid', json.uid);
+          console.log("uid", json.uid)
+          save('email', email);
+          save('pass', pass);
+          login();
+          } else if (json.login !== 'successful' && email !== null && pass !== null) {
+            alert('password or email is incorrect');
+          }
       }
 
   return (
