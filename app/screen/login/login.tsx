@@ -49,7 +49,7 @@ export const LoginScreen = () => {
     console.log(url)
     const response = await fetch(url, {
       method: 'POST',
-
+      mode:"no-cors",
       body:formdata
     })
       const json = await response.json()
