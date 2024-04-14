@@ -25,7 +25,6 @@ const ChatScreen = ({ route }) => {
 
   // Getw otherId from navigation prop
   const otherId = route.params.otherId;
-  const isEphemeral = route.params.otherId;
   useEffect(() => {
     getValueOf("uid").then((res) => {
       setUserId(res);
