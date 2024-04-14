@@ -16,13 +16,14 @@ const ChatScreen = ({ route }) => {
 
   // Getw otherId from navigation prop
   const otherId = route.params.otherId;
-  
+
   useEffect(() => {
     getValueOf("uid").then((res) => {
       setUserId(res);
     });
     if (userId != null) {
-      var msgs = fetch(`${ip}/getMessages/${userId}/${otherId}`);
+      const msgs = fetch(`${ip}/getMessages/${userId}/${otherId}`);
+
 
       setMessages((prevMessages) =>
             GiftedChat.append(prevMessages, msgs)
