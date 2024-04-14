@@ -190,7 +190,7 @@ const ExploreScreen = () => {
                   fontSize:20,
                   paddingBottom:5,
                 }}> 
-                {users[current].user.username} - {users[current].user.age} - {users[current].user.gender}
+                {users[current].title}
               </Text>
           </View>
         </>
