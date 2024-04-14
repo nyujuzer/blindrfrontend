@@ -16,12 +16,14 @@ const ChatScreen = ({ route }) => {
 
   // Getw otherId from navigation prop
   const otherId = route.params.otherId;
+  
   useEffect(() => {
     getValueOf("uid").then((res) => {
       setUserId(res);
     });
     if (userId != null) {
       var msgs = fetch(`${ip}/getMessages/${userId}/${otherId}`);
+
       setMessages((prevMessages) =>
             GiftedChat.append(prevMessages, msgs)
       );
@@ -38,8 +40,7 @@ const ChatScreen = ({ route }) => {
       setMessages((prevMessages) =>
         GiftedChat.append(prevMessages, newMessages)
       );
-;
-      fetch(`${ip}/sendMessage body:${userId, otherId, JSON.stringify(newMessages[0])}`);
+      fetch(`${ip}/sendMessage body:{${userId}, ${otherId}, ${JSON.stringify(newMessages[0])}}`);
     }
   };
 
