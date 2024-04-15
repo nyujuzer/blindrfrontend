@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useId } from "react";
 import {Bubble, GiftedChat, InputToolbar, Message, MessageContainer, Send, } from "react-native-gifted-chat";
+import xhtmlrequestBuilder from "../../../components/helpers/request";
 // import * as WebSocket from 'websocket';
 import { getValueOf } from "../../../components/helpers/app.loginHelper";
 import { ip} from "../../../components/helpers/conf";
@@ -22,14 +23,40 @@ const ChatScreen = ({ route }) => {
       setUserId(res);
     });
     if (userId != null) {
-      const msgs = fetch(`${ip}/getMessages/${userId}/${otherId}`);
+      
+
+      fetch(`${ip}/getMessages/${userId}/${otherId}/`)
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        console.log("bingus");
+        setMessages((prevMessages) =>
+          GiftedChat.append(prevMessages, messages)
+        );
+      });
 
 
-      setMessages((prevMessages) =>
-            GiftedChat.append(prevMessages, msgs)
-      );
+      /*
+      const xhr = new xhtmlrequestBuilder();
+      xhr
+        .to(ip)
+        .asType("GET")
+        .atRoute("/getMessages/" + userId + "/" + otherId + "/")
+        .onCompletion((e) => {
+          const message = JSON.parse(e).data;
+          console.log(message);
+          console.log("xd");
+
+          setMessages((prevMessages) =>
+            GiftedChat.append(prevMessages, message)
+          );
+        })
+        .send();
+        */
     }
-  }, [userId]);
+  }, []);
 
   const handleSend = (newMessages = []) => {
     if (newMessages.length > 0) {
@@ -41,7 +68,14 @@ const ChatScreen = ({ route }) => {
       setMessages((prevMessages) =>
         GiftedChat.append(prevMessages, newMessages)
       );
+
       fetch(`${ip}/sendMessage body:{${userId}, ${otherId}, ${JSON.stringify(newMessages[0])}}`);
+      
+      /*
+      const xhr = new xhtmlrequestBuilder();
+      xhr.to(ip).asType("POST").atRoute("/sendMessage/").message({userID:userId, other:otherId, message:JSON.stringify(newMessages)})
+      */
+      console.log("lol");
     }
   };
 
