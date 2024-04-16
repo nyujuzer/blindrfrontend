@@ -31,7 +31,7 @@ const ChatScreen = ({ route }) => {
         console.log(data);
         console.log("bingus");
         setMessages((prevMessages) =>
-          GiftedChat.append(prevMessages, messages)
+          GiftedChat.append(prevMessages, data)
         );
       });
 
@@ -58,7 +58,7 @@ const ChatScreen = ({ route }) => {
 
   const handleSend = (newMessages = []) => {
     if (newMessages.length > 0) {
-      // const message = newMessages[0];
+      const message = newMessages[0];
       // console.log(newMessages[0]);
       setInputText("")
       // socket.send(JSON.stringify(message));
@@ -67,19 +67,24 @@ const ChatScreen = ({ route }) => {
         GiftedChat.append(prevMessages, newMessages)
       );
 
+      const formdata = new FormData();
+      formdata.append("userId",userId)
+      formdata.append("otherId",otherId)
+      formdata.append("message",message)
+
       fetch(`${ip}/sendMessage/`, {
         method:"POST", 
-        body: {
-          uid:userId, 
-          otherId:otherId, 
-          message:newMessages 
-        }})
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formdata)
+      })
       
       /*
       const xhr = new xhtmlrequestBuilder();
       xhr.to(ip).asType("POST").atRoute("/sendMessage/").message({userID:userId, other:otherId, message:JSON.stringify(newMessages)})
       */
-      console.log("lol");
+      console.log("sent");
     }
   };
 
