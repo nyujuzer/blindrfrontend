@@ -70,14 +70,11 @@ const ChatScreen = ({ route }) => {
       const formdata = new FormData();
       formdata.append("userId",userId)
       formdata.append("otherId",otherId)
-      formdata.append("message",message)
+      formdata.append("message",message.text)
 
       fetch(`${ip}/sendMessage/`, {
         method:"POST", 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formdata)
+        body: formdata,
       })
       
       /*
