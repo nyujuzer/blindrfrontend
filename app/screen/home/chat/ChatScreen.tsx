@@ -17,23 +17,19 @@ const ChatScreen = ({ route }) => {
 
   // Getw otherId from navigation prop
   const otherId = route.params.otherId;
-
+  const handleFetch = async ()=>{
+    const msgs = await fetch(`${ip}/getMessages/${userId}/${otherId}/`);
+    const msgtext = await msgs.json();
+    console.log(msgtext["data"])
+    setMessages(msgtext["data"]);
+  }
   useEffect(() => {
     getValueOf("uid").then((res) => {
       setUserId(res);
     });
     if (userId != null) {
 
-      fetch(`${ip}/getMessages/${userId}/${otherId}/`)
-      .then(res => res.json())
-      .then((data) => {
-
-        console.log(data);
-        console.log("bingus");
-        setMessages((prevMessages) =>
-          GiftedChat.append(prevMessages, data)
-        );
-      });
+      handleFetch();
 
 
       /*
@@ -54,13 +50,14 @@ const ChatScreen = ({ route }) => {
         .send();
         */
     }
-  }, [userId]);
+  },);
 
   const handleSend = (newMessages = []) => {
     if (newMessages.length > 0) {
       const message = newMessages[0];
       // console.log(newMessages[0]);
       setInputText("")
+      
       // socket.send(JSON.stringify(message));
       // Update the local state with the new message
       setMessages((prevMessages) =>
@@ -71,10 +68,13 @@ const ChatScreen = ({ route }) => {
       formdata.append("userId",userId)
       formdata.append("otherId",otherId)
       formdata.append("message",message.text)
-
+      console.log(message.text);
       fetch(`${ip}/sendMessage/`, {
         method:"POST", 
-        body: formdata,
+        // headers: {
+        //   "Content-Type":" multipart/form-data; boundary=---WebKitFormBoundary7MA4YWxkTrZu0gW"
+        // },
+        body: formdata
       })
       
       /*
