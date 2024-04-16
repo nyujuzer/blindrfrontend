@@ -23,7 +23,6 @@ const ChatScreen = ({ route }) => {
       setUserId(res);
     });
     if (userId != null) {
-      
 
       fetch(`${ip}/getMessages/${userId}/${otherId}/`)
       .then((res) => {
