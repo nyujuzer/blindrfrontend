@@ -25,10 +25,9 @@ const ChatScreen = ({ route }) => {
     if (userId != null) {
 
       fetch(`${ip}/getMessages/${userId}/${otherId}/`)
-      .then((res) => {
-        return res.json();
-      })
+      .then(res => res.json())
       .then((data) => {
+
         console.log(data);
         console.log("bingus");
         setMessages((prevMessages) =>
@@ -55,7 +54,7 @@ const ChatScreen = ({ route }) => {
         .send();
         */
     }
-  }, []);
+  }, [userId]);
 
   const handleSend = (newMessages = []) => {
     if (newMessages.length > 0) {
@@ -68,7 +67,13 @@ const ChatScreen = ({ route }) => {
         GiftedChat.append(prevMessages, newMessages)
       );
 
-      fetch(`${ip}/sendMessage body:{${userId}, ${otherId}, ${JSON.stringify(newMessages[0])}}`);
+      fetch(`${ip}/sendMessage/`, {
+        method:"POST", 
+        body: {
+          uid:userId, 
+          otherId:otherId, 
+          message:newMessages 
+        }})
       
       /*
       const xhr = new xhtmlrequestBuilder();
