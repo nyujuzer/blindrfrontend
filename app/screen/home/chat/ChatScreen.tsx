@@ -1,16 +1,9 @@
 import React, { useState, useEffect, useId } from "react";
-import {
-  Bubble,
-  GiftedChat,
-  InputToolbar,
-  Message,
-  MessageContainer,
-  Send,
-} from "react-native-gifted-chat";
+import {Bubble, GiftedChat, InputToolbar, Message, MessageContainer, Send, } from "react-native-gifted-chat";
+import xhtmlrequestBuilder from "../../../components/helpers/request";
 // import * as WebSocket from 'websocket';
 import { getValueOf } from "../../../components/helpers/app.loginHelper";
-import { ip, socketIp } from "../../../components/helpers/conf";
-import xhtmlrequestBuilder from "../../../components/helpers/request";
+import { ip} from "../../../components/helpers/conf";
 import { View } from "react-native";
 import {
 theme
@@ -19,61 +12,76 @@ import CustomInputToolbar from "../../../components/inputbar";
 
 const ChatScreen = ({ route }) => {
   const [messages, setMessages] = useState([]);
-  const [socket, setSocket] = useState(null);
   const [userId, setUserId] = useState(null);
   const [inputText, setInputText] = useState("");
 
   // Getw otherId from navigation prop
   const otherId = route.params.otherId;
+  const handleFetch = async ()=>{
+    const msgs = await fetch(`${ip}/getMessages/${userId}/${otherId}/`);
+    const msgtext = await msgs.json();
+    console.log(msgtext["data"])
+    setMessages(msgtext["data"]);
+  }
   useEffect(() => {
     getValueOf("uid").then((res) => {
       setUserId(res);
     });
-    console.log(socketIp)
     if (userId != null) {
-      var sock = new WebSocket(`${socketIp}/ws/${userId}/${otherId}/`);
-      sock.onopen = () => {
-        const xhr = new xhtmlrequestBuilder();
-        xhr
-          .to(ip)
-          .asType("GET")
-          .atRoute("/getMessages/" + userId + "/" + otherId + "/")
-          .onCompletion((e) => {
-            const message = JSON.parse(e).data;
-            console.log(message);
 
-            setMessages((prevMessages) =>
-              GiftedChat.append(prevMessages, message)
-            );
-          })
-          .send();
-      };
-      sock.onmessage = (event) => {
-        const message = JSON.parse(event.data);
-        if (message.message.user._id !== userId) {
+      handleFetch();
+
+
+      /*
+      const xhr = new xhtmlrequestBuilder();
+      xhr
+        .to(ip)
+        .asType("GET")
+        .atRoute("/getMessages/" + userId + "/" + otherId + "/")
+        .onCompletion((e) => {
+          const message = JSON.parse(e).data;
+          console.log(message);
+          console.log("xd");
+
           setMessages((prevMessages) =>
-            GiftedChat.append(prevMessages, message.message)
+            GiftedChat.append(prevMessages, message)
           );
-        }
-      };
-      sock.onclose = (e) => {
-        console.log("closed");
-      };
-
-      setSocket(sock);
+        })
+        .send();
+        */
     }
-  }, [userId]);
+  },);
+
   const handleSend = (newMessages = []) => {
     if (newMessages.length > 0) {
-      // const message = newMessages[0];
+      const message = newMessages[0];
       // console.log(newMessages[0]);
       setInputText("")
+      
       // socket.send(JSON.stringify(message));
       // Update the local state with the new message
       setMessages((prevMessages) =>
         GiftedChat.append(prevMessages, newMessages)
       );
-      socket.send(JSON.stringify(newMessages[0]));
+
+      const formdata = new FormData();
+      formdata.append("userId",userId)
+      formdata.append("otherId",otherId)
+      formdata.append("message",message.text)
+      console.log(message.text);
+      fetch(`${ip}/sendMessage/`, {
+        method:"POST", 
+        // headers: {
+        //   "Content-Type":" multipart/form-data; boundary=---WebKitFormBoundary7MA4YWxkTrZu0gW"
+        // },
+        body: formdata
+      })
+      
+      /*
+      const xhr = new xhtmlrequestBuilder();
+      xhr.to(ip).asType("POST").atRoute("/sendMessage/").message({userID:userId, other:otherId, message:JSON.stringify(newMessages)})
+      */
+      console.log("sent");
     }
   };
 

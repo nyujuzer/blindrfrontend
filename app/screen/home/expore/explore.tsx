@@ -160,19 +160,19 @@ const ExploreScreen = () => {
               return (
                 <View
                   style={{
-                    aspectRatio: "auto",
+                    aspectRatio: 16 / 9,
                     flex: 1,
                     justifyContent: "center",
                     alignItems: "center",
                   }}
                 >
                   <Player
-                    // style={{
-                    //   flex:1,
-                    //   width: width,
-                    //   height: height,
-                    //   aspectRatio: 16 / 9,
-                    // }}
+                    //style={{
+                    //  flex:1,
+                    //  width: width,
+                    //  height: height,
+                    //  aspectRatio: 16 / 9,
+                    //}}
                     shouldplay={isOnViewport}
                     url={`${ip}${info.item.video_url}`}
                   />
