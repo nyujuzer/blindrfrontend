@@ -4,7 +4,9 @@ import { View, TextInput, StyleSheet, Text } from "react-native";
 const TextAreaWithOverlay = ({maxLength, value, onChangeText, overlayText }) => {
   return (
     <View style={styles.container}>
-      <TextInput
+      <TextInput 
+      
+        id="test__text_input"
         style={styles.textArea}
         multiline
         maxLength={maxLength}

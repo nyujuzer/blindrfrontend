@@ -13,7 +13,6 @@ import StyledButton from "../../../components/styledbutton";
 import InputField from "../../../components/inputfield";
 import { useNavigation } from "@react-navigation/native";
 import { ActivityIndicator } from "react-native-paper";
-import { BackgroundColor } from "../../../components/helpers/StyleVars";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { getExpiration } from "../../../components/helpers/idempotence";
 
@@ -34,29 +33,29 @@ const Vidupload = () => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
 
+  function fileSelectedHandler(event): void {
+    setSelectedImage(event.target.value);
+  }
   const uploadImage = async () => {
     setLoading(true);
-
-    const formData = new FormData();
-    formData.append("video", selectedImage);
-    formData.append("uid", uid);
-    formData.append("title", title);
-    formData.append("description", desc);
-    console.log(formData)
-    const date = new Date()
-    const day = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`
-    const timestamp = `${date.getHours()}-${date.getMinutes()}`
-    const expiration = getExpiration(day, timestamp, 3);
+    const form = document.getElementById("form") as HTMLFormElement
+    const form2 = document.getElementById("form2") as HTMLFormElement
+    // console.log([form, form2]);
+    // const _form_ = form.
+    const formData = new FormData(form);
     try {
       const response = await fetch(ip + "/uploadVideo/", {
         method: "POST",
         body: formData,
+        mode:"no-cors",
         headers: {
           // "idempotenceToken":`${day}/${timestamp};${expiration};${uid}/videoUpload`,
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data;",
           // "access-control-allow-origin":"http://localhost:19006"
         }
       });
+
+    
 
       if (response.status === 200) {
         const data = await response.json();
@@ -79,61 +78,9 @@ const Vidupload = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={{ color: "white", fontSize: 30, fontWeight: "bold" }}>
-        Select a video
-      </Text>
-      <VideoUploadField
-        handleSelection={(img) => setSelectedImage({ ...img, name: title })}
-        uid={uid}
-      />
-      {selectedImage ? (
-        <StyledButton
-          text="Continue!"
-          onPress={() => {
-            setOpen(true);
-          }}
-        />
-      ) : null}
-      <Modal visible={open} transparent={true} animationType="slide">
-        <View
-          style={[
-            styles.container,
-            {
-              alignSelf: "center",
-              width: dimensions.width * 0.8,
-              height: dimensions.height * 0.8,
-              backgroundColor: "rgba(0,0,0,0.8)",
-            },
-          ]}
-        >
-          <Text style={{ color: "white", fontSize: 22 }}>
-            Give it a Great title!
-          </Text>
-          <InputField
-            onChangeText={(text) => {
-              setTitle(text);
-              setSelectedImage({ ...selectedImage, name: text + ".mp4" });
-            }}
-            placeholder="Title"
-          />
-          <InputField
-            onChangeText={(text)=>{setDesc(text)}}
-            placeholder="description"
-          />
-          {title.length >= 5 ? (
-            <StyledButton
-              isDisabled={isLoading}
-              text={isLoading ? <ActivityIndicator size={"small"} color={BackgroundColor}/> : "Upload"}
-              onPress={() => {
-                setLoading(true)
-                uploadImage();
-              }}
-            />
-          ) : null}
-        </View>
-      </Modal>
-    </View>
+  <View>
+    
+  </View>
   );
 };
 

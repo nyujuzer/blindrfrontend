@@ -12,7 +12,9 @@ const CCDatePicker: React.FC<AppropriateDatePickerProps> = ({
   onChange,
 }) => {
   const renderDatePicker = () => {
-    
+    const date = new Date();
+    console.log(date.getDate());
+      
       return (
         <View style={style.modalView}>
           <View style={style.datePickerContsainer}>
@@ -26,9 +28,9 @@ const CCDatePicker: React.FC<AppropriateDatePickerProps> = ({
                 selectedTextColor: "black",
                 mainColor: theme.accent
               }}
-              maximumDate={'2005-05-10'}
+              maximumDate={date}
               minimumDate={'1970-01-01'}
-              current={'2005-05-10'}
+              current={date}
             />
           </View>
           <StyledButton text="Set Birthday" onPress={() => {onPress(); }} />
