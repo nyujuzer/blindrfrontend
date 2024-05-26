@@ -138,7 +138,6 @@ const ExploreScreen = () => {
     <View style={style.container}>
       {users.length > 0 ? (
         <>
-
           <FlatList
             contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
             data={users}
@@ -146,7 +145,7 @@ const ExploreScreen = () => {
             onViewableItemsChanged={onViewableItemsChanged}
             snapToAlignment="start"
             decelerationRate={"fast"}
-            snapToInterval={height}
+            snapToInterval={Dimensions.get("window").height}
             onEndReachedThreshold={2}
             extraData={users}
             onEndReached={() => getMore()}
@@ -160,8 +159,10 @@ const ExploreScreen = () => {
               return (
                 <View
                   style={{
-                    aspectRatio: 16 / 9,
-                    flex: 1,
+                    //aspectRatio: 16 / 9,
+                    height: height-20,
+                    width: width,
+                    alignSelf: "center",
                     justifyContent: "center",
                     alignItems: "center",
                   }}
@@ -173,7 +174,7 @@ const ExploreScreen = () => {
                     //  height: height,
                     //  aspectRatio: 16 / 9,
                     //}}
-                    shouldplay={isOnViewport}
+                    shouldplay={true}
                     url={`${ip}${info.item.video_url}`}
                   />
                 </View>
