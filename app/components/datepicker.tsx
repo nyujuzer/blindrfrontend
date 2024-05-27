@@ -28,9 +28,9 @@ const CCDatePicker: React.FC<AppropriateDatePickerProps> = ({
                 selectedTextColor: "black",
                 mainColor: theme.accent
               }}
-              maximumDate={date}
+              maximumDate={"2006-01-01"}
               minimumDate={'1970-01-01'}
-              current={date}
+              current={"2005-01-01"}
             />
           </View>
           <StyledButton text="Set Birthday" onPress={() => {onPress(); }} />
