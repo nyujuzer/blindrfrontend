@@ -173,7 +173,7 @@ const ExploreScreen = () => {
                     //  height: height,
                     //  aspectRatio: 16 / 9,
                     //}}
-                    shouldplay={isOnViewport}
+                    shouldplay={true}
                     url={`${ip}${info.item.video_url}`}
                   />
                 </View>
